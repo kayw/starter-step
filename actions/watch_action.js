@@ -1,10 +1,10 @@
 'use strict';
 
-var mtreeConstants = require('../constants/mtree_const.js');
+var fluxConstants = require('../constants/flux_const.js');
 var appDispatcher = require('../dispatcher');
 
-var PayLoadSources = mtreeConstants.PayLoadSources;
-var ActionTypes = mtreeConstants.ActionTypes; 
+var PayLoadSources = fluxConstants.PayLoadSources;
+var ActionTypes = fluxConstants.ActionTypes; 
 
 appDispatcher.dispatch = appDispatcher.dispatch.bind(appDispatcher);
 
@@ -21,6 +21,12 @@ module.exports = {
         ioconn.on('connect', function(socketio) {
             var socket = socketio || ioconn;
             socket.on('change', function(changedInfo) {
+                setTimeout(function() {
+                    appDispatcher.dispatch({
+                        source: PayLoadSources.SERVER_ACTION,
+                        action: { type: ActionTypes.CLEAR_PREVIOUS_MESSAGE }
+                    });
+                }, 1);
                 var action = {
                     node: changedInfo.node
                 };

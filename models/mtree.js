@@ -1,36 +1,44 @@
 'use strict';
 
+var mtreeConst = require('../constants/mtree_const.js');
+var ToggleTypes = mtreeConst.ToggleStateTypes;
+var AnimationTypes = mtreeConst.AnimationTypes;
 function MTreeNode(id, data) {
     this.id_ = id;
     this.text_ = data.name || 'Root';
     this.type_ = data.type || 'file';
-    this.relPath_ = data.path || ''; // relative path modules
+    this.relPath_ = data.path || ''; // relative to the toplevel module path
     this.children_ = [];
 
-    this.isEmerged_ = false;// can be useful for view animation todo
-    this.isModified_ = false;
-
     this.isVisible_ = true;
-    this.isOpen_ = false;
-    this.isLoading_ = false;
+
+    this.toggleState_ = ToggleTypes.TOGGLE_CLOSE;
+    this.animateState_ = AnimationTypes.ANIMATE_NONE;
+    this.childrenLoaded_ = false;
 }
 
 MTreeNode.prototype.hasVisibleChild = function() {
     return this.children_.some(function(elem) {
         return elem.isVisible_;
     });
+};//todo none use
+
+MTreeNode.prototype.getChildrenLoaded = function() {
+    return this.childrenLoaded_;
 };
+
+MTreeNode.prototype.setChildrenLoaded = function() {
+    this.childrenLoaded_ = true;
+}
 
 function MTree(data) {
     this.cnt_ = 0;
     this.root_ = new MTreeNode(this.cnt_++, data);
-    this.root_.isOpen_ = true;
+    this.root_.toggleState_ = ToggleTypes.TOGGLE_OPEN;
     this.pathIndexes_ = {};
     this.pathIndexes_[this.root_.relPath_] = this.root_.id_;
     this.idIndexes_ = {};
     this.idIndexes_[this.root_.id_] = this.root_;
-    //this.pathIndexes_ = {this.root_.relPath_ : this.root_.id_ };
-    //this.idIndexes_ = { this.root_.id_ : this.root_};
 }
 
 var proto = MTree.prototype;
@@ -52,7 +60,15 @@ proto.getNodeById = function(id) {
     }
 };
 
-proto.insert = function(name, parentId, type, path, emerged) {
+proto.getNodeIdByPath = function(path) {
+    var id = null;
+    if (path in this.pathIndexes_) {
+        id = this.pathIndexes_[path];
+    }
+    return id;
+};
+
+proto.insert = function(name,  type, path, parentId) {
     var node = new MTreeNode(this.cnt_++ , {
         name: name,
         path: path,
@@ -64,27 +80,24 @@ proto.insert = function(name, parentId, type, path, emerged) {
     }
     this.idIndexes_[node.id_] = node;
     this.pathIndexes_[node.relPath_] = node.id_;
-    node.isEmerged_ = emerged || false;
+    return node;
 };
 
 proto.update = function(name, type, path) {
-    var exist = false;
     var node = this.getNodeByPath(path);
     if (node) {
         node.text = name;
         node.type = type;
-        node.isModified_ = true;
-        exist = true;
     }
-    return exist;
+    return node;
 };
 
-proto.remove = function(path, parentPath) {
+proto.remove = function(path, parentPath) { //todo refractor
     var currNode = this.getNodeByPath(path);
     var removed = false;
     if (currNode) {
         currNode.children_.forEach(function(elem) {
-            this.remove(elem.path_, currNode.path_); //todo debug
+            this.remove(elem.path_, currNode.path_); 
         });
         var parentNode = this.getNodeByPath(parentPath);
         for (var i = parentNode.children_.length; i--;) {
@@ -98,14 +111,6 @@ proto.remove = function(path, parentPath) {
         }
     }
     return removed;
-};
-
-proto.getNodeIdByPath = function(path) {
-    var id = null;
-    if (path in this.pathIndexes_) {
-        id = this.pathIndexes_[path];
-    }
-    return id;
 };
 
 module.exports = MTree;

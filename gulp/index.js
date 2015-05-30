@@ -8,10 +8,11 @@ function getTask(task) {
 gulp.task('setWatch', getTask('set_watch'));
 gulp.task('browserify', getTask('browserify'));
 gulp.task('style', getTask('style'));
+gulp.task('fonts', getTask('copy-fonts'));
 gulp.task('build', [
   'browserify',
   //'copy-bower-files',
-  //'copy-fontawesome-fonts',
+  'fonts',
   //'copy-bootstrap-fonts',
   //'copy-html',
   //'copy-images',

@@ -14,8 +14,9 @@ router.get('/', function(req, res, next) {
     fs.readdir(servedDir, function(err, files) {
         g.onFileEnumerated(err, files,servedDir, fileNodes);
         fileNodes.forEach(function(elem) {
-            tree.insert(elem.name, tree.root_.id_, elem.type, elem.path);
+            tree.insert(elem.name, elem.type, elem.path, tree.root_.id_);
         });
+        tree.root_.setChildrenLoaded();
         treeStore.setData(tree);
         var data = {
             title: 'modules tree app'

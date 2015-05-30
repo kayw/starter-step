@@ -1,5 +1,5 @@
-@import "common_var.scss";
-@import "mixins.scss";
+@import "common";
+@import "mixins";
 .mtree-children,
 .mtree-ui-ul {
 	display: block;
@@ -38,6 +38,11 @@
 	padding: 0;
 	vertical-align: top;
 	text-align: center;
+	font: normal normal normal 16px/1 octicons;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	user-select: none;
 }
 .mtree-ocl {
 	cursor: pointer;
@@ -51,9 +56,6 @@
 .mtree .mtree-closed > .mtree-children,
 .mtree .mtree-leaf > .mtree-children {
 	display: none;
-}
-.mtree-anchor > .mtree-themeicon {
-	margin-right: 2px;
 }
 
 .mtree-default {
@@ -115,13 +117,16 @@
 	}
 	.mtree-modified {
 		animation-name: flash;
+		//animation-iteration-count: infinite;
 	}
 	.mtree-open > .mtree-ocl:before {
-		content:"▼";
+		//content:"▼";
+		content:"\f05b";
 		display: inline-block;
 	}
 	.mtree-closed > .mtree-ocl:before {
-		content:"▶";
+		//content:"▶";
+		content:"\f05a";
 		display: inline-block;
 	}
 	.mtree-leaf > .mtree-ocl:before {
@@ -176,8 +181,8 @@
 		margin-left:0;
 		margin-right:0; 
 	}
-	@include styling($base-height: 18px);
+	@include styling($base-height: 24px);
 	@media ($large) {
-		@include styling($base-height: 24px);
+		@include styling($base-height: 32px);
 	}
 }

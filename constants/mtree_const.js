@@ -3,17 +3,16 @@
 var keyMirror = require('keymirror');
 
 module.exports = {
-    ActionTypes: keyMirror({
-        RECEIVE_MODIFIED_MESSAGE: null,
-        RECEIVE_REMOVE_MESSAGE: null,
-        RECEIVE_CREATED_MESSAGE: null,
-        CLOSE_FOLDER: null,
-        OPEN_FOLDER: null,
-        LOADING_FOLDER_CHILDREN: null
+    AnimationTypes: keyMirror({
+        ANIMATE_NONE: null,
+        ANIMATE_EMERGE: null,
+        ANIMATE_MODIFIED: null
     }),
     
-    PayLoadSources: keyMirror({
-        SERVER_ACTION: null,
-        VIEW_ACTION: null
+    ToggleStateTypes: keyMirror({
+        TOGGLE_NONE: null,
+        TOGGLE_OPEN: null,
+        TOGGLE_LOADING: null,
+        TOGGLE_CLOSE: null
     })
 };

@@ -2,13 +2,19 @@
 var _ = require('lodash');
 
 var appDispatcher = require('../dispatcher');
-var mtreeConstants = require('../constants/mtree_const.js');
 
+var fluxConstants = require('../constants/flux_const.js');
 var EventEmitter = require('events').EventEmitter;
-var ActionTypes = mtreeConstants.ActionTypes; 
+var ActionTypes = fluxConstants.ActionTypes; 
+
+var mtreeConst = require('../constants/mtree_const.js');
+var ToggleTypes = mtreeConst.ToggleStateTypes;
+var AnimationTypes = mtreeConst.AnimationTypes;
+
 var request = require('superagent');
 
 var tree = {};
+var prevAnimatedNode = null;
 
 var treeStore = _.extend({}, EventEmitter.prototype, {
     getRootNode: function() {
@@ -24,45 +30,47 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
         var parentId = tree.getNodeIdByPath(node.parentPath);
         var exist = false;
         if (parentId >= 0) {
-            tree.insert(node.name, parentId, node.type, node.path, true);
+            var node = tree.insert(node.name, node.type, node.path, parentId);
+            node.animateState_ = AnimationTypes.ANIMATE_EMERGE;
+            prevAnimatedNode = node;
             exist = true;
         }
         return exist;
     },
 
     onNodeModified : function(node) {
-        var updated = tree.update(node.name, node.type, node.path);
+        var updated = false;
+        var updatedNode = tree.update(node.name, node.type, node.path);
+        if (updatedNode) {
+            updatedNode.animateState_ = AnimationTypes.ANIMATE_MODIFIED;
+            prevAnimatedNode = updatedNode;
+            updated = true;
+        }
         return updated;
     },
     onNodeRemove : function(node) {
         var removed = tree.remove(node.path, node.parentPath);
         return removed;
     },
-    onOpenFolder : function(folderId) {
+    onToggleFolder : function(folderId) {
         var folder = tree.getNodeById(folderId);
-        folder.children_.forEach(function(elem) {
-            elem.isVisible_ = true;
-        });
-        folder.isOpen_ = true;
-    },
-    onCloseFolder : function(folderId) {
-        var folder = tree.getNodeById(folderId);
-        folder.children_.forEach(function(elem) {
-            elem.isVisible_ = false;
-        });
-        folder.isOpen_ = false;
+        if (folder.toggleState_ == ToggleTypes.TOGGLE_OPEN) {
+            folder.toggleState_ = ToggleTypes.TOGGLE_CLOSE;
+        } 
+        else if (folder.toggleState_ == ToggleTypes.TOGGLE_CLOSE) {
+            folder.toggleState_ = ToggleTypes.TOGGLE_OPEN;
+        }
     },
     onFolderChildrenLoaded : function(err, res) {
         if (res.ok) {
             var parentPath = res.body.parentPath;
             var parentId = tree.getNodeIdByPath(parentPath);
             var parent = tree.getNodeById(parentId);
-            var children = res.body.children;
-            parent.isLoading_ = false;
-            parent.isOpen_ = true;
-            children.forEach(function(elem) {
-                tree.insert(elem.name, parentId, elem.type, elem.path);
+            parent.toggleState_ = ToggleTypes.TOGGLE_OPEN;
+            res.body.children.forEach(function(elem) {
+                tree.insert(elem.name, elem.type, elem.path, parentId);
             });
+            parent.setChildrenLoaded();
             treeStore.emitChange();
         }
         else {
@@ -71,8 +79,8 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
     },
     onFolderChildrenLoading : function(folderNode) {
         request.get('/folder/' + folderNode.relPath_).end(this.onFolderChildrenLoaded);
-        folderNode.isLoading_ = true;
-        folderNode.isOpen_ = false;
+        //for simplicity fire & process respone in the store not in another action
+        folderNode.toggleState_ = ToggleTypes.TOGGLE_LOADING;
     },
     addListener : function(eventName, callback) {
         this.on(eventName, callback);
@@ -85,7 +93,13 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
 appDispatcher.register(function(payload) {
     var needEmit = false;
     switch (payload.action.type) {
-        //case 'SEND_EMERGE_MESSAGE':
+        case ActionTypes.CLEAR_PREVIOUS_MESSAGE :
+            if (prevAnimatedNode) {
+                prevAnimatedNode.animateState_ = AnimationTypes.ANIMATE_NONE;
+                console.log("CLEAR_PREVIOUS_MESSAGE");
+                needEmit = true;
+            }
+            break;
         case ActionTypes.RECEIVE_CREATED_MESSAGE:
             needEmit = treeStore.onNodeCreated(payload.action.node);
             break;
@@ -96,15 +110,11 @@ appDispatcher.register(function(payload) {
 
         case ActionTypes.RECEIVE_MODIFIED_MESSAGE:
             needEmit = treeStore.onNodeModified(payload.action.node);
+            console.log("RECEIVE_MODIFIED_MESSAGE:", payload.action.node.name);
             break;
 
-        case ActionTypes.OPEN_FOLDER:
-            treeStore.onOpenFolder(payload.action.folderId);
-            needEmit = true;
-            break;
-
-        case ActionTypes.CLOSE_FOLDER:
-            treeStore.onCloseFolder(payload.action.folderId);
+        case ActionTypes.TOGGLE_FOLDER:
+            treeStore.onToggleFolder(payload.action.folderId);
             needEmit = true;
             break;
 

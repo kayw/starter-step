@@ -1,16 +1,23 @@
-/*
-  Move fonts from client and output into build.
-*/
+/**
+ * Copy fonts output into build.
+ */
 
-var changed    = require('gulp-changed');
-var gulp       = require('gulp');
+var gulp = require('gulp');
+var changed = require('gulp-changed');
 var handleErrors = require('../util/handleErrors');
 
-gulp.task('copy-fonts', function() {
-  var dest = './build/fonts';
+module.exports = function(gulp, plugins) {
+    return function() {
+        var dest = './public/fonts';
 
-  return gulp.src('./client/fonts/**')
-    .pipe(changed(dest)) // Ignore unchanged files
-    .on('error', handleErrors)
-    .pipe(gulp.dest(dest));
-});
+        var files = [
+            'bower_components/octicons/octicons/octicons.{svg,woff,ttf,eot}'//no space after , !!!
+        ];
+
+        return gulp.src(files)
+        // Ignore unchanged files
+        .pipe(changed(dest))
+        .on('error', handleErrors)
+        .pipe(gulp.dest(dest));
+    };
+};
