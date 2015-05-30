@@ -18,7 +18,6 @@ module.exports = {
             action.folderNode = folderNode;
         }
         else {
-            // if all the children nodes are hidden, we show them otherwise hide the node
             // otherwise show/hide the loaded children
             action.type =  ActionTypes.TOGGLE_FOLDER;
             action.folderId = folderNode.id_;

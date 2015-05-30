@@ -21,12 +21,6 @@ module.exports = {
         ioconn.on('connect', function(socketio) {
             var socket = socketio || ioconn;
             socket.on('change', function(changedInfo) {
-                setTimeout(function() {
-                    appDispatcher.dispatch({
-                        source: PayLoadSources.SERVER_ACTION,
-                        action: { type: ActionTypes.CLEAR_PREVIOUS_MESSAGE }
-                    });
-                }, 1);
                 var action = {
                     node: changedInfo.node
                 };

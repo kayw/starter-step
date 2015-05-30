@@ -10,18 +10,10 @@ function MTreeNode(id, data) {
     this.relPath_ = data.path || ''; // relative to the toplevel module path
     this.children_ = [];
 
-    this.isVisible_ = true;
-
     this.toggleState_ = ToggleTypes.TOGGLE_CLOSE;
     this.animateState_ = AnimationTypes.ANIMATE_NONE;
     this.childrenLoaded_ = false;
 }
-
-MTreeNode.prototype.hasVisibleChild = function() {
-    return this.children_.some(function(elem) {
-        return elem.isVisible_;
-    });
-};//todo none use
 
 MTreeNode.prototype.getChildrenLoaded = function() {
     return this.childrenLoaded_;
@@ -92,7 +84,7 @@ proto.update = function(name, type, path) {
     return node;
 };
 
-proto.remove = function(path, parentPath) { //todo refractor
+proto.remove = function(path, parentPath) {
     var currNode = this.getNodeByPath(path);
     var removed = false;
     if (currNode) {

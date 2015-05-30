@@ -13,7 +13,6 @@ var AnimationTypes = mtreeConst.AnimationTypes;
 var MTreeUINode = React.createClass({
     render: function() {
         var thisNode = this.props.data;
-        //console.log("rendering node:" + thisNode.text_);
         var childNodes = null;
         if (thisNode.toggleState_ === ToggleTypes.TOGGLE_OPEN) {
             childNodes = thisNode.children_.map(function(child,idx) {
@@ -60,12 +59,6 @@ var MTreeUINode = React.createClass({
         );
     },
 
-    componentWillUpdate: function() {
-        console.log("componentWillUpdate");
-    },
-    componentDidUpdate: function() {
-        console.log("componentDidUpdate");
-    },
     getInitialState: function() {
         return { selected: false };
     },

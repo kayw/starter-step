@@ -14,7 +14,6 @@ var AnimationTypes = mtreeConst.AnimationTypes;
 var request = require('superagent');
 
 var tree = {};
-var prevAnimatedNode = null;
 
 var treeStore = _.extend({}, EventEmitter.prototype, {
     getRootNode: function() {
@@ -32,7 +31,6 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
         if (parentId >= 0) {
             var node = tree.insert(node.name, node.type, node.path, parentId);
             node.animateState_ = AnimationTypes.ANIMATE_EMERGE;
-            prevAnimatedNode = node;
             exist = true;
         }
         return exist;
@@ -43,7 +41,6 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
         var updatedNode = tree.update(node.name, node.type, node.path);
         if (updatedNode) {
             updatedNode.animateState_ = AnimationTypes.ANIMATE_MODIFIED;
-            prevAnimatedNode = updatedNode;
             updated = true;
         }
         return updated;
@@ -54,6 +51,7 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
     },
     onToggleFolder : function(folderId) {
         var folder = tree.getNodeById(folderId);
+        // if all the children nodes are hidden, show them otherwise hide
         if (folder.toggleState_ == ToggleTypes.TOGGLE_OPEN) {
             folder.toggleState_ = ToggleTypes.TOGGLE_CLOSE;
         } 
@@ -93,13 +91,6 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
 appDispatcher.register(function(payload) {
     var needEmit = false;
     switch (payload.action.type) {
-        case ActionTypes.CLEAR_PREVIOUS_MESSAGE :
-            if (prevAnimatedNode) {
-                prevAnimatedNode.animateState_ = AnimationTypes.ANIMATE_NONE;
-                console.log("CLEAR_PREVIOUS_MESSAGE");
-                needEmit = true;
-            }
-            break;
         case ActionTypes.RECEIVE_CREATED_MESSAGE:
             needEmit = treeStore.onNodeCreated(payload.action.node);
             break;
