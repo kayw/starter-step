@@ -11,11 +11,7 @@ gulp.task('style', getTask('style'));
 gulp.task('fonts', getTask('copy-fonts'));
 gulp.task('build', [
   'browserify',
-  //'copy-bower-files',
   'fonts',
-  //'copy-bootstrap-fonts',
-  //'copy-html',
-  //'copy-images',
   'style'
 ]);
 gulp.task('browserSync', ['build'], getTask('browser_sync'));

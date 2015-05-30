@@ -21,7 +21,7 @@ MTreeNode.prototype.getChildrenLoaded = function() {
 
 MTreeNode.prototype.setChildrenLoaded = function() {
     this.childrenLoaded_ = true;
-}
+};
 
 function MTree(data) {
     this.cnt_ = 0;

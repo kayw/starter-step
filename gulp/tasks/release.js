@@ -1,6 +1,5 @@
 'use strict';
-var rename = require('rename'),
-    handleErrors = require('../util/handleErrors');
+var handleErrors = require('../util/handleErrors');
 
 module.exports = function(gulp, plugins) {
     return function() {

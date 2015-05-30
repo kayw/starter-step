@@ -15,7 +15,6 @@ module.exports = function (data, containerId) {
         return tree;
     };
     treeStore.setData(buildMTreeFromData());
-    //treeStore.setData(new MTree(data));
     var container = document.getElementById(containerId || 'content');
     React.render(
         <MTreeUI />,
