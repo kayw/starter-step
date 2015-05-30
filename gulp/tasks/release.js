@@ -7,14 +7,12 @@ module.exports = function(gulp, plugins) {
         gulp.src(['public/*.js'])
             .pipe(plugins.uglify())//options todo
             .on('error', handleErrors)
-            .pipe(rename({suffix: '.min'}))
-            .on('error', handleErrors)
+            .pipe(plugins.rename({suffix: '.min'}))
             .pipe(gulp.dest('public'));
          gulp.src(['public/*.css'])
             .pipe(plugins.minifyCss())
             .on('error', handleErrors)
-            .pipe(rename({suffix: '.min'}))
-            .on('error', handleErrors)
+            .pipe(plugins.rename({suffix: '.min'}))
             .pipe(gulp.dest('public'));
     };
 };

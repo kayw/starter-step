@@ -20,7 +20,7 @@ app.engine('jsx', reactViews.createEngine());
 app.disable('etag');
 
 // Index Route
-app.use('/', homeRouter);
+app.use('/', homeRouter(app.get('env')));
 
 // Folder Route
 app.use('/folder', folderRouter);
@@ -53,7 +53,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
-        error: err
+        error: {}
     });
 });
 

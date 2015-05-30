@@ -3,6 +3,7 @@ var chokidr = require('chokidar');
 var path = require('path');
 var fs = require('fs');
 var g = require('../utils/globals.js');
+var conf = require('../config');
 
 var watcherActor = require('../actions/watch_action.js');
 
@@ -10,7 +11,7 @@ module.exports = function(wsio) {
     var servedDir = g.ModulesDir();
         
     var watcher = chokidr.watch(servedDir, {
-        ignored: /[\/\\]\.|node_modules|bower_components/,
+        ignored: conf['ignored-watch-directory'],
         persistent: true
     });
 

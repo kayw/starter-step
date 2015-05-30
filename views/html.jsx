@@ -51,19 +51,21 @@ module.exports = React.createClass({
      * know what you are doing and good luck.
      */
     var initScript = 'MTreeApp(' + JSON.stringify(data).replace(/script/g, 'scr"+"ipt') + ')';
+    var appCssLink = "/app" + initialData.minExt + ".css";
+    var jsLink = "/bundle" + initialData.minExt + ".js";
 
     return (
       <html>
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
           <meta title={initialData.title} />
-          <link rel="stylesheet" href="/app.css" />
+          <link rel="stylesheet" href={appCssLink} />
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: contentHtml}}/>
 
           <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
-          <script src="/bundle.js"></script>
+          <script src={jsLink}></script>
           <script dangerouslySetInnerHTML={{__html: initScript}} />
 
         </body>
