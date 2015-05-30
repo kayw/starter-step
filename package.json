@@ -13,7 +13,6 @@
       "reactify"
     ]
   },
-  "browserify-shim": "./config/shim.js",
   "devDependencies": {
     "body-parser": "~1.6.7",
     "bower": "~1.3.9",
