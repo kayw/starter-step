@@ -1,0 +1,22 @@
+@mixin styling($base-height) {
+	.mtree-node { 
+		line-height:$base-height;
+       		margin-left:$base-height/2; 
+		min-width:$base-height; 
+		min-height:$base-height;
+	}
+	.mtree-anchor { 
+		line-height:$base-height;
+		height:$base-height;
+	}
+	.mtree-icon { 
+		width:$base-height;
+       		height:$base-height;
+       		line-height:$base-height; 
+	}
+	.mtree-icon:empty { 
+		width:$base-height;
+       		height:$base-height;
+       		line-height:$base-height;
+	}
+}

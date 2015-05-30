@@ -1,0 +1,28 @@
+
+@import "common_var";
+
+html {
+	font-size: 100%;
+	@media ($medium) {
+		font-size: 112%;
+	}
+	@media ($large) {
+		font-size: 120%;
+	}
+}
+#content {
+	margin: 2em auto;
+	background-color: #f7f7f7;
+	border: 2px solid #ddd;
+	transition: transform .2s ease;
+	//transform: translate3d(-100%, 0, 0);
+	//overflow: visible;
+	width: 70%;
+	max-width: 48rem;
+}
+
+.mtree-ui-panel {
+	height: auto;
+	display: inline-block;
+	position: relative;
+}
