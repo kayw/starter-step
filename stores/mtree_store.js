@@ -101,7 +101,6 @@ appDispatcher.register(function(payload) {
 
         case ActionTypes.RECEIVE_MODIFIED_MESSAGE:
             needEmit = treeStore.onNodeModified(payload.action.node);
-            console.log("RECEIVE_MODIFIED_MESSAGE:", payload.action.node.name);
             break;
 
         case ActionTypes.TOGGLE_FOLDER:

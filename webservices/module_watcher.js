@@ -16,10 +16,10 @@ module.exports = function(wsio) {
     });
 
     watcher.on('add', handlePathAdd)
-        .on('adddir', handlePathAdd)
+        .on('addDir', handlePathAdd)
         .on('change', handlePathModify)
         .on('unlink', handlePathRemove)
-        .on('unlinkdir', handlePathRemove)
+        .on('unlinkDir', handlePathRemove)
         .on('error', function(error) { 
             console.log('error happend in module watcher', error); 
         });

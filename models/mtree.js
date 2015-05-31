@@ -78,8 +78,8 @@ proto.insert = function(name,  type, path, parentId) {
 proto.update = function(name, type, path) {
     var node = this.getNodeByPath(path);
     if (node) {
-        node.text = name;
-        node.type = type;
+        node.text_ = name;
+        node.type_ = type;
     }
     return node;
 };
@@ -90,7 +90,7 @@ proto.remove = function(path, parentPath) {
     if (currNode) {
         currNode.children_.forEach(function(elem) {
             this.remove(elem.path_, currNode.path_); 
-        });
+        }.bind(this));
         var parentNode = this.getNodeByPath(parentPath);
         for (var i = parentNode.children_.length; i--;) {
             if (currNode === parentNode.children_[i]) {

@@ -15,10 +15,11 @@ gulp.task('build', [
   'style'
 ]);
 gulp.task('browserSync', ['build'], getTask('browser_sync'));
-gulp.task('watch', ['setWatch', 'browserSync'], getTask('watch'));
 gulp.task('jshint', getTask('jshint'));
 gulp.task('csslint', getTask('csslint'));
+
 gulp.task('lint', ['jshint', 'csslint']);
+gulp.task('watch', ['setWatch', 'browserSync'], getTask('watch'));
 gulp.task('release', ['build'], getTask('release'));
-gulp.task('default', ['watch']);
+gulp.task('default', ['release']);
 gulp.task('clean', getTask('clean'));

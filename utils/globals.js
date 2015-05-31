@@ -16,7 +16,7 @@ module.exports = {
         var compareFiles = function(left, right) {
             var leftFull = path.resolve(dir, left);
             var rightFull = path.resolve(dir, right);
-            var isLeftDir = fs.statSync(leftFull).isDirectory();//todo replace with stat
+            var isLeftDir = fs.statSync(leftFull).isDirectory();// fixme replaced with async stat
             var isRightDir = fs.statSync(rightFull).isDirectory();
             if (isLeftDir && !isRightDir) {
                 return -1;

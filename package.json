@@ -4,8 +4,24 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "server": "node server.js",
+    "server": "NODE_ENV=production node server.js",
     "test": "jest"
+  },
+  "jest": {
+    "scriptPreprocessor": "./preprocessor.js",
+    "testPathIgnorePatterns": [
+      "./node_modules/",
+      "./bower_components/",
+      "./gulp/"
+    ],
+    "unmockedModulePathPatterns": [
+      "./node_modules/react",
+      "./node_modules/keymirror",
+      "./node_modules/superagent",
+      "./node_modules/classnames",
+      "./constants/mtree_const.js",
+      "./node_modules/lodash"
+    ]
   },
   "browser": {},
   "browserify": {
@@ -14,13 +30,9 @@
     ]
   },
   "devDependencies": {
-    "body-parser": "~1.6.7",
-    "bower": "~1.3.9",
     "browser-sync": "^2.7.5",
     "browserify": "^10.2.1",
-    "browserify-shim": "~3.7.0",
     "del": "^1.2.0",
-    "events": "~1.0.2",
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^2.3.0",
     "gulp-changed": "^1.2.1",
@@ -33,15 +45,10 @@
     "gulp-sass": "^2.0.1",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
-    "jest-cli": "~0.1.18",
+    "jest-cli": "^0.4.5",
     "jshint-stylish": "^2.0.0",
-    "karma": "~0.12.22",
-    "karma-chai": "~0.1.0",
-    "karma-mocha": "~0.1.9",
-    "karma-mocha-reporter": "~0.3.0",
-    "karma-phantomjs-launcher": "~0.1.4",
     "pretty-hrtime": "~0.2.1",
-    "require-dir": "^0.3.0",
+    "react-tools": "^0.13.3",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.1"
   },

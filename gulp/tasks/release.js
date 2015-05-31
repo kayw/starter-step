@@ -4,7 +4,7 @@ var handleErrors = require('../util/handleErrors');
 module.exports = function(gulp, plugins) {
     return function() {
         gulp.src(['public/*.js'])
-            .pipe(plugins.uglify())//options todo
+            .pipe(plugins.uglify())
             .on('error', handleErrors)
             .pipe(plugins.rename({suffix: '.min'}))
             .pipe(gulp.dest('public'));
