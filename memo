@@ -1,0 +1,55 @@
+server.js:  react-tweet http://expressjs.com/guide/migrating-4.html https://github.com/keithyong/chat-room/blob/master/app.js
+
+routes:  https://github.com/keithyong/chat-room/blob/master/routes%2Findex.js
+home.js: sort 
+
+fs readdir https://chawlasumit.wordpress.com/2014/08/04/how-to-create-a-web-based-file-browser-using-nodejs-express-and-jquery-datatables/
+https://github.com/arvindr21/fileBrowserApp  http://filebrowserapp.herokuapp.com/#/
+
+home.js: sort http://stackoverflow.com/questions/6246238/how-to-list-contents-of-a-directory-in-order-with-node-js
+dispatcher store action constant rfcsbg  flux-example chat\todo  isomorphic-flux-concept
+http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
+
+socket.io webservice
+http://stackoverflow.com/questions/29378717/react-js-flux-where-is-the-best-place-to-register-websocket-event-receive-d
+
+scss
+http://stackoverflow.com/questions/9122195/using-sass-variables-with-css3-media-queries
+
+
+js-beautify
+
+remove this modified flags when new come( animation end callback)
+http://rhumaric.com/2013/12/hiding-elements-and-css-animations/
+https://github.com/elierotenberg/react-styling-demo#react-animate-with-react-css
+https://github.com/facebook/react/issues/1707   leaves DOM nodes with both `leave` and `enter` classes 
+https://github.com/facebook/react/issues/1196
+TransitionEvents = require 'react/lib/ReactTransitionEvents'
+module.exports = React.createClass
+    displayName: 'Component'
+
+    # ...
+
+    componentDidMount: ->
+        # HACK: Manually support `animationEnd` event
+        # See: http://git.io/dfdd1Q
+        if @props.onAnimationEnd
+            TransitionEvents.addEndEventListener @getDOMNode(),
+                @props.onAnimationEnd
+
+   render: ->
+      # ...
+
+# Invoke as follows:
+Component
+  onAnimationEnd: @handleAnimationEnd
+
+
+tree remove refractor
+statsync replace with stat
+gulp jest  mocha jasmine automock  https://github.com/facebook/jest/issues/243
+http://kentor.me/posts/testing-react-and-flux-applications-with-karma-and-webpack/
+setState({state: false}) node don't change
+karma
+
+hot-loader browsersync
