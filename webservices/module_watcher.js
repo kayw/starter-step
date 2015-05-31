@@ -30,7 +30,8 @@ module.exports = function(wsio) {
     }
    
     function handlePathModify(p) {
-        handlePathEvent(p, 'modified');
+        var type = fs.statSync(p).isDirectory() ? 'folder' : 'file';
+        handlePathEvent(p, 'modified', type);
     }
    
     function handlePathRemove(p) {
