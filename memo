@@ -13,12 +13,19 @@ http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
 socket.io webservice
 http://stackoverflow.com/questions/29378717/react-js-flux-where-is-the-best-place-to-register-websocket-event-receive-d
 
+https://github.com/ltk/react-cannon
+
+routes https://github.com/keithyong/chat-room
+
+https://github.com/Janekk/Battleships
+
 scss
 http://stackoverflow.com/questions/9122195/using-sass-variables-with-css3-media-queries
 
 
 js-beautify
 
+emerge replaced with react css transition enter leave
 remove this modified flags when new come( animation end callback)
 http://rhumaric.com/2013/12/hiding-elements-and-css-animations/
 https://github.com/elierotenberg/react-styling-demo#react-animate-with-react-css
@@ -47,9 +54,14 @@ Component
 
 tree remove refractor
 statsync replace with stat
-gulp jest  mocha jasmine automock  https://github.com/facebook/jest/issues/243
+gulp jest  karma mocha jasmine automock  https://github.com/facebook/jest/issues/243
 http://kentor.me/posts/testing-react-and-flux-applications-with-karma-and-webpack/
-setState({state: false}) node don't change
-karma
+setState({state: false}) node don't change  -----> react state enqueue not immediately
+source map  http://thesassway.com/intermediate/using-source-maps-with-sass
+mori immutable 	http://stackoverflow.com/questions/27413049/how-does-one-store-pointers-to-nested-nodes-in-an-immutable-tree-in-react-java
+
+setMock
+http://stackoverflow.com/questions/28514868/how-do-you-manually-mock-one-of-your-own-files-in-jest
+
 
 hot-loader browsersync
