@@ -1,0 +1,12 @@
+[{
+    "name"       : "guide-server-dev",
+    "script"     : "./server/index.js",
+    "error_file" : "./pm2/log/guide-server-dev-err.log",
+    "out_file"   : "./pm2/log/guide-server-dev-out.log",
+    "pid_file"   : "./pm2/log/guide-server-dev.pid",
+    "watch"	: ["server","universal", "webpack"],
+    "ignore_watch" : ["node_modules", "log"],
+    "env": {
+        "NODE_ENV": "development"
+    }
+}]

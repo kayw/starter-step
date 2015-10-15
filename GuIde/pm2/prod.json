@@ -1,0 +1,11 @@
+[{
+    "name"       : "guide-server-prod",
+    "script"     : "./server/index.js",
+    "error_file" : "./pm2/log/guide-server-prod-err.log",
+    "out_file"   : "./pm2/log/guide-server-prod-out.log",
+    "pid_file"   : "./pm2/log/guide-server-prod.pid",
+    "args"      : "['--app=api', '--port=3050']",
+    "env": {
+        "NODE_ENV": "production"
+    }
+}]
