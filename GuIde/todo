@@ -1,3 +1,7 @@
+hoc for page-container
+immutable
+redux-router for time-travelling in routing
+
 saviour page
 search action
 open/view sidebar
@@ -10,8 +14,8 @@ jsxtree
 rm -rf before rsync
 
 ??
-webpack-dev-server watch restart
-ie9 conditional meta
+which config item cause webpack-dev-server watch restart
+webpack-dev-server compile twice on startup   ==> quiet noinfo supress it
 
 ##webpack
 https://github.com/odysseyscience/react-router-proxy-loader/issues/8
@@ -19,7 +23,11 @@ https://github.com/petehunt/webpack-howto/issues/18 multiple entry-points
 
 https://github.com/gaearon/react-transform-hmr/issues/5
 
+https://github.com/davezuko/react-redux-starter-kit/issues/58 webpack rendering setup
+
 #react-router
-https://github.com/rackt/react-router/issues/1919  https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/common/app/app-stream.jsx 
-https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/client/index.js https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/server/boot/a-react.js  
+https://github.com/rackt/react-router/issues/1919  https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/common/app/app-stream.jsx
+https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/client/index.js https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/server/boot/a-react.js
 https://github.com/mikhail-riabokon/redux-form-universal-example
+
+https://github.com/rackt/redux/issues/805 redux-router

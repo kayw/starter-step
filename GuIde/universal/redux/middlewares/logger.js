@@ -32,10 +32,10 @@ function createLogger(options = {}) {
       actionTransformer = actn => actn
     } = options;
 
-    const consoler = logger || window.console;
+    const logFn = logger || console;
 
-    // exit if consoler undefined
-    if (typeof consoler === `undefined`) {
+    // exit if logFn undefined
+    if (typeof logFn === `undefined`) {
       return next(action);
     }
 
@@ -60,29 +60,29 @@ function createLogger(options = {}) {
     const formattedDuration = duration ? ` in ${took.toFixed(2)} ms` : ``;
     const formattedAction = actionTransformer(action);
     const message = `action ${formattedAction.type}${formattedTime}${formattedDuration}`;
-    const startMessage = isCollapsed ? consoler.groupCollapsed : consoler.group;
+    const startMessage = isCollapsed ? logFn.groupCollapsed : logFn.group;
 
     // render
     try {
       startMessage(message);
     } catch (e) {
-      consoler.log(message);
+      logFn.log(message);
     }
 
     if (level) {
-      consoler[level](`%c prev state`, `color: #9E9E9E; font-weight: bold`, prevState);
-      consoler[level](`%c action`, `color: #03A9F4; font-weight: bold`, formattedAction);
-      consoler[level](`%c next state`, `color: #4CAF50; font-weight: bold`, nextState);
+      logFn[level](`%c prev state`, `color: #9E9E9E; font-weight: bold`, prevState);
+      logFn[level](`%c action`, `color: #03A9F4; font-weight: bold`, formattedAction);
+      logFn[level](`%c next state`, `color: #4CAF50; font-weight: bold`, nextState);
     } else {
-      consoler.log(`%c prev state`, `color: #9E9E9E; font-weight: bold`, prevState);
-      consoler.log(`%c action`, `color: #03A9F4; font-weight: bold`, formattedAction);
-      consoler.log(`%c next state`, `color: #4CAF50; font-weight: bold`, nextState);
+      logFn.log(`%c prev state`, `color: #9E9E9E; font-weight: bold`, prevState);
+      logFn.log(`%c action`, `color: #03A9F4; font-weight: bold`, formattedAction);
+      logFn.log(`%c next state`, `color: #4CAF50; font-weight: bold`, nextState);
     }
 
     try {
-      consoler.groupEnd();
+      logFn.groupEnd();
     } catch (e) {
-      consoler.log(`—— log end ——`);
+      logFn.log(`—— log end ——`);
     }
 
     return returnValue;

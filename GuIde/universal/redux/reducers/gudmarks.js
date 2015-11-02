@@ -5,8 +5,9 @@ const CREATION_FAIL = 'gulink/CREATION_FAIL';
 
 const initialState = {
   techcuz: [{
-    cate: 'reactjs',
-    links: []
+    name: 'reactjs',
+    link: 'reddit.com/r/reactjs',
+    source: 'reddit'
   }]
 };
 
@@ -15,9 +16,10 @@ export default function reducer(state = initialState, action = {}) {
   case CREATION:
     return state;
   case CREATION_SUCCESS:
-    const nextState = Object.assign({}, state);
-    nextState.techcuz.push(action.data);
-    return nextState;
+    const nextTechcuz = [...state[action.data.category]];// Object.assign({}, state);
+    nextTechcuz.push(action.data[action.data.category]);
+    console.log('gudmarks reducer', state);
+    return { ...state, techcuz: nextTechcuz };
   case CREATION_FAIL:
   default:
     return state;
@@ -28,7 +30,7 @@ export function createLink(gulink) {
   return {
     [CLIENT_API]: {
       types: [CREATION, CREATION_SUCCESS, CREATION_FAIL],
-      endpoint: 'gudmarks/create',
+      endpoint: 'gudmarks',
       method: 'post',
       data: gulink
     }

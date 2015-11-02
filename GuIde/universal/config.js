@@ -8,21 +8,20 @@ const config = new Map();
 // Environment
 // ------------------------------------
 config.set('env', process.env.NODE_ENV);
-config.set('globals', {
-  'process.env'  : {
-    'NODE_ENV' : JSON.stringify(config.get('env'))
-  },
-  'NODE_ENV'     : config.get('env'),
-  '__DEV__'      : config.get('env') === 'development',
-  '__PROD__'     : config.get('env') === 'production',
-  '__DEBUG__'    : config.get('env') === 'development'
-});
+config.set('__DEV__', config.get('env') === 'development');
+config.set('__PROD__', config.get('env') === 'production');
+config.set('__DEVTOOLS__', config.get('env') === 'development');
 
 // ------------------------------------
 // Server
 // ------------------------------------
 config.set('server_host', 'localhost');
-config.set('server_port', process.env.PORT || 3000);
+config.set('server_port', 3000);
+config.set('rethinkdb', {
+  host: 'localhost',
+  port: 28015,
+  db: 'guide'
+});
 
 // ------------------------------------
 // Webpack
@@ -52,7 +51,6 @@ config.set('vendor_dependencies', [
   'react-router',
   'redux',
   'redux-devtools',
-  'redux-devtools/lib/react',
   'react-tap-event-plugin',
   'material-ui'
 ]);

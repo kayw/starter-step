@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom/server';
 import { match } from 'react-router';
 import createLocation from 'history/lib/createLocation';
-import createStore from './stores/configure';
+import createStore from './redux/configureStore';
 import routes from './components/routes';
 import App from './components/app';
 import Html from './components/html';

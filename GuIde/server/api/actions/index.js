@@ -1,1 +1,1 @@
-export * as gudmarks from './gudmarks.api';
+export * as techcuz from './techcuz.api';

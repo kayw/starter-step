@@ -1,8 +1,13 @@
 {
   "extends": "airbnb",
   "globals": {
-    "__DEV__"      : false,
-    "__PROD__"     : false
+    "__DEV__": false,
+    "__PROD__": false,
+    "__SERVER__": false,
+    "__API_ROOT__": false,
+    "__DEVTOOLS__": false,
+    "r": true,
+    "webpackIsomorphicTools": true
   },  
   "rules": {
     "comma-dangle": [1, "never"],

@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router, RoutingContext } from 'react-router';
 import invariant from 'invariant';
-import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
-// import config from '../config';
-import routes from './routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-// const __DEBUG__ = config.get('globals').__DEBUG__;
+import routes from './routes';
 
 injectTapEventPlugin();
 export default class App extends Component {
@@ -25,11 +22,8 @@ export default class App extends Component {
   }
 
   renderDevTools () {
-    return (
-      <DebugPanel top right bottom key="debugPanel">
-        <DevTools store={this.props.store} monitor={LogMonitor} />
-      </DebugPanel>
-    );
+    const DevTools = require('./redux-dev-dock');
+    return <DevTools key="devtools" />;
   }
 
   renderRouter () {
@@ -51,12 +45,12 @@ export default class App extends Component {
 
   render () {
     return (
-      <div>
         <Provider store={this.props.store}>
+          <div>
           { this.renderRouter()}
+          { __DEVTOOLS__ && this.renderDevTools() }
+          </div>
         </Provider>
-        {/* __DEBUG__ && this.renderDevTools()*/}
-      </div>
     );
   }
 }

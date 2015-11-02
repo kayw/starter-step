@@ -1,7 +1,6 @@
 import * as actions from './actions/index';
 import cobody from 'co-body';
-import ndebug from 'debug';
-const debug = ndebug('guide');
+import debug from '../../universal/helpers/inspector';
 /*
       yield r.dbCreate("guide").run();
       yield r.db("guide").tableCreate("gudmarks").run();
@@ -9,29 +8,35 @@ const debug = ndebug('guide');
       .indexCreate("geometry", {geo: true}).run();
 
 */
+function findApiAction(url, method) {
+  let action = false;
+  let params = null;
+  let apiActions = actions;
+  let sliceIndex = 0;
+
+  debug('api action url', url);
+  const matcher = url.split('?')[0].split('/').slice(2);
+  const apiMethod = method.toLowerCase() !== 'delete' ? method.toLowerCase() : 'del';
+  matcher.push(apiMethod);
+  debug('api action', matcher);
+  for (const actionName of matcher) {
+    if (apiActions[actionName]) {
+      action = apiActions[actionName];
+    }
+
+    if (typeof action === 'function') {
+      params = matcher.slice(++sliceIndex);
+      break;
+    }
+    apiActions = action;
+    ++sliceIndex;
+  }
+  return { action, params };
+}
+
 export default function useApi() {
   return function *runApi (next) {
-    let action = false;
-    let params = null;
-    let apiActions = actions;
-    let sliceIndex = 0;
-
-    debug('api actions ', actions);
-    debug('api action url %s', this.request.url);
-    const matcher = this.request.url.split('?')[0].split('/').slice(2);
-    debug('api action %s', matcher);
-    for (const actionName of matcher) {
-      if (apiActions[actionName]) {
-        action = apiActions[actionName];
-      }
-
-      if (typeof action === 'function') {
-        params = matcher.slice(++sliceIndex);
-        break;
-      }
-      apiActions = action;
-      ++sliceIndex;
-    }
+    const { action, params } = findApiAction(this.request.url, this.method);
     try {
       if (action && typeof action === 'function') {
         const body = yield cobody(this);
@@ -39,10 +44,25 @@ export default function useApi() {
         this.json(result);
       } else {
         yield *next;
-        // this.status(404).end('NOT FOUND');
       }
     } catch (err) {
       this.body = err.message;
+    }
+  };
+}
+
+export function getApiResult(url, method, query) {
+  return function *getApi () {
+    const { action } = findApiAction(url, method);
+    let result;
+    try {
+      if (action && typeof action === 'function') {
+        result = yield action(query);
+      }
+      return result;
+    } catch (err) {
+      debug('get api result error', err);
+      return null;
     }
   };
 }

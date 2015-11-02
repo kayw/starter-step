@@ -1,12 +1,10 @@
 import superagent from 'superagent';
-import ndebug from 'debug';
-const debug = ndebug('guide');
+import debug from '../../helpers/inspector';
 
-const API_ROOT = true ? 'http://localhost:3000/api/' : '';
 function apiPromise(requests) {
   ['get', 'post', 'patch', 'del', 'put'].forEach((method) => {
     requests[method] = (endpoint, option) => {
-      const furl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
+      const furl = (endpoint.indexOf(__API_ROOT__) === -1) ? __API_ROOT__ + endpoint : endpoint;
       return new Promise((resolve, reject) => {
         const request = superagent[method](furl);
         if (option && option.params) {

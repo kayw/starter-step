@@ -1,11 +1,8 @@
-import ndebug from 'debug';
-const debug = ndebug('guide');
-export function create(params, body) {
+import debug from '../../../universal/helpers/inspector';
+export function post(params, body) {
   return function *updateMark() {
     try {
-      const result = yield r.db('guide').table('gudmarks').update({
-          'techcuz': r.row('techcuz').default([]).append(body)
-        }).run();
+      const result = yield r.db('guide').table('gudmarks').insert(Object.assign({}, body.category, body[body.category])).run();
       return result;
     } catch (e) {
       debug(e.message);

@@ -3,11 +3,11 @@ require('babel/register')({
 });
 const config = require('../universal/config');
 const rootDir = config.get('project_root');
-const globals = config.get('globals');
 const WebpackIsomorphicTools = require('webpack-isomorphic-tools');
+global.__DEV__ = config.get('__DEV__');
+global.__DEVTOOLS__ = config.get('__DEVTOOLS__');
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/isomorphic'))
-.development(globals.__DEV__)
-.server(rootDir, function run() {
-  require('./koa');
-});
-
+  .development(__DEV__)
+  .server(rootDir, function run() {
+    require('./koa');
+  });

@@ -1,5 +1,4 @@
-import ndebug from 'debug';
-const debug = ndebug('guide');
+import debug from '../../universal/helpers/inspector';
 module.exports = function *loggerMiddleware (next) {
   const start = new Date();
 

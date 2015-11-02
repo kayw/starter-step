@@ -5,10 +5,9 @@ require('babel/register')({
 
 const webpack = require('webpack');
 const path = require('path');
-const argv = require('yargs');
+const autoprefix = require('autoprefixer');
+const precss = require('precss');
 const config = require('../universal/config');
-const globals = config.get('globals');
-globals.__DEBUG_NW__ = !!argv.nw;
 
 const WebpackIsomorphicPlugin = require('webpack-isomorphic-tools/plugin');
 const isomorphicPlugin = new WebpackIsomorphicPlugin(require('./isomorphic'));
@@ -48,6 +47,8 @@ const wpConfig = {
   devServer: {
     contentBase: config.get('webpack_dev_path'),
     hot: true,
+    quiet: true,
+    noInfo: true,
     inline: true,
     progress: true,
     stats: {
@@ -55,7 +56,7 @@ const wpConfig = {
     },
     port: config.get('webpack_port')
   },
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   output: {
     path: config.get('dist_path'), // Path of output file
     publicPath: config.get('webpack_public_path'),
@@ -63,6 +64,11 @@ const wpConfig = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),// sync with browser while developing
+    new webpack.DefinePlugin({
+      __API_ROOT__: JSON.stringify(`http://${config.get('server_host')}:${config.get('server_port')}/api/`),
+      __DEV__: config.get('__DEV__'),
+      __DEVTOOLS__: config.get('__DEVTOOLS__')
+    }),
     isomorphicPlugin.development(),
     // Allows error warninggs but does not stop compiling. Will remove when eslint is added
     new webpack.NoErrorsPlugin()
@@ -106,14 +112,21 @@ const wpConfig = {
         }
       }
     }, {
+      test: /\.css$/,
+      loader: 'style!css?modules&importLoaders=1&sourceMap&localIdentName=[local]___[hash:base64:5]!postcss?parser=postcss-scss'
+    }, {
       test: isomorphicPlugin.regular_expression('images'),
       loader: 'url-loader?limit=10240' // any image below or equal to 10K will be converted to inline base64 instead
     }]
   },
+  postcss: function postcss() {
+    // return [autoprefix({ browsers: ['> 5%', 'last 2 versions'] }), precss];
+    return [autoprefix, precss];
+  },
   eslint: {
     configFile: './.eslintrc',
-    failOnError : globals.__PROD__,
-    emitWarning : globals.__DEV__
+    failOnError : config.get('__PROD__'),
+    emitWarning : config.get('__DEV__')
   }
 };
 

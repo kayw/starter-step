@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import counter from './counter';
-import gudmarks from './gudmarks';
+import techcuz from './techcuz';
 
 export default combineReducers({
   counter,
-  gudmarks
+  techcuz
 });
