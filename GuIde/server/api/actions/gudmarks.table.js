@@ -24,7 +24,6 @@ export function getGudmarks(table) {
 export function delGudmark(table, body) {
   return function *del() {
     try {
-      console.log(body);
       const result = yield r.table(table).get(body.id).delete();
       return result;
     } catch (e) {

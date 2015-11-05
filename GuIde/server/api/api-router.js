@@ -1,5 +1,6 @@
 import * as actions from './actions/index';
 import cobody from 'co-body';
+import { fromJS } from 'immutable';
 import debug from '../../universal/helpers/inspector';
 /*
       yield r.dbCreate("guide").run();
@@ -59,6 +60,9 @@ export function getApiResult(url, method, query) {
       if (action && typeof action === 'function') {
         result = yield action(query);
       }
+      Object.keys(result).forEach(key => {
+        result[key] = fromJS(result[key]);
+      });
       return result;
     } catch (err) {
       debug('get api result error', err);

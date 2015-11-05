@@ -1,3 +1,4 @@
+import { Map as immutifyMap } from 'immutable';
 import { CLIENT_API } from '../middlewares/api';
 
 export function gudmarksReducer(state, action, types) {
@@ -7,16 +8,11 @@ export function gudmarksReducer(state, action, types) {
   case CREATION:
     return state;
   case CREATION_SUCCESS:
-    let nextMarks = [...state.gulinks];
-    nextMarks.push(action.data);
-    return { ...state, gulinks: nextMarks};
-
+    return state.update('gulinks', list => list.push(immutifyMap(action.data)));
   case SELECTION:
-    return { ...state, selectedIndex: action.index };
+    return state.set('selectedIndex', action.index);
   case DELETION_SUCCESS:
-    nextMarks = [...state.gulinks];
-    nextMarks.splice(action.data.index, 1);
-    return { ...state, gulinks: nextMarks };
+    return state.update('gulinks', list => list.delete(action.data.index));
   case DELETION_FAIL:
   case DELETION:
   case CREATION_FAIL:

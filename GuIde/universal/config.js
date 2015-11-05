@@ -41,7 +41,8 @@ config.set('webpack_lint_in_dev', true);
 // Project
 // ------------------------------------
 config.set('project_root', path.resolve(__dirname, '..'));
-config.set('dist_path', path.resolve(__dirname, '..', config.get('webpack_output_path')));
+config.set('dist_path', path.resolve(__dirname, '..', 'public', config.get('webpack_output_path')));
+config.set('assets_path', path.resolve(__dirname, '..', 'public'));
 config.set('client_entry', path.resolve(__dirname, '..', 'client/centry.js'));
 
 config.set('vendor_dependencies', [

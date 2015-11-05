@@ -19,7 +19,7 @@ app.context.json = app.response.json = function json(obj) {
 
 app.use(responseTime);
 app.use(logger);
-app.use(assets(conf.get('project_root')));
+app.use(assets(conf.get('assets_path')));
 
 app.use(api());
 app.use(renderRouter(getApiResult));

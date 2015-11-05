@@ -1,6 +1,6 @@
-hoc for page-container
-immutable
+list gudmark action
 redux-router for time-travelling in routing
+fetchdata onEnter ==> blog-redux
 
 saviour page
 search action
@@ -16,6 +16,7 @@ rm -rf before rsync
 ??
 which config item cause webpack-dev-server watch restart
 webpack-dev-server compile twice on startup   ==> quiet noinfo supress it
+precss import partial hot load https://github.com/jonathantneal/precss/issues/6
 
 ##webpack
 https://github.com/odysseyscience/react-router-proxy-loader/issues/8

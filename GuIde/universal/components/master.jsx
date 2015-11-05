@@ -13,6 +13,9 @@ class Master extends React.Component {
     children: React.PropTypes.object
   }
 
+  static contextTypes = {
+    store: React.PropTypes.object.isRequired
+  }
   constructor() {
     super();
   }

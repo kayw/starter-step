@@ -43,8 +43,8 @@ export default class Html extends Component {
           <meta charSet="UTF-8" />
           <title>Gu-IDE</title>
           <link rel="shortcut icon" href="/favicon.ico" />
-          <link href="client/main.css" rel="stylesheet" />
-          <link href="client/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" />
+          <link href="/statics/main.css" rel="stylesheet" />
+          <link href="/statics/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" />
 
           {/* styles (will be present only in production with webpack extract text plugin) */}
           {Object.keys(assets.styles).map((style, i) =>

@@ -4,11 +4,11 @@
   "description": "GuIDE web playground bookmarks",
   "main": "server/index.js",
   "scripts": {
-    "clean": "rm -rf dist & rm -f webpack/assets.json",
+    "clean": "rm -rf public/dist & rm -f public/assets.json",
     "build": "NODE_ENV=production webpack --progress --profile --diplay-modules --display-origins --config webpack/prod.js",
     "hot": "webpack-dev-server --config webpack/dev.js",
     "lint": "eslint --ext .js --ext .jsx client server universal webpack",
-    "server": "node",
+    "server": "NODE_ENV=production node",
     "start": "npm run clean & pm2 start pm2/dev.json --no-daemon & npm run hot",
     "prod": "npm run clean && npm run build && npm run server",
     "test": "echo \"Error: no test specified\" && exit 1"
