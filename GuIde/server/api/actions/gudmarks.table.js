@@ -29,5 +29,5 @@ export function delGudmark(table, body) {
     } catch (e) {
       log(e.message);
     }
-  }
+  };
 }

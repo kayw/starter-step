@@ -1,4 +1,4 @@
-list gudmark action
+update docs script
 redux-router for time-travelling in routing
 fetchdata onEnter ==> blog-redux
 
@@ -17,6 +17,7 @@ rm -rf before rsync
 which config item cause webpack-dev-server watch restart
 webpack-dev-server compile twice on startup   ==> quiet noinfo supress it
 precss import partial hot load https://github.com/jonathantneal/precss/issues/6
+category table reducer actiontype still a lot non-DRY
 
 ##webpack
 https://github.com/odysseyscience/react-router-proxy-loader/issues/8

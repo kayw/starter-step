@@ -1,0 +1,6 @@
+
+$serifFontFamily: "Droid Serif", Georgia, "Times New Roman", Times, serif;
+$medium-screen: (min-width: 768px);
+
+$desktop-keyline-increment: 64px;
+$desktop-gutter: 24px;

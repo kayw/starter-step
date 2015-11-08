@@ -63,7 +63,7 @@ export function getApiResult(url, method, query) {
       Object.keys(result).forEach(key => {
         result[key] = fromJS(result[key]);
       });
-      return result;
+      return result || undefined;
     } catch (err) {
       debug('get api result error', err);
       return null;

@@ -1,0 +1,18 @@
+@import "variable";
+.root {
+  padding-top: $desktop-keyline-increment;
+
+  @media ($(medium-screen)) {
+    position: "relative";
+  }
+}
+
+.content {
+  box-sizing: border-box;
+  padding: $desktop-gutter;
+  @media ($(medium-screen)) {
+    border-left: solid 1px $gray300;
+    min-height: 685px;
+  }
+}
+
