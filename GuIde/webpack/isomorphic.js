@@ -1,42 +1,47 @@
 import WebpackIsomorphicPlugin from 'webpack-isomorphic-tools/plugin';
 
 export default {
-  webpack_assets_file_path:  'public/assets.json',
+  webpack_assets_file_path: 'public/assets.json',
+  webpack_stats_file_path: 'public/stats.json',
+
   assets: {
     images: {
       extensions: ['png', 'jpg', 'gif', 'ico', 'svg'],
-      parser: WebpackIsomorphicPlugin.url_loader_parser // see Configuration and API sections for more info on this parameter
+      parser: WebpackIsomorphicPlugin.url_loader_parser
     },
     style_decriptor: {
-      extensions: ['css'],
-      filter: (m, regex, options, log) => {
-        if (!options.development) {
-          return regex.test(m.name);
+      extensions: ['css', 'scss'],
+      filter: (module, regex, options, log) => {
+        if (module.name.slice(-2) === 'ss') {
+          log.info(module.name, regex.toString());
         }
-        /*
-         * filter by modules with '.scss' inside name string, that also have name and moduleName that end with 'ss'(allows for css, less, sass, and scss extensions)
-           this ensures that the proper scss module is returned, so that namePrefix variable is no longer needed
-          */
-        return regex.test(m.name) && m.name.slice(-2) === 'ss' && m.reasons[0].moduleName.slice(-2) === 'ss';
-      },
-      naming: (m, options, log) => {
-        // find index of '/client' inside the module name, slice it and resolve path
-        const srcIndex = m.name.indexOf('/client');
-        let name = '.' + m.name.slice(srcIndex);
-        if (name) {
-          // Resolve the e.g.: "C:\"  issue on windows
-          const i = name.indexOf(':');
-          if (i >= 0) {
-            name = name.slice(i + 1);
-          }
+        if (options.development) {
+          // in development mode there's webpack "style-loader",
+          // so the module.name is not equal to module.name
+          return WebpackIsomorphicPlugin.style_loader_filter(module, regex, options, log);
+        } else {
+          // in production mode there's no webpack "style-loader",
+          // so the module.name will be equal to the asset path
+          return regex.test(module.name);
         }
-        return name;
       },
-      parser: (m, options, log) => {
-        if (m.source) {
-          const regex = options.development ? /exports\.locals = ((.|\n)+);/ : /module\.exports = ((.|\n)+);/;
-          const match = m.source.match(regex);
-          return match ? JSON.parse(match[1]) : {};
+      path: (module, options, log) => {
+        if (options.development) {
+          // in development mode there's webpack "style-loader",
+          // so the module.name is not equal to module.name
+          return WebpackIsomorphicPlugin.style_loader_path_extractor(module, options, log);
+        } else {
+          // in production mode there's no webpack "style-loader",
+          // so the module.name will be equal to the asset path
+          return module.name;
+        }
+      },
+      parser: (module, options, log) => {
+        if (options.development) {
+          return WebpackIsomorphicPlugin.css_modules_loader_parser(module, options, log);
+        } else {
+          // in production mode there's Extract Text Loader which extracts CSS text away
+          return module.source;
         }
       }
     }

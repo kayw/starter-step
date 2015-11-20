@@ -3,12 +3,13 @@ process.env.NODE_ENV = (process.env.NODE_ENV || 'development').trim();
 import path from 'path';
 
 const config = new Map();
+const __DEV__ = process.env.NODE_ENV === 'development';
 
 // ------------------------------------
 // Environment
 // ------------------------------------
 config.set('env', process.env.NODE_ENV);
-config.set('__DEV__', config.get('env') === 'development');
+config.set('__DEV__', __DEV__);
 config.set('__PROD__', config.get('env') === 'production');
 config.set('__DEVTOOLS__', config.get('env') === 'development');
 
@@ -31,11 +32,15 @@ config.set('webpack_dev_path',
   `http://${config.get('server_host')}:${config.get('webpack_port')}/`
 );
 config.set('webpack_output_path', 'dist');
-config.set('webpack_public_path',
-  `${config.get('webpack_dev_path')}${config.get('webpack_output_path')}/`
-);
 
 config.set('webpack_lint_in_dev', true);
+if (__DEV__) {
+  config.set('webpack_public_path', `${config.get('webpack_dev_path')}${config.get('webpack_output_path')}/`);
+  config.set('__API_ROOT__', `http://${config.get('server_host')}:${config.get('server_port')}/api/`);
+} else {
+  config.set('webpack_public_path', `/${config.get('webpack_output_path')}/`);
+  config.set('__API_ROOT__', '');
+}
 
 // ------------------------------------
 // Project

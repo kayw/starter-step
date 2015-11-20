@@ -2,6 +2,7 @@ import * as actions from './actions/index';
 import cobody from 'co-body';
 import { fromJS } from 'immutable';
 import debug from '../../universal/helpers/inspector';
+console.log(actions);
 /*
       yield r.dbCreate("guide").run();
       yield r.db("guide").tableCreate("gudmarks").run();
@@ -17,7 +18,7 @@ function findApiAction(url, method) {
 
   debug('api action url', url);
   const matcher = url.split('?')[0].split('/').slice(2);
-  const apiMethod = method.toLowerCase() !== 'delete' ? method.toLowerCase() : 'del';
+  const apiMethod = method.toLowerCase();
   matcher.push(apiMethod);
   debug('api action', matcher);
   for (const actionName of matcher) {
@@ -36,11 +37,14 @@ function findApiAction(url, method) {
 }
 
 export default function useApi() {
-  return function *runApi (next) {
+  return function *runApi(next) {
     const { action, params } = findApiAction(this.request.url, this.method);
     try {
       if (action && typeof action === 'function') {
-        const body = yield cobody(this);
+        let body;
+        if (this.method.toLowerCase() !== 'get') {
+          body = yield cobody(this);
+        }
         const result = yield action(params, body);
         this.json(result);
       } else {
@@ -53,16 +57,19 @@ export default function useApi() {
 }
 
 export function getApiResult(url, method, query) {
-  return function *getApi () {
+  return function *getApi() {
     const { action } = findApiAction(url, method);
     let result;
     try {
       if (action && typeof action === 'function') {
         result = yield action(query);
       }
-      Object.keys(result).forEach(key => {
-        result[key] = fromJS(result[key]);
-      });
+      console.log('get api result', result);
+      if (result) {
+        Object.keys(result).forEach(key => {
+          result[key] = fromJS(result[key]);
+        });
+      }
       return result || undefined;
     } catch (err) {
       debug('get api result error', err);

@@ -1,4 +1,4 @@
-module.exports = function *responseTimeMiddleware (next) {
+module.exports = function *responseTimeMiddleware(next) {
   const start = new Date();
 
   yield next;

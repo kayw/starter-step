@@ -10,6 +10,8 @@
 .content {
   box-sizing: border-box;
   padding: $desktop-gutter;
+  width: 50%;
+  margin-left: 20%;
   @media ($(medium-screen)) {
     border-left: solid 1px $gray300;
     min-height: 685px;

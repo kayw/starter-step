@@ -22,7 +22,7 @@ app.use(logger);
 app.use(assets(conf.get('assets_path')));
 
 app.use(api());
-app.use(renderRouter(getApiResult));
+app.use(renderRouter());
 
 app.listen(process.env.PORT || conf.get('server_port'));
 debug('koa server started');

@@ -12,14 +12,14 @@ class Master extends React.Component {
   static propTypes = {
     children: React.PropTypes.object
   }
-
+/*
   static contextTypes = {
     store: React.PropTypes.object.isRequired
   }
+*/
   constructor() {
     super();
   }
-
   getChildContext() {
     return {
       muiTheme: ThemeManager.getMuiTheme(DefaultRawTheme)

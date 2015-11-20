@@ -4,3 +4,5 @@ $medium-screen: (min-width: 768px);
 
 $desktop-keyline-increment: 64px;
 $desktop-gutter: 24px;
+
+$gray300: #e0e0e0;

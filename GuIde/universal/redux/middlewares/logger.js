@@ -90,3 +90,16 @@ function createLogger(options = {}) {
 }
 
 export default createLogger;
+/* https://github.com/fcomb/redux-logger/blob/master/examples/basic/containers/root.jsx
+const logger = createLogger({
+  predicate: (getState, action) => action.type !== AUTH_REMOVE_TOKEN, // log all actions except AUTH_REMOVE_TOKEN
+    level: `info`,
+  duration: true,
+  actionTransformer: (action) => {
+    return {
+      ...action,
+      type: String(action.type),
+    };
+  }
+});
+*/

@@ -15,7 +15,7 @@ function apiPromise(requests) {
         }
         request.end((err, resp) => {
           if (err) {
-            reject((resp && resp.body) || err);
+            return reject((resp && resp.body) || err);
           }
           return resolve(resp.body);
         });

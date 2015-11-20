@@ -1,5 +1,5 @@
 import debug from '../../universal/helpers/inspector';
-module.exports = function *loggerMiddleware (next) {
+module.exports = function *loggerMiddleware(next) {
   const start = new Date();
 
   yield next;

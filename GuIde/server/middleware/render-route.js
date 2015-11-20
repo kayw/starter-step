@@ -1,9 +1,9 @@
 import render from '../../universal/html-render';
 import debug from '../../universal/helpers/inspector';
 
-module.exports = function makeRenderRouteMiddleware (middleware) {
+module.exports = function makeRenderRouteMiddleware(middleware) {
   return function *renderRoute(next) {
-    function *renderRouteMiddleware () {
+    function *renderRouteMiddleware() {
       let initialState = {};
       if (typeof middleware === 'function') {
         initialState = yield middleware.call(this, `/api${this.request.url}`, this.request.method);
@@ -11,7 +11,7 @@ module.exports = function makeRenderRouteMiddleware (middleware) {
       try {
         this.body = yield render(this.request.url, initialState);
       } catch (e) {
-        debug(e);
+        debug('renderRouteMiddleware:', e.stack || e);
         yield* next;
       }
     }
@@ -82,13 +82,16 @@ module.exports = function makeRenderRouteMiddleware (middleware) {
       </body>
       </html>`;
     }
+    console.log(this.request.get('user-agent'));
+    global.navigator = {};
+    navigator.userAgent = this.request.get('user-agent');
     if (this.request.url === '/old') {
       yield renderPlayground;
     } else {
       yield renderRouteMiddleware;
-      // yield *renderRouteMiddleware; //not entered
+      // yield* renderRouteMiddleware; //not entered
       // yield renderRouteMiddleware(); // this null ??
-      // yield *renderRouteMiddleware(); // this null
+      // yield* renderRouteMiddleware(); // this null
     }
   };
 };

@@ -1,6 +1,8 @@
 {
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "globals": {
+     __CLIENT__: false,
     "__DEV__": false,
     "__PROD__": false,
     "__SERVER__": false,
@@ -8,17 +10,9 @@
     "__DEVTOOLS__": false,
     "r": true,
     "webpackIsomorphicTools": true
-  },  
+  },
   "rules": {
     "comma-dangle": [1, "never"],
-    "key-spacing": [0, {
-      "beforeColon": true,
-      "afterColon": true
-    }], 
     "no-else-return": 0,
-    "space-before-function-paren": [0, "always"],
-    "id-length":[0],
-    //"jsx-quotes": [2, "prefer-double"],
-    "react/jsx-quotes": [0, "single"]
   }
 }

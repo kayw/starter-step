@@ -1,6 +1,11 @@
-update docs script
-redux-router for time-travelling in routing
-fetchdata onEnter ==> blog-redux
+update docs script rm -rf before rsync
+reorder the gulink
+link bundles delete modify on link item
+Rodux
+blog sync
+rust no man install
+multiprocess
+cinterview
 
 saviour page
 search action
@@ -11,15 +16,16 @@ area height adaption
 https://scotch.io/tutorials/build-chrome-like-tabs-with-bootstrap-and-angularjs
 jsxtree
 
-rm -rf before rsync
-
 ??
 which config item cause webpack-dev-server watch restart
 webpack-dev-server compile twice on startup   ==> quiet noinfo supress it
 precss import partial hot load https://github.com/jonathantneal/precss/issues/6
 category table reducer actiontype still a lot non-DRY
+async route
+mouseonenter dialog dismiss not fired
 
 ##webpack
+?? split per route component
 https://github.com/odysseyscience/react-router-proxy-loader/issues/8
 https://github.com/petehunt/webpack-howto/issues/18 multiple entry-points
 

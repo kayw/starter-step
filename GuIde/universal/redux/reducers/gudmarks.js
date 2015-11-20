@@ -1,20 +1,28 @@
 import { fromJS, Map as immutifyMap } from 'immutable';
 import { CLIENT_API } from '../middlewares/api';
 
+// https://github.com/rackt/redux/issues/822
 const initialState = fromJS({
-  selectedIndex: -1,
+  loaded: false,
   gulinks: []
 });
 
 function liftedReducer(actionTypes) {
   return function reducer(state = initialState, action = {}) {
     switch (action.type) {
+    case actionTypes.LOAD_SUCCESS:
+      return state.set('loaded', true).set('gulinks', fromJS(action.result[action.category].gulinks));
     case actionTypes.CREATION:
       return state;
     case actionTypes.CREATION_SUCCESS:
       return state.update('gulinks', list => list.push(immutifyMap(action.data)));
-    case actionTypes.SELECT_LINK:
-      return state.set('selectedIndex', action.index);
+    case actionTypes.MODIFICATION_SUCCESS:
+      return state.update('gulinks', list => {
+        const gulink = action.data;
+        return list.update(action.index, old =>
+          old.set('name', gulink.name).set('source', gulink.source)
+          .set('links', fromJS(gulink.links)));
+      });
     case actionTypes.DELETION_SUCCESS:
       return state.update('gulinks', list => list.delete(action.data.index));
     case actionTypes.DELETION_FAIL:
@@ -27,8 +35,10 @@ function liftedReducer(actionTypes) {
 }
 
 function formActionType(domain) {
-  const atypes = [ 'CREATION', 'CREATION_SUCCESS', 'CREATION_FAIL', 'DELETION',
-    'DELETION_SUCCESS', 'DELETION_FAIL', 'SELECT_LINK' ];
+  const atypes = ['LOAD', 'LOAD_SUCCESS', 'LOAD_FAIL',
+    'CREATION', 'CREATION_SUCCESS', 'CREATION_FAIL',
+    'MODIFICATION', 'MODIFICATION_SUCCESS', 'MODIFICATION_FAIL',
+    'DELETION', 'DELETION_SUCCESS', 'DELETION_FAIL' ];
   const actionType = {};
   atypes.forEach((at) => {
     actionType[at] = `@@${domain}/${at}`;
@@ -43,36 +53,18 @@ const techcuz = liftedReducer(techcuzActionType);
 const docsio = liftedReducer(docsioActionType);
 const people = liftedReducer(peopleActionType);
 
-/*
-const techcuz = liftedReducer({
-  CREATION: '@@techcuz/CREATION',
-  CREATION_SUCCESS: '@@techcuz/CREATION_SUCCESS',
-  CREATION_FAIL: '@@techcuz/CREATION_FAIL',
-  DELETION: '@@techcuz/DELETION',
-  DELETION_SUCCESS: '@@techcuz/DELETION_SUCCESS',
-  DELETION_FAIL: '@@techcuz/DELETION_FAIL',
-  SELECT_LINK: '@@techcuz/SELECT_LINK'
-});
-const docsio = liftedReducer({
-  CREATION: '@@docsio/CREATION',
-  CREATION_SUCCESS: '@@docsio/CREATION_SUCCESS',
-  CREATION_FAIL: '@@docsio/CREATION_FAIL',
-  DELETION: '@@docsio/DELETION',
-  DELETION_SUCCESS: '@@docsio/DELETION_SUCCESS',
-  DELETION_FAIL: '@@docsio/DELETION_FAIL',
-  SELECT_LINK: '@@docsio/SELECT_LINK'
-});
-const people = liftedReducer({
-  CREATION: '@@people/CREATION',
-  CREATION_SUCCESS: '@@people/CREATION_SUCCESS',
-  CREATION_FAIL: '@@people/CREATION_FAIL',
-  DELETION: '@@people/DELETION',
-  DELETION_SUCCESS: '@@people/DELETION_SUCCESS',
-  DELETION_FAIL: '@@people/DELETION_FAIL',
-  SELECT_LINK: '@@people/SELECT_LINK'
-});
-*/
-
+function liftedLoadLink(category, actionTypes) {
+  return function loadLink() {
+    return {
+      [CLIENT_API]: {
+        types: [actionTypes.LOAD, actionTypes.LOAD_SUCCESS, actionTypes.LOAD_FAIL],
+        endpoint: category,
+        method: 'get',
+        category
+      }
+    };
+  };
+}
 function liftedCreateLink(actionTypes) {
   return function createLink(gulink) {
     return {
@@ -99,13 +91,22 @@ function liftedDelLink(actionTypes) {
   };
 }
 
-function liftedSelectLink(actionTypes) {
-  return function selectLink(index) {
+function liftedModifyLink(actionTypes) {
+  return function modifyLink(index, gulink) {
     return {
-      type: actionTypes.SELECT_LINK,
-      index
+      [CLIENT_API]: {
+        types: [actionTypes.MODIFICATION, actionTypes.MODIFICATION_SUCCESS, actionTypes.MODIFICATION_FAIL],
+        endpoint: gulink.category,
+        method: 'put',
+        index,
+        data: gulink[gulink.category]
+      }
     };
   };
+}
+
+function isLoaded(state, category) {
+  return state[category] && state[category].get('loaded');
 }
 
 const techcuzCreateLink = liftedCreateLink(techcuzActionType);
@@ -116,12 +117,31 @@ const techcuzDeleteLink = liftedDelLink(techcuzActionType);
 const docsioDeleteLink = liftedDelLink(docsioActionType);
 const peopleDeleteLink = liftedDelLink(peopleActionType);
 
-const techcuzSelectLink = liftedSelectLink(techcuzActionType);
-const docsioSelectLink = liftedSelectLink(docsioActionType);
-const peopleSelectLink = liftedSelectLink(peopleActionType);
+const techcuzModifyLink = liftedModifyLink(techcuzActionType);
+const docsioModifyLink = liftedModifyLink(docsioActionType);
+const peopleModifyLink = liftedModifyLink(peopleActionType);
+
+const techcuzLoadLink = liftedLoadLink('techcuz', techcuzActionType);
+const docsioLoadLink = liftedLoadLink('docsio', docsioActionType);
+const peopleLoadLink = liftedLoadLink('people', peopleActionType);
+
+['RELOAD', 'RELOAD_SUCCESS', 'RELOAD_FAIL'].forEach((at) => {
+  docsioActionType[at] = `@@docsio/${at}`;
+});
+function docsioReload(category, docName) {
+  return {
+    [CLIENT_API]: {
+      types: [docsioActionType.RELOAD, docsioActionType.RELOAD_SUCCESS, docsioActionType.RELOAD_FAIL],
+      endpoint: category,
+      method: 'post',
+      data: docName
+    }
+  };
+}
 
 export {
-  techcuz, techcuzCreateLink, techcuzDeleteLink, techcuzSelectLink,
-  docsio, docsioCreateLink, docsioDeleteLink, docsioSelectLink,
-  people, peopleCreateLink, peopleDeleteLink, peopleSelectLink
+  isLoaded, docsioReload,
+  techcuz, techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink, techcuzLoadLink,
+  docsio, docsioCreateLink, docsioDeleteLink, docsioModifyLink, docsioLoadLink,
+  people, peopleCreateLink, peopleDeleteLink, peopleModifyLink, peopleLoadLink
 };
