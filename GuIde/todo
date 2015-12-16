@@ -1,17 +1,10 @@
 update docs script rm -rf before rsync
 reorder the gulink
-link bundles delete modify on link item
-Rodux
-blog sync
-rust no man install
-multiprocess
-cinterview
+Rodux https://github.com/rackt/redux-router/issues/66
 
-saviour page
 search action
-open/view sidebar
+saviour page
 codemirror??
-area height adaption
 
 https://scotch.io/tutorials/build-chrome-like-tabs-with-bootstrap-and-angularjs
 jsxtree

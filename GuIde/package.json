@@ -5,11 +5,12 @@
   "main": "server/index.js",
   "scripts": {
     "clean": "rm -rf public/dist & rm -f public/assets.json",
-    "build": "npm run clean && NODE_ENV=production webpack --progress --verbose --colors --display-error-details --profile --diplay-modules --display-origins --config webpack/prod.js",
-    "hot": "webpack-dev-server --config webpack/dev.js",
     "lint": "eslint --ext .js --ext .jsx client server universal webpack",
-    "server": "NODE_ENV=production node .",
+    "hot": "webpack-dev-server --config webpack/dev.js",
+    "dev": "pm2 start pm2/dev.json --no-daemon",
     "start": "pm2 start pm2/dev.json --no-daemon & npm run hot",
+    "build": "npm run clean && NODE_ENV=production webpack --progress --verbose --colors --display-error-details --profile --diplay-modules --display-origins --config webpack/prod.js",
+    "server": "NODE_ENV=production node .",
     "prod": "npm run build && npm run server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -70,6 +71,7 @@
     "style-loader": "^0.13.0",
     "webpack": "^1.12.0",
     "webpack-dev-server": "^1.10.1",
-    "webpack-isomorphic-tools": "^2.0.0"
+    "webpack-isomorphic-tools": "^2.0.0",
+    "yadc": "0.0.1"
   }
 }

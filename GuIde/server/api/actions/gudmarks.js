@@ -13,6 +13,7 @@ winston.loggers.add('bookmarks', {
 
 const logger = winston.loggers.get('bookmarks');
 
+// https://github.com/neumino/rethinkdbdash-examples/blob/master/todo/app.js
 function post(table) {
   return function insertGudmark(params, body) {
     return function *insertMark() {

@@ -34,12 +34,11 @@ config.set('webpack_dev_path',
 config.set('webpack_output_path', 'dist');
 
 config.set('webpack_lint_in_dev', true);
+config.set('__API_ROOT__', `http://${config.get('server_host')}:${config.get('server_port')}/api/`);
 if (__DEV__) {
   config.set('webpack_public_path', `${config.get('webpack_dev_path')}${config.get('webpack_output_path')}/`);
-  config.set('__API_ROOT__', `http://${config.get('server_host')}:${config.get('server_port')}/api/`);
 } else {
   config.set('webpack_public_path', `/${config.get('webpack_output_path')}/`);
-  config.set('__API_ROOT__', '');
 }
 
 // ------------------------------------

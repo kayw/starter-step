@@ -6,6 +6,7 @@ import createStore from './redux/configureStore';
 import getRoutes from './components/routes';
 import App from './components/app';
 import Html from './components/html';
+import OldView from '../client/views/old';
 // import { match } from 'react-router';
 // import createLocation from 'history/lib/createLocation';
 
@@ -51,4 +52,9 @@ export default function render(url, initialState) {
       }
     }));
   });
+}
+
+export function renderOldPage() {
+  const component = (<OldView />);
+  return ReactDom.renderToString(component);
 }

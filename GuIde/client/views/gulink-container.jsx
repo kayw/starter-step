@@ -141,7 +141,7 @@ export default class GuLinkContainer extends Component {
                     {
                     gulink.links.map(
                       (link, idx) =>
-                      <p key={'g' + idx} className={styles['short-desc']}><a href={link}>{link}</a></p>)
+                      <p key={'g' + idx} className={styles['short-desc']}><a href={link} target="_blank">{link}</a></p>)
                     }
                     </div>
                     </li>);
