@@ -1,6 +1,7 @@
 update docs script rm -rf before rsync
 reorder the gulink
 Rodux https://github.com/rackt/redux-router/issues/66
+https://github.com/rackt/redux-simple-router/issues/13
 
 search action
 saviour page

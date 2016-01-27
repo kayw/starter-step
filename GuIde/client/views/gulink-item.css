@@ -1,0 +1,132 @@
+@import "theme";
+.gulink {
+  $bar-vertical-padding: 10px;
+  $bar-horizontal-padding: 20px;
+
+  position: relative;
+  list-style-type: none;
+  background-color: $bg-light-2;
+  margin-top: 10px;
+
+  &.visited {
+    // TODO(david): Figure out a styling that is not ugly.
+    //opacity: 0.6;
+  }
+
+  padding: $bar-vertical-padding $bar-horizontal-padding;
+  display: block;
+
+  .gulink-name {
+    $left-offset: 5px;
+    position: relative;
+    font-weight: normal;
+    font-size: 24px;
+    margin-bottom: 2px;
+    line-height: normal;
+    display: inline-block;
+    margin-top: 0;
+    margin-left: calc(-$bar-horizontal-padding - $left-offset);
+    padding: 5px 10px 5px calc($bar-horizontal-padding + $left-offset);
+    color: white;
+    white-space: nowrap;
+
+    // Pre-animation setup
+    transition: all 0.1s ease-out;
+    opacity: 0.8;
+
+    // Fixes an issue where hovering over a non 1.0-opacity element causes
+    // Chrome to wobble by a pixel: http://stackoverflow.com/a/16833496/392426
+    -webkit-backface-visibility: hidden;
+
+    &:before {
+      color: white;
+      content: '»';
+      position: absolute;
+      opacity: 0.0;
+      left: -5px;
+      top: 4px;
+      transition: all 0.1s ease-out;
+    }
+
+    &:after {
+      content: " ";
+      display: block;
+      border-bottom: 4px solid #CCC;
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: -4px;
+      border-left: $left-offset solid transparent;
+      left: 0;
+    }
+
+    @define-mixin category $name, $color {
+      &.$(name) {
+        background-color: $color;
+        &:after {
+          border-bottom-color: color($color a(90%));
+        }
+      }
+    }
+
+    @mixin category techcuz, $red;
+    @mixin category docsio, $yellow;
+    @mixin category people, $green;
+  }
+
+  &.nav-focus {
+    /*background: mix($bg-light-2, $bg-dark-1, 95%);*/
+    /*background: mix(#eee8d5, #073642, 95%);*/
+    background: #e2dfce;
+    .gulink-name {
+      transition: all 0.1s ease-out;
+      opacity: 1.0;
+
+      &:before {
+        transition: all 0.1s ease-out;
+        opacity: 1.0;
+        left: 7px;
+      }
+    }
+
+    .from .source {
+      color: $content-1;
+    }
+
+    .short-desc {
+      color: $content-4;
+    }
+  }
+
+  .from {
+    /*color: mix($content-1, $bg-light-2, 40%);
+    color: mix(#93a1a1, #eee8d5, 40%); */
+    color: #caccc0;
+
+    margin-left: 9px;
+    font-family: $serifFontFamily;
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  .source {
+    /*color: mix($content-1, $bg-light-2, 50%);*/
+    color: #c1c5bb;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+
+  .short-desc {
+    margin-bottom: 0;
+    margin-top: 5px;
+    margin-right: 1.2rem;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 300;
+    color: $content-3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

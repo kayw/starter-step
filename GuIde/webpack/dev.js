@@ -3,7 +3,6 @@ const wpConfig = require('./wpbase');
 const config = require('../universal/config');
 
 wpConfig.entry.app = [
-  'webpack/hot/dev-server',
   'webpack/hot/only-dev-server',
   config.get('client_entry')
 ];

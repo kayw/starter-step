@@ -11,7 +11,7 @@ module.exports = function makeRenderRouteMiddleware(middleware) {
       try {
         this.body = yield render(this.request.url, initialState);
       } catch (e) {
-        debug('renderRouteMiddleware:', e.stack || e);
+        debug('renderRouteMiddleware:',  e && e.stack);
         yield* next;
       }
     }

@@ -1,9 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { FlatButton, Toolbar, IconButton, Dialog, TextField } from 'material-ui';
 import cssifyModules from 'react-css-modules';
+import ReactDom from 'react-dom';
+import {DragDropContext as dragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import PageContainer from './page-container';
+import GuLinkItem from './gulink-item';
 const styles = require('./gulink-container.css');
 
+@dragDropContext(HTML5Backend)
 @cssifyModules(styles, { allowMultiple: true })
 export default class GuLinkContainer extends Component {
   static propTypes = {
@@ -23,6 +28,16 @@ export default class GuLinkContainer extends Component {
       selectedIndex: -1
     };
   }
+  componentDidMount() {
+    const refs = this.refs;
+    this.props.gulinks.map((child) => {
+      const enode = ReactDom.findDOMNode(refs[`item-${child.get('_id')}`]);
+      enode.addEventListener('dragstart', ::this.handleDragStart);
+    });
+  }
+  handleDragStart() {
+    console.log('handleDragStart');
+  }
   handleLinkAdd() {
     this.setState({ openDialog: true });
   }
@@ -36,10 +51,6 @@ export default class GuLinkContainer extends Component {
 
   handleLinkModify() {
     this.setState({ openDialog: true });
-  }
-
-  handleBackendReload(gulink) {
-    this.props.reload(this.props.category, gulink.name);
   }
 
   handleDialogCancel() {
@@ -84,7 +95,7 @@ export default class GuLinkContainer extends Component {
   }
 
   handleMouseEnter(gulink, index) {
-    this.setState({ ...this.state, selectedIndex: index, linksBundle: gulink.links || [''] });
+    this.setState({ selectedIndex: index, linksBundle: gulink.links || [''] });
   }
   handleMouseLeave() {
     if (!this.refs.gulinkDialog.isOpen()) {
@@ -126,25 +137,16 @@ export default class GuLinkContainer extends Component {
         {
           gulinks.map((gulink, i) => {
             const focused = i === this.state.selectedIndex;
-            return (<li className={styles.gulink + (focused ? ' ' + styles['nav-focus'] : '')} key={gulink._id}
-                    onMouseEnter={() => this.handleMouseEnter(gulink, i)} onMouseLeave={ () => this.handleMouseLeave() }>
-                    <h3 className={styles['gulink-name'] + ' ' + styles[category] }>{gulink.name}</h3>
-                    {gulink.source && <span className={styles.from}>from</span>}
-                    {gulink.source && <span className={styles.source}>{' ' + gulink.source}</span>}
-                    <div className={ styles['gulink-actions'] }>
-                      <span className={ styles['gulink-action'] } onClick={ () => this.handleLinkModify() }><i className="md-mode-edit"></i></span>
-                      { this.props.reload && <span className={ styles['gulink-action'] }
-                        onClick={ () => this.handleBackendReload(gulink) }><i className="md-sync"></i></span> }
-                      <span className={ styles['gulink-action'] } onClick={ () => this.handleLinkRemove(i) }><i className="md-delete"></i></span>
-                    </div>
-                    <div>
-                    {
-                    gulink.links.map(
-                      (link, idx) =>
-                      <p key={'g' + idx} className={styles['short-desc']}><a href={link} target="_blank">{link}</a></p>)
-                    }
-                    </div>
-                    </li>);
+            return (<GuLinkItem focused={focused} category={category} gulink={gulink}
+                    handleMouseEnter={(...args) => this.handleMouseEnter(...args)}
+                    handleMouseLeave={(...args) => this.handleMouseLeave(...args)}
+                    handleLinkModify={(...args) => this.handleLinkModify(...args)}
+                    handleLinkRemove={(...args) => this.handleLinkRemove(...args)}
+                    move={(...args) => this.move(...args)}
+                    reorder={(...args) => this.reorder(...args)}
+                    reload={(...args) => this.reload(...args)}
+										index={i}
+                    />);
           })
         }
         </ul>

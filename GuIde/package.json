@@ -34,6 +34,8 @@
     "pretty-error": "^1.2.0",
     "react": "^0.14.0",
     "react-css-modules": "^3.6.1",
+    "react-dnd": "^2.0.2",
+    "react-dnd-html5-backend": "^2.0.1",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",

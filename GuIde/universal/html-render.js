@@ -44,9 +44,14 @@ export default function render(url, initialState) {
         store.getState().router.then(() => {
           console.log('store getstate', store.getState());
           const component = (<App store= { store } />);
-          const htmls = ReactDom.renderToStaticMarkup(
-            <Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>
-          );
+          let htmls = '';
+          try {
+            htmls = ReactDom.renderToStaticMarkup(
+              <Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>
+            );
+          } catch (e) {
+            console.log('render static markup error', e && e.stack);
+          }
           resolve(`<!doctype html>\n${htmls}`);
         });
       }
