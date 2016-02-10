@@ -1,6 +1,6 @@
 update docs script rm -rf before rsync
 reorder the gulink
-Rodux https://github.com/rackt/redux-router/issues/66
+Rodux https://github.com/rackt/redux-router/issues/66  react-router 2.0 https://github.com/rackt/redux/issues/805
 https://github.com/rackt/redux-simple-router/issues/13
 
 search action
@@ -12,13 +12,16 @@ jsxtree
 
 ??
 which config item cause webpack-dev-server watch restart
-webpack-dev-server compile twice on startup   ==> quiet noinfo supress it
 precss import partial hot load https://github.com/jonathantneal/precss/issues/6
-category table reducer actiontype still a lot non-DRY
 async route
 mouseonenter dialog dismiss not fired
+dnd scroll  https://github.com/gaearon/react-dnd/issues/324#issuecomment-154042432   and see https://github.com/gaearon/react-dnd/issues/362
 
-##webpack
+#refractor
+category table(api ops) reducer actiontype still a lot non-DRY
+connect gulink-container with state has { techcuz: , } and one action creator
+
+#webpack
 ?? split per route component
 https://github.com/odysseyscience/react-router-proxy-loader/issues/8
 https://github.com/petehunt/webpack-howto/issues/18 multiple entry-points
@@ -27,9 +30,14 @@ https://github.com/gaearon/react-transform-hmr/issues/5
 
 https://github.com/davezuko/react-redux-starter-kit/issues/58 webpack rendering setup
 
-#react-router
+#docs
+https://gaearon.github.io/react-dnd
+
+##react-router
 https://github.com/rackt/react-router/issues/1919  https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/common/app/app-stream.jsx
 https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/client/index.js https://github.com/FreeCodeCamp/FreeCodeCamp/blob/feature/jobs/server/boot/a-react.js
 https://github.com/mikhail-riabokon/redux-form-universal-example
 
-https://github.com/rackt/redux/issues/805 redux-router
+
+### Fixed
+webpack-dev-server compile twice on startup   ==> quiet noinfo supress it ==> because you add dev-server and hot-dev-server

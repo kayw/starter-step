@@ -12,9 +12,11 @@ export default {
     style_decriptor: {
       extensions: ['css', 'scss'],
       filter: (module, regex, options, log) => {
+        /*
         if (module.name.slice(-2) === 'ss') {
           log.info(module.name, regex.toString());
         }
+       */
         if (options.development) {
           // in development mode there's webpack "style-loader",
           // so the module.name is not equal to module.name

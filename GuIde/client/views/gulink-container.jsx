@@ -1,78 +1,64 @@
 import React, { Component, PropTypes } from 'react';
 import { FlatButton, Toolbar, IconButton, Dialog, TextField } from 'material-ui';
 import cssifyModules from 'react-css-modules';
-import ReactDom from 'react-dom';
-import {DragDropContext as dragDropContext} from 'react-dnd';
+import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import PageContainer from './page-container';
 import GuLinkItem from './gulink-item';
 const styles = require('./gulink-container.css');
 
 @dragDropContext(HTML5Backend)
-@cssifyModules(styles, { allowMultiple: true })
+@cssifyModules(styles)
 export default class GuLinkContainer extends Component {
   static propTypes = {
     category: PropTypes.string.isRequired,
     creator: PropTypes.func.isRequired,
     modify: PropTypes.func.isRequired,
     deleter: PropTypes.func.isRequired,
-    reload: PropTypes.func,
-    gulinks: PropTypes.object
+    onMove: PropTypes.func.isRequired,
+    onReorder: PropTypes.func.isRequired,
+    gulinks: PropTypes.object.isRequired,
+    reload: PropTypes.func
   }
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      openDialog: false,
-      linksBundle: [''],
-      selectedIndex: -1
-    };
+  state = {
+    openDialog: false,
+    linksBundle: [''],
+    selectedIndex: -1
   }
-  componentDidMount() {
-    const refs = this.refs;
-    this.props.gulinks.map((child) => {
-      const enode = ReactDom.findDOMNode(refs[`item-${child.get('_id')}`]);
-      enode.addEventListener('dragstart', ::this.handleDragStart);
-    });
-  }
-  handleDragStart() {
-    console.log('handleDragStart');
-  }
-  handleLinkAdd() {
+  handleLinkAdd = () => {
     this.setState({ openDialog: true });
   }
 
-  handleLinkRemove(i) {
-    const {category, gulinks} = this.props;
+  handleLinkRemove = (i) => {
+    const { category, gulinks } = this.props;
     if (gulinks.size > 0) {
       this.props.deleter(i, gulinks.get(i).get('_id'), category);
     }
   }
 
-  handleLinkModify() {
+  handleLinkModify = () => {
     this.setState({ openDialog: true });
   }
 
-  handleDialogCancel() {
+  handleDialogCancel = () => {
     this.setState({ openDialog: false, selectedIndex: -1, linksBundle: [''] });
   }
   handleDialogSubmit() {
     const { category, gulinks } = this.props;
     const links = [];
-    this.state.linksBundle.forEach((lb) => {
+    this.state.linksBundle.forEach(lb => {
       if (!!lb && lb.slice(0, 4) !== 'http') {
-        links.push('https://' + lb);
+        links.push(`https://${lb}`);
       } else {
         links.push(lb);
       }
     });
     if (this.state.selectedIndex < 0) {
-      const cursor = gulinks.size > 0 ? gulinks.get(gulinks.size - 1).get('cursor') + 1 : 0;
       const gulink = {
-        category: category,
+        category,
         [category]: {
-          _id: `${category}${cursor}`,
-          cursor,
+          _id: gulinks.size,
           name: this.refs.name_field.getValue(),
           links,
           source: this.refs.from_field.getValue()
@@ -81,7 +67,7 @@ export default class GuLinkContainer extends Component {
       this.props.creator(gulink);
     } else {
       const gulink = {
-        category: category,
+        category,
         [category]: {
           _id: gulinks.get(this.state.selectedIndex).get('_id'),
           name: this.refs.name_field.getValue(),
@@ -94,11 +80,11 @@ export default class GuLinkContainer extends Component {
     this.setState({ openDialog: false, selectedIndex: -1, linksBundle: [''] });
   }
 
-  handleMouseEnter(gulink, index) {
+  handleMouseEnter = (gulink, index) => {
     this.setState({ selectedIndex: index, linksBundle: gulink.links || [''] });
   }
-  handleMouseLeave() {
-    if (!this.refs.gulinkDialog.isOpen()) {
+  handleMouseLeave = () => {
+    if (!this.state.openDialog) {
       this.setState({ ...this.state, selectedIndex: -1, linksBundle: [''] });
     }
   }
@@ -106,61 +92,62 @@ export default class GuLinkContainer extends Component {
     this.state.linksBundle[idx] = ev.target.value;
     this.setState(this.state);
   }
-  handleLinkBundleRemove(idx) {
+  handleLinkBundleRemove = () => (idx) => {
     this.state.linksBundle.splice(idx, 2);
     this.setState(this.state);
   }
-  handleLinkBundleAdd() {
+  handleLinkBundleAdd = () => {
     this.state.linksBundle.push('', '');
     this.setState(this.state);
   }
+  handleReorder = () => {
+    this.props.onReorder(this.props.category, this.props.gulinks);
+  }
+
   render() {
     const { category } = this.props;
     const gulinks = this.props.gulinks.toJS();
     const currGulink = (this.state.selectedIndex !== -1 && gulinks.length > 0)
       ? gulinks[this.state.selectedIndex] : {};
     const gulinkActions = [
-      <FlatButton label="Cancel" key={0} secondary
-      onTouchTap={::this.handleDialogCancel} />,
-      <FlatButton label="Submit" key={1} primary
-      onTouchTap={::this.handleDialogSubmit} />
+      <FlatButton label="Cancel" key="fb1" secondary onTouchTap={ this.handleDialogCancel } />,
+      <FlatButton label="Submit" key="fb2" primary onTouchTap={::this.handleDialogSubmit} />
     ];
 
     // https://github.com/gajus/react-css-modules/issues/50
     return (
       <PageContainer>
         <Toolbar>
-            <IconButton iconClassName="md-add-box" onTouchTap={e => this.handleLinkAdd(e)} />
-            <span className={styles['icon-button-text']}>添加书签</span>
+            <IconButton iconClassName="md-add-box" onTouchTap={ this.handleLinkAdd } />
+            <span className={ styles['toolbar-text'] }>添加书签</span>
         </Toolbar>
-        <ul className={styles.gulinks}>
+        <ul className={ styles.gulinks }>
         {
           gulinks.map((gulink, i) => {
             const focused = i === this.state.selectedIndex;
-            return (<GuLinkItem focused={focused} category={category} gulink={gulink}
-                    handleMouseEnter={(...args) => this.handleMouseEnter(...args)}
-                    handleMouseLeave={(...args) => this.handleMouseLeave(...args)}
-                    handleLinkModify={(...args) => this.handleLinkModify(...args)}
-                    handleLinkRemove={(...args) => this.handleLinkRemove(...args)}
-                    move={(...args) => this.move(...args)}
-                    reorder={(...args) => this.reorder(...args)}
-                    reload={(...args) => this.reload(...args)}
-										index={i}
-                    />);
+            return (
+              <GuLinkItem key={gulink._id} focused={focused} category={category} gulink={gulink}
+                onHandleMouseEnter={this.handleMouseEnter}
+                onHandleMouseLeave={this.handleMouseLeave}
+                onHandleLinkModify={this.handleLinkModify}
+                onHandleLinkRemove={this.handleLinkRemove}
+                onReorder={this.handleReorder}
+                onMove={this.props.onMove}
+                onReload={this.props.reload}
+                index={i}
+              />);
           })
         }
         </ul>
-        <Dialog
-          ref="gulinkDialog"
-          title="GuLink Setting Dialog"
-          actions={gulinkActions}
-          open={this.state.openDialog}
-          autoDetectWindowHeight
-          autoScrollBodyContent>
-          <TextField key={2}
-            floatingLabelText="name" ref="name_field" defaultValue={ currGulink.name } fullWidth/>
-          <TextField key={3}
-            hintText="from" ref="from_field" defaultValue={ currGulink.source } fullWidth/>
+        <Dialog title="GuLink Setting Dialog" actions={gulinkActions}
+          open={this.state.openDialog} autoDetectWindowHeight autoScrollBodyContent
+        >
+          <TextField key="dtf1" floatingLabelText="name" ref="name_field"
+            defaultValue={currGulink.name} fullWidth
+          />
+          <TextField key="dtf2" hintText="from" ref="from_field"
+            defaultValue={currGulink.source} fullWidth
+          />
           {
           this.state.linksBundle.map((lb, idx) => {
             if (idx & 1) { // it's odd
@@ -169,13 +156,24 @@ export default class GuLinkContainer extends Component {
             const oddlb = this.state.linksBundle[idx + 1];
             return (<div key={ 4 + idx }>
               <div className={ styles['url-input'] }>
-                <TextField floatingLabelText="url" value={ lb } onChange={ (ev) => this.handleLinkBundleChange(ev, idx) } />
+                <TextField floatingLabelText="url" value={lb}
+                  onChange={ (ev) => this.handleLinkBundleChange(ev, idx) }
+                />
               </div>
               <div className={ styles['url-input'] }>
-                <TextField value={ oddlb } onChange={ (ev) => this.handleLinkBundleChange(ev, idx + 1) } />
+                <TextField value={oddlb}
+                  onChange={ (ev) => this.handleLinkBundleChange(ev, idx + 1) }
+                />
               </div>
-              { idx !== 0 && <span className={ styles['url-action'] } onClick={ () => this.handleLinkBundleRemove(idx) }><i className="md-remove"></i></span> }
-              <span className={ styles['url-action'] } onClick={ () => this.handleLinkBundleAdd() }><i className="md-add"></i></span>
+              {
+                idx !== 0 &&
+                <span className={ styles['url-action'] } onClick={ this.handleLinkBundleRemove }>
+                  <i className="md-remove"></i>
+                </span>
+              }
+              <span className={ styles['url-action'] } onClick={ this.handleLinkBundleAdd }>
+                <i className="md-add"></i>
+              </span>
             </div>);
           })
           }

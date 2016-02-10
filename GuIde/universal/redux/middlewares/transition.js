@@ -23,7 +23,7 @@ function fetchComponentData(components, locals) {
   const promises = (Array.isArray(components) ? components : [components])
   .filter(component => component) // filter undefined because of redux-router addition
   .reduce((fetchers, component) => fetchers.concat(component.fetchers || []), [])
-  .map(fetcher => fetcher(locals) );
+  .map(fetcher => fetcher(locals));
 
   return Promise.all(promises);
 }

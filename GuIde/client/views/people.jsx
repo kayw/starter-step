@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import GuLinkPage from './gulink-container';
-import { isLoaded, peopleLoadLink, peopleCreateLink, peopleDeleteLink, peopleModifyLink } from '../../universal/redux/reducers/gudmarks';
+import { isLoaded, peopleLoadLink, peopleCreateLink, peopleDeleteLink, peopleModifyLink,
+  peopleMoveLink, peopleReorderLink } from '../../universal/redux/reducers/gudmarks';
 import connectFetch from '../hoc/connect-fetch';
 
 function fetchData({state, dispatch}) {
@@ -16,15 +17,16 @@ function fetchData({state, dispatch}) {
       guLinks: state.people.get('gulinks')
     });
   },
-  { peopleCreateLink, peopleDeleteLink, peopleModifyLink }
+  { peopleCreateLink, peopleDeleteLink, peopleModifyLink, peopleMoveLink, peopleReorderLink }
 )
 export default class PeopleView extends Component {
   static propTypes = {
     guLinks: PropTypes.object.isRequired,
-    selectedIndex: PropTypes.number,
-    peopleModifyLink: PropTypes.func,
-    peopleCreateLink: PropTypes.func,
-    peopleDeleteLink: PropTypes.func
+    peopleMoveLink: PropTypes.func.isRequired,
+    peopleReorderLink: PropTypes.func.isRequired,
+    peopleModifyLink: PropTypes.func.isRequired,
+    peopleCreateLink: PropTypes.func.isRequired,
+    peopleDeleteLink: PropTypes.func.isRequired
   }
   static contextTypes = {
     store: PropTypes.object.isRequired
@@ -32,8 +34,9 @@ export default class PeopleView extends Component {
   render() {
     const { guLinks } = this.props;
     return (
-      <GuLinkPage category="people" gulinks={guLinks} creator={this.props.peopleCreateLink} deleter={this.props.peopleDeleteLink}
-        modify={this.props.peopleModifyLink} />
+      <GuLinkPage category="people" gulinks={guLinks} creator={this.props.peopleCreateLink}
+      deleter={this.props.peopleDeleteLink} modify={this.props.peopleModifyLink}
+      onMove={this.props.peopleMoveLink} onReorder={this.props.peopleReorderLink} />
     );
   }
 }

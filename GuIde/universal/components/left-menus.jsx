@@ -1,93 +1,65 @@
-const React = require('react');
-const { MenuItem, LeftNav, Styles } = require('material-ui');
+import React, { PropTypes } from 'react';
+import { List, ListItem, LeftNav, Divider, SelectableContainerEnhance, Styles } from 'material-ui';
 const { Colors, Spacing, Typography } = Styles;
-import { PropTypes } from 'react-router';
+const SelectableList = SelectableContainerEnhance(List);
 
-const menuItems = [
-  { route: '/techcuz', text: 'techcuz'},
-  { route: '/docsio', text: 'docs.io' },
-  { route: '/people', text: 'people' },
-  { route: '/offline', text: 'grab-reader' },
-  { route: '/whiteboard', text: 'playground' },
-  { route: '/saviour', text: 'saviour' },
-  { type: MenuItem.Types.SUBHEADER, text: 'Tools' },
-  { type: MenuItem.Types.LINK, payload: 'https://github.com/callemall/material-ui', text: 'Material-UI' },
-  { type: MenuItem.Types.LINK, payload: 'http://facebook.github.io/react', text: 'React' }
-];
-
-
-class AppLeftNav extends React.Component {
-
-  constructor() {
-    super();
-    this.toggle = this.toggle.bind(this);
-    this._getSelectedIndex = this._getSelectedIndex.bind(this);
-    this._onLeftNavChange = this._onLeftNavChange.bind(this);
-    this._onHeaderClick = this._onHeaderClick.bind(this);
+export default class AppLeftNav extends React.Component {
+  static propTypes = {
+    location: PropTypes.object.isRequired,
+    leftNavOpen: PropTypes.bool.isRequired,
+    onRequestChangeLeftNav: PropTypes.func.isRequired,
+    onRequestChangeLink: PropTypes.func.isRequired
   }
-
   getStyles() {
     return {
       cursor: 'pointer',
-      fontSize: '24px',// .mui-font-style-headline
+      fontSize: '24px', // .mui-font-style-headline
       color: Typography.textFullWhite,
-      lineHeight: Spacing.desktopKeylineIncrement + 'px',
+      lineHeight: `${Spacing.desktopKeylineIncrement}px`,
       fontWeight: Typography.fontWeightLight,
       backgroundColor: Colors.cyan500,
       paddingLeft: Spacing.desktopGutter,
-      paddingTop: '0px',
-      marginBottom: '8px'
+      marginBottom: 8
     };
   }
 
-  toggle() {
-    this.refs.leftNav.toggle();
+  handleTouchTapHeader = () => {
+    this.props.onRequestChangeLink('/');
   }
 
-  _getSelectedIndex() {
-    let currentItem;
-
-    for (let i = menuItems.length - 1; i >= 0; i--) {
-      currentItem = menuItems[i];
-      if (currentItem.route && this.context.history.isActive(currentItem.route)) {
-        return i;
-      }
-    }
+  handleRequestChangeList = (ev, value) => {
+    this.props.onRequestChangeLink(value);
   }
 
-  _onLeftNavChange(ev, key, payload) {
-    // this.context.history.transitionTo(payload.route);
-    this.context.history.pushState(null, payload.route);
-  }
-
-  _onHeaderClick() {
-    // this.context.history.transitionTo('root');
-    this.context.history.pushState(null, '/');
-    this.refs.leftNav.close();
+  handleRequestChangeLink = (ev, value) => {
+    window.location = value;
   }
 
   render() {
-    const header = (
-      <div style={this.getStyles()} onTouchTap={this._onHeaderClick}>
-        GuIde
-      </div>
-    );
-
+    const { onRequestChangeLeftNav, leftNavOpen, location } = this.props;
     return (
-      <LeftNav
-        ref="leftNav"
-        docked={false}
-        isInitiallyOpen={false}
-        header={header}
-        menuItems={menuItems}
-        selectedIndex={this._getSelectedIndex()}
-        onChange={this._onLeftNavChange} />
-    );
+      <LeftNav docked={false} open={leftNavOpen} onRequestChange={ onRequestChangeLeftNav }>
+        <div style={this.getStyles()} onTouchTap={ this.handleTouchTapHeader }>
+          GuIde
+        </div>
+        <SelectableList valueLink={{ value: location.pathname,
+          requestChange: this.handleRequestChangeList }}
+        >
+          <ListItem primaryText="techcuz" value="/techcuz" />
+          <ListItem primaryText="docs.io" value="/docsio" />
+          <ListItem primaryText="people" value="/people" />
+          <ListItem primaryText="grab-reader" value="/offline" />
+          <ListItem primaryText="playground" value="/whiteboard" />
+          <ListItem primaryText="saviour" value="/saviour" />
+        </SelectableList>
+        <Divider />
+        <SelectableList subheader="Tools" valueLink={{
+          value: '', requestChange: this.handleRequestChangeLink
+        }}
+        >
+          <ListItem primaryText="Material-UI" value="https://github.com/callemall/material-ui" />
+          <ListItem primaryText="React" value="http://facebook.github.io/react" />
+        </SelectableList>
+      </LeftNav>);
   }
 }
-
-AppLeftNav.contextTypes = {
-  history: PropTypes.history
-};
-
-module.exports = AppLeftNav;

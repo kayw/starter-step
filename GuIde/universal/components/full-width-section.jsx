@@ -3,17 +3,20 @@ const { ClearFix, Mixins, Styles } = require('material-ui');
 const { StylePropable, StyleResizable } = Mixins;
 const DesktopGutter = Styles.Spacing.desktopGutter;
 
-
 const FullWidthSection = React.createClass({
+
   propTypes: {
-    useContent: React.PropTypes.bool,
+    children: React.PropTypes.node,
+    contentStyle: React.PropTypes.object,
     contentType: React.PropTypes.string,
-    children: React.PropTypes.array,
     style: React.PropTypes.object,
-    contentStyle: React.PropTypes.object
+    useContent: React.PropTypes.bool
   },
 
-  mixins: [StylePropable, StyleResizable],
+  mixins: [
+    StylePropable,
+    StyleResizable
+  ],
 
   getDefaultProps() {
     return {
@@ -25,7 +28,7 @@ const FullWidthSection = React.createClass({
   getStyles() {
     return {
       root: {
-        padding: DesktopGutter + 'px',
+        padding: `${DesktopGutter}px`,
         boxSizing: 'border-box'
       },
       content: {
@@ -33,12 +36,12 @@ const FullWidthSection = React.createClass({
         margin: '0 auto'
       },
       rootWhenSmall: {
-        paddingTop: (DesktopGutter * 2) + 'px',
-        paddingBottom: (DesktopGutter * 2) + 'px'
+        paddingTop: DesktopGutter * 2,
+        paddingBottom: DesktopGutter * 2
       },
       rootWhenLarge: {
-        paddingTop: (DesktopGutter * 3) + 'px',
-        paddingBottom: (DesktopGutter * 3) + 'px'
+        paddingTop: DesktopGutter * 3,
+        paddingBottom: DesktopGutter * 3
       }
     };
   },
@@ -59,7 +62,7 @@ const FullWidthSection = React.createClass({
       content =
         React.createElement(
           contentType,
-          {style: this.mergeAndPrefix(styles.content, contentStyle)},
+          { style: this.mergeStyles(styles.content, contentStyle) },
           this.props.children
         );
     } else {
@@ -67,12 +70,14 @@ const FullWidthSection = React.createClass({
     }
 
     return (
-      <ClearFix {...other}
-        style={this.mergeAndPrefix(
+      <ClearFix
+        {...other}
+        style={this.mergeStyles(
           styles.root,
           style,
           this.isDeviceSize(StyleResizable.statics.Sizes.SMALL) && styles.rootWhenSmall,
-          this.isDeviceSize(StyleResizable.statics.Sizes.LARGE) && styles.rootWhenLarge)}>
+          this.isDeviceSize(StyleResizable.statics.Sizes.LARGE) && styles.rootWhenLarge)}
+      >
         {content}
       </ClearFix>
     );

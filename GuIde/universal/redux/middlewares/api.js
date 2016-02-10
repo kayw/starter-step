@@ -53,9 +53,8 @@ export default function clientMiddleware() {
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
       return requests[method](endpoint, {...rest}).then(
-        (result) => next({...rest, result, type: SUCCESS}),
-        (error) => next({...rest, error, type: FAILURE})
-      ).catch((error)=> {
+        (result) => next({...rest, result, type: SUCCESS})
+      ).catch((error) => {
         debug('MIDDLEWARE ERROR:', error);
         next({...rest, error, type: FAILURE});
       });

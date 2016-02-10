@@ -44,6 +44,7 @@ export default class Html extends Component {
           <title>Gu-IDE</title>
           <link rel="shortcut icon" href="/favicon.ico" />
           <link href="/statics/main.css" rel="stylesheet" />
+          <link href="/statics/socicon/socicon.min.css" rel="stylesheet" />
           <link href="/statics/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" />
 
           {/* styles (will be present only in production with webpack extract text plugin) */}

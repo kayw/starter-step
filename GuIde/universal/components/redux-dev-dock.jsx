@@ -5,8 +5,8 @@ import DockMonitor from 'redux-devtools-dock-monitor';
 // https://github.com/emmenko/redux-react-router-async-example/blob/master/lib/components/DevTools.js
 export default createDevTools(
   <DockMonitor
-    toggleVisibilityKey="H"
-    changePositionKey="Q">
+    toggleVisibilityKey="meta-H"
+    changePositionKey="meta-j">
     <LogMonitor />
   </DockMonitor>
 );

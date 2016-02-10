@@ -1,4 +1,3 @@
-import { DELETE } from '../../../universal/constants';
 import log from '../../../universal/helpers/inspector';
 import winston from 'winston';
 winston.loggers.add('bookmarks', {
@@ -19,7 +18,13 @@ function post(table) {
     return function *insertMark() {
       try {
         logger.info(body);
-        const result = yield r.table(table).insert(body);
+        const result = yield r.table(table).insert({
+          _id: `${table}${body._id}`,
+          order: body._id,
+          name: body.name,
+          links: body.links,
+          source: body.source
+        });
         return result;
       } catch (e) {
         log('insert bookmarks', e.message);
@@ -32,7 +37,7 @@ function get(table) {
   return function getGudmarks() {
     return function *get() {
       try {
-        const result = yield r.table(table).orderBy('cursor');
+        const result = yield r.table(table).orderBy('order');
         return { [table]: { gulinks: result } };
       } catch (e) {
         log(e.message);
@@ -46,8 +51,11 @@ function put(table) {
     return function *update() {
       try {
         logger.info({ name: body.name, links: body.links });
-        const result = yield r.table(table).get(body._id).update({ name: body.name,
-                                                                 links: body.links, source: body.source });
+        const result = yield r.table(table).get(body._id).update({
+          name: body.name,
+          links: body.links,
+          source: body.source
+        });
         return result;
       } catch (e) {
         log(e.message);
@@ -68,24 +76,52 @@ function del(table) {
   };
 }
 
-const techcuz = {
-  get: get('techcuz'),
-  post: post('techcuz'),
-  put: put('techcuz'),
-  [DELETE]: del('techcuz')
-};
-const docsio = {
-  get: get('docsio'),
-  post: post('docsio'),
-  put: put('docsio'),
-  [DELETE]: del('docsio')
-};
-const people = {
-  get: get('people'),
-  post: post('people'),
-  put: put('people'),
-  [DELETE]: del('people')
-};
+function order(table) {
+  return function reorder(params, body) {
+    return function *reorder() {
+      console.log(body, params);
+      try {
+        /*
+         * TODO: add order field, transfer {_id:, order:} body
+         * update order Maybe can cache previous order and only pass changed id orders
+         *
+        for (let i = 0; i < body.length; ++i) {
+          yield r.table(table).nth(i).replace({
+            _id: `${table}${i}`,
+            name: body[i].name,
+            links: body[i].links,
+            source: body[i].source
+          });
+        }
+       */
+        yield r.table(table).delete();
+        for (let i = 0; i < body.length; ++i) {
+          yield r.table(table).insert({
+            _id: `${table}${i}`,
+            order: i,
+            name: body[i].name,
+            links: body[i].links,
+            source: body[i].source
+          });
+        }
+        return true;
+      } catch (e) {
+        log(e.message);
+      }
+    };
+  };
+}
+
+const methodsAggreate = (table) => ({
+  order: order(table),
+  get: get(table),
+  post: post(table),
+  put: put(table),
+  delete: del(table)
+});
+const techcuz = methodsAggreate('techcuz');
+const docsio = methodsAggreate('docsio');
+const people = methodsAggreate('people');
 
 export default {
   techcuz,

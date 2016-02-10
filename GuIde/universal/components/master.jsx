@@ -3,32 +3,48 @@ const AppLeftNav = require('./left-menus');
 const FullWidthSection = require('./full-width-section');
 const { AppBar, AppCanvas, IconButton, Styles } = require('material-ui');
 
-const { Colors } = Styles;
-const ThemeManager = Styles.ThemeManager;
-const DefaultRawTheme = Styles.LightRawTheme;
-import { PropTypes } from 'react-router';
+const { Colors, getMuiTheme } = Styles;
 
 class Master extends React.Component {
   static propTypes = {
+    history: React.PropTypes.object.isRequired,
+    location: React.PropTypes.object.isRequired,
     children: React.PropTypes.object
   }
-/*
-  static contextTypes = {
-    store: React.PropTypes.object.isRequired
-  }
-*/
-  constructor() {
-    super();
-  }
-  getChildContext() {
-    return {
-      muiTheme: ThemeManager.getMuiTheme(DefaultRawTheme)
-    };
+  static childContextTypes = {
+    muiTheme: React.PropTypes.object
   }
 
+  state = {
+    muiTheme: getMuiTheme(),
+    leftNavOpen: false
+  }
+
+  getChildContext() {
+    return {
+      muiTheme: this.state.muiTheme
+    };
+  }
+  componentWillMount() {
+    this.setState({
+      muiTheme: this.state.muiTheme
+    });
+  }
+  componentWillReceiveProps(nextProps, nextContext) {
+    const newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+    this.setState({
+      muiTheme: newMuiTheme
+    });
+  }
   getStyles() {
     const darkWhite = Colors.darkWhite;
     return {
+      appBar: {
+        position: 'fixed',
+        // Needed to overlap the examples
+        zIndex: this.state.muiTheme.zIndex.appBar + 1,
+        top: 0
+      },
       footer: {
         backgroundColor: Colors.grey900,
         textAlign: 'center'
@@ -48,40 +64,50 @@ class Master extends React.Component {
     };
   }
 
-  _onLeftIconButtonTouchTap() {
-    this.refs.leftNav.toggle();
+  handleTouchTapLeftIcon = () => {
+    this.setState({
+      leftNavOpen: !this.state.leftNavOpen
+    });
+  }
+  handleRequestChangeLeftNav = (open) => {
+    this.setState({
+      leftNavOpen: open
+    });
+  }
+  handleRequestChangeLink = (link) => {
+    this.props.history.push(link);
+    this.handleRequestChangeLeftNav(false);
   }
 
   render() {
     const styles = this.getStyles();
-    const title = 'GuIDE'/*
-      this.context.router.isActive('get-started') ? 'Get Started' :
-      this.context.router.isActive('customization') ? 'Customization' :
-      this.context.router.isActive('components') ? 'Components' : ''*/;
+    const title = 'GuIDE';
 
     const githubButton = (
       <IconButton
         iconStyle={styles.iconButton}
-        iconClassName="muidocs-icon-custom-github"
-        href="https://github.com/kayw/guide"
-        linkButton />
-    );
+        iconClassName="socicon socicon-github"
+        href="https://github.com/kayw/starter-step/guide"
+        linkButton
+      />);
 
     return (
       <AppCanvas>
-      <AppBar
-          onLeftIconButtonTouchTap={::this._onLeftIconButtonTouchTap}
+        <AppBar
+          onLeftIconButtonTouchTap={ this.handleTouchTapLeftIcon }
           title={title}
           zDepth={0}
-          style={{position: 'absolute', top: 0}}
-      />
-
+          iconElementRight={githubButton}
+          style={styles.appBar}
+        />
         { this.props.children }
-        <AppLeftNav ref="leftNav" />
+        <AppLeftNav onRequestChangeLeftNav={ this.handleRequestChangeLeftNav }
+          location={ this.props.location } onRequestChangeLink={ this.handleRequestChangeLink }
+          leftNavOpen={ this.state.leftNavOpen }
+        />
         <FullWidthSection style={styles.footer}>
           <p style={styles.p}>
-            Hand crafted with love by the engineers at <a style={styles.a} href="http://kayw.me">kayw</a> and our
-            awesome <a style={styles.a} href="https://github.com/callemall/material-ui/graphs/contributors">contributors</a>.
+            Hand crafted with <i className="md md-favorite"></i> by <a style={styles.a} href="http://kayw.me">kayw</a>
           </p>
           {githubButton}
         </FullWidthSection>
@@ -90,13 +116,5 @@ class Master extends React.Component {
     );
   }
 }
-
-Master.contextTypes = {
-  history: PropTypes.history
-};
-
-Master.childContextTypes = {
-  muiTheme: React.PropTypes.object
-};
 
 module.exports = Master;

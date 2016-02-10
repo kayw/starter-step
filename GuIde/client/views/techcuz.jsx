@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import GuLinkPage from './gulink-container';
-import { isLoaded, techcuzLoadLink, techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink } from '../../universal/redux/reducers/gudmarks';
+import { isLoaded, techcuzLoadLink, techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink,
+  techcuzReorderLink, techcuzMoveLink } from '../../universal/redux/reducers/gudmarks';
 import connectFetch from '../hoc/connect-fetch';
 
 function fetchData({state, dispatch}) {
@@ -18,12 +19,15 @@ function fetchData({state, dispatch}) {
       guLinks: state.techcuz.get('gulinks')
     });
   },
-  { techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink }
+  { techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink,
+    techcuzReorderLink, techcuzMoveLink }
 )
 export default class TechcuzView extends Component {
   static propTypes = {
     guLinks: PropTypes.object.isRequired,
     selectedIndex: PropTypes.number,
+    techcuzReorderLink: PropTypes.func.isRequired,
+    techcuzMoveLink: PropTypes.func.isRequired,
     techcuzModifyLink: PropTypes.func.isRequired,
     techcuzCreateLink: PropTypes.func.isRequired,
     techcuzDeleteLink: PropTypes.func.isRequired
@@ -34,8 +38,9 @@ export default class TechcuzView extends Component {
   render() {
     const { guLinks } = this.props;
     return (
-      <GuLinkPage category="techcuz" gulinks={guLinks} creator={this.props.techcuzCreateLink} deleter={this.props.techcuzDeleteLink}
-        modify={this.props.techcuzModifyLink} />
+      <GuLinkPage category="techcuz" gulinks={guLinks} creator={this.props.techcuzCreateLink}
+        deleter={this.props.techcuzDeleteLink} modify={this.props.techcuzModifyLink}
+        onMove={this.props.techcuzMoveLink} onReorder={this.props.techcuzReorderLink}/>
     );
   }
 }

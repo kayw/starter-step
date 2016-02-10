@@ -16,6 +16,7 @@ if (initialState) {
     }
   });
 }
-const store = configureStore(reduxReactRouter, makeRouteHookSafe(getPlainRoute), createBrowserHistory, initialState);
+const store = configureStore(reduxReactRouter, makeRouteHookSafe(getPlainRoute),
+                             createBrowserHistory, initialState);
 ReactDom.render(<App routes={ getPlainRoute(store) } store={store} />,
              document.getElementById('mount'));

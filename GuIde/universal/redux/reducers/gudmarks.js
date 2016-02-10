@@ -5,6 +5,9 @@ import { CLIENT_API } from '../middlewares/api';
 const initialState = fromJS({
   loaded: false,
   gulinks: []
+  /*
+   * [{_id: , order: , links: [], source: ,name: }]
+   */
 });
 
 function liftedReducer(actionTypes) {
@@ -25,9 +28,9 @@ function liftedReducer(actionTypes) {
       });
     case actionTypes.DELETION_SUCCESS:
       return state.update('gulinks', list => list.delete(action.data.index));
-    case actionTypes.DELETION_FAIL:
-    case actionTypes.DELETION:
-    case actionTypes.CREATION_FAIL:
+    case actionTypes.MOVE:
+      return state.update('gulinks', list => list.splice(action.data.originIndex, 1).splice(
+        action.data.atIndex, 0, list.get(action.data.originIndex)));
     default:
       return state;
     }
@@ -35,10 +38,14 @@ function liftedReducer(actionTypes) {
 }
 
 function formActionType(domain) {
-  const atypes = ['LOAD', 'LOAD_SUCCESS', 'LOAD_FAIL',
+  const atypes = [
+    'MOVE',
+    'LOAD', 'LOAD_SUCCESS', 'LOAD_FAIL',
     'CREATION', 'CREATION_SUCCESS', 'CREATION_FAIL',
     'MODIFICATION', 'MODIFICATION_SUCCESS', 'MODIFICATION_FAIL',
-    'DELETION', 'DELETION_SUCCESS', 'DELETION_FAIL' ];
+    'REORDER', 'REORDER_SUCCESS', 'REORDER_FAIL',
+    'DELETION', 'DELETION_SUCCESS', 'DELETION_FAIL'
+  ];
   const actionType = {};
   atypes.forEach((at) => {
     actionType[at] = `@@${domain}/${at}`;
@@ -95,12 +102,35 @@ function liftedModifyLink(actionTypes) {
   return function modifyLink(index, gulink) {
     return {
       [CLIENT_API]: {
-        types: [actionTypes.MODIFICATION, actionTypes.MODIFICATION_SUCCESS, actionTypes.MODIFICATION_FAIL],
+        types: [actionTypes.MODIFICATION, actionTypes.MODIFICATION_SUCCESS,
+          actionTypes.MODIFICATION_FAIL],
         endpoint: gulink.category,
         method: 'put',
         index,
         data: gulink[gulink.category]
       }
+    };
+  };
+}
+
+function liftedReorderLink(actionTypes) {
+  return function reoderLink(category, gulinks) {
+    return {
+      [CLIENT_API]: {
+        types: [actionTypes.REORDER, actionTypes.REORDER_SUCCESS, actionTypes.REORDER_FAIL],
+        endpoint: `${category}/order`,
+        method: 'put',
+        data: gulinks
+      }
+    };
+  };
+}
+
+function liftedMoveLink(actionTypes) {
+  return function moveLink(originIndex, atIndex) {
+    return {
+      type: actionTypes.MOVE,
+      data: { originIndex, atIndex }
     };
   };
 }
@@ -121,17 +151,26 @@ const techcuzModifyLink = liftedModifyLink(techcuzActionType);
 const docsioModifyLink = liftedModifyLink(docsioActionType);
 const peopleModifyLink = liftedModifyLink(peopleActionType);
 
+const techcuzReorderLink = liftedReorderLink(techcuzActionType);
+const docsioReorderLink = liftedReorderLink(docsioActionType);
+const peopleReorderLink = liftedReorderLink(peopleActionType);
+
+const techcuzMoveLink = liftedMoveLink(techcuzActionType);
+const docsioMoveLink = liftedMoveLink(docsioActionType);
+const peopleMoveLink = liftedMoveLink(peopleActionType);
+
 const techcuzLoadLink = liftedLoadLink('techcuz', techcuzActionType);
 const docsioLoadLink = liftedLoadLink('docsio', docsioActionType);
 const peopleLoadLink = liftedLoadLink('people', peopleActionType);
 
-['RELOAD', 'RELOAD_SUCCESS', 'RELOAD_FAIL'].forEach((at) => {
+['RELOAD', 'RELOAD_SUCCESS', 'RELOAD_FAIL'].forEach(at => {
   docsioActionType[at] = `@@docsio/${at}`;
 });
 function docsioReload(category, docName) {
   return {
     [CLIENT_API]: {
-      types: [docsioActionType.RELOAD, docsioActionType.RELOAD_SUCCESS, docsioActionType.RELOAD_FAIL],
+      types: [docsioActionType.RELOAD, docsioActionType.RELOAD_SUCCESS,
+        docsioActionType.RELOAD_FAIL],
       endpoint: category,
       method: 'post',
       data: docName
@@ -142,6 +181,9 @@ function docsioReload(category, docName) {
 export {
   isLoaded, docsioReload,
   techcuz, techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink, techcuzLoadLink,
+  techcuzReorderLink, techcuzMoveLink,
   docsio, docsioCreateLink, docsioDeleteLink, docsioModifyLink, docsioLoadLink,
-  people, peopleCreateLink, peopleDeleteLink, peopleModifyLink, peopleLoadLink
+  docsioReorderLink, docsioMoveLink,
+  people, peopleCreateLink, peopleDeleteLink, peopleModifyLink, peopleLoadLink,
+  peopleReorderLink, peopleMoveLink
 };

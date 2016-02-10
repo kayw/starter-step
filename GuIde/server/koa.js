@@ -3,7 +3,7 @@ import assets from 'koa-static';
 import renderRouter from './middleware/render-route';
 import responseTime from './middleware/response-time';
 import logger from './middleware/logger';
-import api, { getApiResult } from './api/api-router';
+import api from './api/api-router';
 import conf from '../universal/config';
 import rethink from 'rethinkdbdash';
 import debug from '../universal/helpers/inspector';
