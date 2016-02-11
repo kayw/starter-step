@@ -7,7 +7,8 @@ import rootReducer from './reducers/combiner';
 export default function configureStore(reduxReactRouter, getRoutes, createHistory, initialState) {
   let createMiddlewaredStore;
   const apiMiddleware = createClientApi();
-  const storeEnhancers = [reduxReactRouter({getRoutes, createHistory}), applyMiddleware(apiMiddleware, transitionMw)];
+  const storeEnhancers = [reduxReactRouter({ getRoutes, createHistory }),
+    applyMiddleware(apiMiddleware, transitionMw)];
   if (__DEVTOOLS__) {
     const DevTools = require('../components/redux-dev-dock');
     storeEnhancers.push(DevTools.instrument());

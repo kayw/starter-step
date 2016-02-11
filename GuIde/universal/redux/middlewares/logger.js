@@ -1,8 +1,9 @@
-const pad = num => (`0` + num).slice(-2);
+const pad = num => `${num}`.slice(-2);
 // https://github.com/fcomb/redux-logger
 
 // Use the new performance api to get better precision if available
-const timer = typeof performance !== `undefined` && typeof performance.now === `function` ? performance : Date;
+const timer = typeof performance !== 'undefined' && typeof performance.now === 'function'
+  ? performance : Date;
 
 /**
  * Creates logger with followed options
@@ -56,7 +57,8 @@ function createLogger(options = {}) {
     const time = new Date();
     const isCollapsed = (typeof collapsed === `function`) ? collapsed(getState, action) : collapsed;
 
-    const formattedTime = timestamp ? ` @ ${time.getHours()}:${pad(time.getMinutes())}:${pad(time.getSeconds())}` : ``;
+    const formattedTime = timestamp ?
+      ` @ ${time.getHours()}:${pad(time.getMinutes())}:${pad(time.getSeconds())}` : ``;
     const formattedDuration = duration ? ` in ${took.toFixed(2)} ms` : ``;
     const formattedAction = actionTransformer(action);
     const message = `action ${formattedAction.type}${formattedTime}${formattedDuration}`;
@@ -92,8 +94,9 @@ function createLogger(options = {}) {
 export default createLogger;
 /* https://github.com/fcomb/redux-logger/blob/master/examples/basic/containers/root.jsx
 const logger = createLogger({
-  predicate: (getState, action) => action.type !== AUTH_REMOVE_TOKEN, // log all actions except AUTH_REMOVE_TOKEN
-    level: `info`,
+  predicate: (getState, action) => action.type !== AUTH_REMOVE_TOKEN,
+  // log all actions except AUTH_REMOVE_TOKEN
+  level: `info`,
   duration: true,
   actionTransformer: (action) => {
     return {

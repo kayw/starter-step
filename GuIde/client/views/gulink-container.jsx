@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import update from 'react/lib/update';
 import { FlatButton, Toolbar, IconButton, Dialog, TextField } from 'material-ui';
 import cssifyModules from 'react-css-modules';
 import { DragDropContext as dragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import PageContainer from './page-container';
 import GuLinkItem from './gulink-item';
 const styles = require('./gulink-container.css');
 
@@ -12,13 +12,13 @@ const styles = require('./gulink-container.css');
 export default class GuLinkContainer extends Component {
   static propTypes = {
     category: PropTypes.string.isRequired,
-    creator: PropTypes.func.isRequired,
-    modify: PropTypes.func.isRequired,
-    deleter: PropTypes.func.isRequired,
+    onCreate: PropTypes.func.isRequired,
+    onModify: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
     onMove: PropTypes.func.isRequired,
     onReorder: PropTypes.func.isRequired,
     gulinks: PropTypes.object.isRequired,
-    reload: PropTypes.func
+    onReload: PropTypes.func
   }
 
   state = {
@@ -33,7 +33,7 @@ export default class GuLinkContainer extends Component {
   handleLinkRemove = (i) => {
     const { category, gulinks } = this.props;
     if (gulinks.size > 0) {
-      this.props.deleter(i, gulinks.get(i).get('_id'), category);
+      this.props.onDelete(i, gulinks.get(i).get('_id'), category);
     }
   }
 
@@ -64,7 +64,7 @@ export default class GuLinkContainer extends Component {
           source: this.refs.from_field.getValue()
         }
       };
-      this.props.creator(gulink);
+      this.props.onCreate(gulink);
     } else {
       const gulink = {
         category,
@@ -75,7 +75,7 @@ export default class GuLinkContainer extends Component {
           source: this.refs.from_field.getValue()
         }
       };
-      this.props.modify(this.state.selectedIndex, gulink);
+      this.props.onModify(this.state.selectedIndex, gulink);
     }
     this.setState({ openDialog: false, selectedIndex: -1, linksBundle: [''] });
   }
@@ -85,20 +85,33 @@ export default class GuLinkContainer extends Component {
   }
   handleMouseLeave = () => {
     if (!this.state.openDialog) {
-      this.setState({ ...this.state, selectedIndex: -1, linksBundle: [''] });
+      this.setState({ selectedIndex: -1, linksBundle: [''] });
     }
   }
-  handleLinkBundleChange(ev, idx) {
-    this.state.linksBundle[idx] = ev.target.value;
-    this.setState(this.state);
+  handleLinkBundleChange = (idx) => (ev) => {
+    this.setState(update(this.state, {
+      linksBundle: {
+        [idx]: {
+          $set: ev.target.value
+        }
+      }
+    }));
   }
-  handleLinkBundleRemove = () => (idx) => {
-    this.state.linksBundle.splice(idx, 2);
-    this.setState(this.state);
+  handleLinkBundleRemove = (idx) => () => {
+    this.setState(update(this.state, {
+      linksBundle: {
+        $splice: [
+          [idx, 2]
+        ]
+      }
+    }));
   }
   handleLinkBundleAdd = () => {
-    this.state.linksBundle.push('', '');
-    this.setState(this.state);
+    this.setState(update(this.state, {
+      linksBundle: {
+        $push: ['', '']
+      }
+    }));
   }
   handleReorder = () => {
     this.props.onReorder(this.props.category, this.props.gulinks);
@@ -110,18 +123,18 @@ export default class GuLinkContainer extends Component {
     const currGulink = (this.state.selectedIndex !== -1 && gulinks.length > 0)
       ? gulinks[this.state.selectedIndex] : {};
     const gulinkActions = [
-      <FlatButton label="Cancel" key="fb1" secondary onTouchTap={ this.handleDialogCancel } />,
+      <FlatButton label="Cancel" key="fb1" secondary onTouchTap={this.handleDialogCancel} />,
       <FlatButton label="Submit" key="fb2" primary onTouchTap={::this.handleDialogSubmit} />
     ];
 
     // https://github.com/gajus/react-css-modules/issues/50
     return (
-      <PageContainer>
+      <div>
         <Toolbar>
             <IconButton iconClassName="md-add-box" onTouchTap={ this.handleLinkAdd } />
-            <span className={ styles['toolbar-text'] }>添加书签</span>
+            <span styleName="toolbar-text">添加书签</span>
         </Toolbar>
-        <ul className={ styles.gulinks }>
+        <ul styleName="gulinks">
         {
           gulinks.map((gulink, i) => {
             const focused = i === this.state.selectedIndex;
@@ -133,7 +146,7 @@ export default class GuLinkContainer extends Component {
                 onHandleLinkRemove={this.handleLinkRemove}
                 onReorder={this.handleReorder}
                 onMove={this.props.onMove}
-                onReload={this.props.reload}
+                onReload={this.props.onReload}
                 index={i}
               />);
           })
@@ -155,30 +168,30 @@ export default class GuLinkContainer extends Component {
             }
             const oddlb = this.state.linksBundle[idx + 1];
             return (<div key={ 4 + idx }>
-              <div className={ styles['url-input'] }>
+              <div styleName="url-input">
                 <TextField floatingLabelText="url" value={lb}
-                  onChange={ (ev) => this.handleLinkBundleChange(ev, idx) }
+                  onChange={this.handleLinkBundleChange(idx)}
                 />
               </div>
-              <div className={ styles['url-input'] }>
+              <div styleName="url-input">
                 <TextField value={oddlb}
-                  onChange={ (ev) => this.handleLinkBundleChange(ev, idx + 1) }
+                  onChange={this.handleLinkBundleChange(idx + 1)}
                 />
               </div>
               {
                 idx !== 0 &&
-                <span className={ styles['url-action'] } onClick={ this.handleLinkBundleRemove }>
+                <span styleName="url-action" onClick={this.handleLinkBundleRemove(idx)}>
                   <i className="md-remove"></i>
                 </span>
               }
-              <span className={ styles['url-action'] } onClick={ this.handleLinkBundleAdd }>
+              <span styleName="url-action" onClick={this.handleLinkBundleAdd}>
                 <i className="md-add"></i>
               </span>
             </div>);
           })
           }
         </Dialog>
-      </PageContainer>
+      </div>
     );
   }
 }

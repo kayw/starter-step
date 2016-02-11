@@ -5,18 +5,16 @@ import { isLoaded, peopleLoadLink, peopleCreateLink, peopleDeleteLink, peopleMod
   peopleMoveLink, peopleReorderLink } from '../../universal/redux/reducers/gudmarks';
 import connectFetch from '../hoc/connect-fetch';
 
-function fetchData({state, dispatch}) {
+function fetchData({ state, dispatch }) {
   if (!isLoaded(state, 'people')) {
     return dispatch(peopleLoadLink());
   }
 }
 @connectFetch(fetchData)
 @connect(
-  state => {
-    return ({
-      guLinks: state.people.get('gulinks')
-    });
-  },
+  state => ({
+    guLinks: state.people.get('gulinks')
+  }),
   { peopleCreateLink, peopleDeleteLink, peopleModifyLink, peopleMoveLink, peopleReorderLink }
 )
 export default class PeopleView extends Component {
@@ -34,9 +32,10 @@ export default class PeopleView extends Component {
   render() {
     const { guLinks } = this.props;
     return (
-      <GuLinkPage category="people" gulinks={guLinks} creator={this.props.peopleCreateLink}
-      deleter={this.props.peopleDeleteLink} modify={this.props.peopleModifyLink}
-      onMove={this.props.peopleMoveLink} onReorder={this.props.peopleReorderLink} />
+      <GuLinkPage category="people" gulinks={guLinks} onCreato={this.props.peopleCreateLink}
+        onDelete={this.props.peopleDeleteLink} onModify={this.props.peopleModifyLink}
+        onMove={this.props.peopleMoveLink} onReorder={this.props.peopleReorderLink}
+      />
     );
   }
 }

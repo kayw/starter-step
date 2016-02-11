@@ -11,7 +11,7 @@ module.exports = function makeRenderRouteMiddleware(middleware) {
       try {
         this.body = yield render(this.request.url, initialState);
       } catch (e) {
-        debug('renderRouteMiddleware:',  e && e.stack);
+        debug('renderRouteMiddleware:', e && e.stack);
         yield* next;
       }
     }
@@ -49,10 +49,17 @@ module.exports = function makeRenderRouteMiddleware(middleware) {
           </nav>
           <section class="sv-nav-content-wrap" data-toggle="sv-nav-shift">
             <div class="sv-nav-header">
-              <a id="mw-mf-main-menu-button" class="icon icon-mainmenu" title="Open main menu">Open main menu</a>
+              <a id="mw-mf-main-menu-button" class="icon icon-mainmenu" title="Open main menu">
+                Open main menu
+              </a>
               <form class="search-box" action="/search">
-                <input id="searchInput" class="search" type="search" autocomplete="off" accesskey="f" title="Search [f]" placeholder="Search Saviour" name="search" readonly="">
-                <input class="fulltext-search no-js-only icon icon-search" type="submit" title="Search within code" value="Search" name="fulltext">
+                <input id="searchInput" class="search" type="search" autocomplete="off"
+                  accesskey="f" title="Search [f]" placeholder="Search Saviour" name="search"
+                  readonly=""
+                >
+                <input class="fulltext-search no-js-only icon icon-search" type="submit"
+                  title="Search within code" value="Search" name="fulltext"
+                >
               </form>
             </div>
             <div id="content-container">${htmls}</div>
@@ -65,7 +72,9 @@ module.exports = function makeRenderRouteMiddleware(middleware) {
                 </li>
               </ul>
               <ul>
-                Content is available under <a class="external" href="//creativecommons.org/licenses/by-sa/3.0/" rel="nofollow">CC BY-SA 3.0</a> unless otherwise noted.
+                Content is available under <a class="external"
+                href="//creativecommons.org/licenses/by-sa/3.0/" rel="nofollow">
+                CC BY-SA 3.0</a> unless otherwise noted.
               </ul>
               <ul>
                 Built with
@@ -80,7 +89,7 @@ module.exports = function makeRenderRouteMiddleware(middleware) {
       </body>
       </html>`;
     }
-    console.log(this.request.get('user-agent'));
+    // console.log(this.request.get('user-agent'));
     global.navigator = {};
     navigator.userAgent = this.request.get('user-agent');
     if (this.request.url === '/old') {

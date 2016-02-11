@@ -4,19 +4,19 @@ const config = require('./dev');
 const host = process.env.HOST || 'localhost';
 const port = parseInt(process.env.PORT, 10) + 1 || 3001;
 const serverOptions = {
-  contentBase: 'http://' + host + ':' + port,
+  contentBase: `http://${host}:${port}`,
   quiet: true,
   noInfo: true,
   hot: true,
   inline: true,
   lazy: false,
   publicPath: config.output.publicPath,
-  headers: {'Access-Control-Allow-Origin': '*'},
-  stats: {colors: true}
+  headers: { 'Access-Control-Allow-Origin': '*' },
+  stats: { colors: true }
 };
 const webpackDevServer = new WebpackDevServer(config, serverOptions);
 
 const consoleF = console;
-webpackDevServer.listen(port, host, function afterConnect() {
+webpackDevServer.listen(port, host, () => {
   consoleF.info('==> 🚧  Webpack development server listening on %s:%s', host, port);
 });

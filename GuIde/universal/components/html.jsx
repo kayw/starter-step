@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom/server';
 import serialize from 'serialize-javascript';
 // const cdn = '//cdnjs.cloudflare.com/ajax/libs/';
@@ -33,7 +33,7 @@ export default class Html extends Component {
     </html>
       */
   render() {
-    const {assets, component, store} = this.props;
+    const { assets, component, store } = this.props;
     const content = ReactDOM.renderToString(component);
     return (
       <html>
@@ -45,7 +45,9 @@ export default class Html extends Component {
           <link rel="shortcut icon" href="/favicon.ico" />
           <link href="/statics/main.css" rel="stylesheet" />
           <link href="/statics/socicon/socicon.min.css" rel="stylesheet" />
-          <link href="/statics/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet" />
+          <link href="/statics/material-design-iconic-font/css/material-design-iconic-font.min.css"
+            rel="stylesheet"
+          />
 
           {/* styles (will be present only in production with webpack extract text plugin) */}
           {Object.keys(assets.styles).map((style, i) =>
@@ -53,8 +55,10 @@ export default class Html extends Component {
           )}
         </head>
         <body>
-          <div id="mount" dangerouslySetInnerHTML={{__html: content}}/>
-          <script dangerouslySetInnerHTML={{__html: `window.__INITIAL_STATE__=${serialize(store.getState())};`}} />
+          <div id="mount" dangerouslySetInnerHTML={{ __html: content }}/>
+          <script dangerouslySetInnerHTML=
+            {{ __html: `window.__INITIAL_STATE__=${serialize(store.getState())};` }}
+          />
           <script src={assets.javascript.vendor}/>
           <script src={assets.javascript.app}/>
           {/*

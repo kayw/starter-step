@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import cssifyModules from 'react-css-modules';
 const pageStyle = require('./page-container.css');
-// import CounterButton from '../../universal/components/CounterButton';
 
 @cssifyModules(pageStyle)
 export default class PageContainer extends React.Component {

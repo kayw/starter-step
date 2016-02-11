@@ -19,7 +19,9 @@ export default class OldView extends Component {
     </div>
   </div>
   <div className="play-input">
-    <textarea className="play-code-area" itemProp="description" name="code" autoCorrect="off" autoComplete="off" autoCapitalize="off" spellCheck="false">
+    <textarea className="play-code-area" itemProp="description" name="code" autoCorrect="off"
+      autoComplete="off" autoCapitalize="off" spellCheck="false"
+    >
     </textarea>
   </div>
   <div className="play-output"></div>

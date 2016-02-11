@@ -35,7 +35,7 @@ function post(table) {
 
 function get(table) {
   return function getGudmarks() {
-    return function *get() {
+    return function *getGen() {
       try {
         const result = yield r.table(table).orderBy('order');
         return { [table]: { gulinks: result } };
@@ -65,7 +65,7 @@ function put(table) {
 }
 function del(table) {
   return function delGudmark(params, body) {
-    return function *del() {
+    return function *delGen() {
       try {
         const result = yield r.table(table).get(body.id).delete();
         return result;
@@ -78,8 +78,8 @@ function del(table) {
 
 function order(table) {
   return function reorder(params, body) {
-    return function *reorder() {
-      console.log(body, params);
+    return function *reorderGen() {
+      // console.log(body, params);
       try {
         /*
          * TODO: add order field, transfer {_id:, order:} body
@@ -127,4 +127,4 @@ export default {
   techcuz,
   docsio,
   people
-}
+};

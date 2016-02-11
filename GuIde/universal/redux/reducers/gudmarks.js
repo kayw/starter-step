@@ -13,26 +13,27 @@ const initialState = fromJS({
 function liftedReducer(actionTypes) {
   return function reducer(state = initialState, action = {}) {
     switch (action.type) {
-    case actionTypes.LOAD_SUCCESS:
-      return state.set('loaded', true).set('gulinks', fromJS(action.result[action.category].gulinks));
-    case actionTypes.CREATION:
-      return state;
-    case actionTypes.CREATION_SUCCESS:
-      return state.update('gulinks', list => list.push(immutifyMap(action.data)));
-    case actionTypes.MODIFICATION_SUCCESS:
-      return state.update('gulinks', list => {
-        const gulink = action.data;
-        return list.update(action.index, old =>
-          old.set('name', gulink.name).set('source', gulink.source)
-          .set('links', fromJS(gulink.links)));
-      });
-    case actionTypes.DELETION_SUCCESS:
-      return state.update('gulinks', list => list.delete(action.data.index));
-    case actionTypes.MOVE:
-      return state.update('gulinks', list => list.splice(action.data.originIndex, 1).splice(
-        action.data.atIndex, 0, list.get(action.data.originIndex)));
-    default:
-      return state;
+      case actionTypes.LOAD_SUCCESS:
+        return state.set('loaded', true).set(
+          'gulinks', fromJS(action.result[action.category].gulinks));
+      case actionTypes.CREATION:
+        return state;
+      case actionTypes.CREATION_SUCCESS:
+        return state.update('gulinks', list => list.push(immutifyMap(action.data)));
+      case actionTypes.MODIFICATION_SUCCESS:
+        return state.update('gulinks', list => {
+          const gulink = action.data;
+          return list.update(action.index, old =>
+            old.set('name', gulink.name).set('source', gulink.source)
+            .set('links', fromJS(gulink.links)));
+        });
+      case actionTypes.DELETION_SUCCESS:
+        return state.update('gulinks', list => list.delete(action.data.index));
+      case actionTypes.MOVE:
+        return state.update('gulinks', list => list.splice(action.data.originIndex, 1).splice(
+          action.data.atIndex, 0, list.get(action.data.originIndex)));
+      default:
+        return state;
     }
   };
 }

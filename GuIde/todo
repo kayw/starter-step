@@ -16,6 +16,7 @@ precss import partial hot load https://github.com/jonathantneal/precss/issues/6
 async route
 mouseonenter dialog dismiss not fired
 dnd scroll  https://github.com/gaearon/react-dnd/issues/324#issuecomment-154042432   and see https://github.com/gaearon/react-dnd/issues/362
+multiple rethinkdash yield (?? in rethink docker) warning  a promise not handled
 
 #refractor
 category table(api ops) reducer actiontype still a lot non-DRY

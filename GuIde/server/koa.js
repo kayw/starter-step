@@ -13,7 +13,7 @@ global.r = rethink(conf.get('rethinkdb'));
 const app = koa();
 app.context.json = app.response.json = function json(obj) {
   this.charset = this.charset || 'utf-8';
-  this.set('Content-Type', 'application/json; charset=' + this.charset);
+  this.set('Content-Type', `application/json; charset=${this.charset}`);
   this.body = JSON.stringify(obj);
 };
 

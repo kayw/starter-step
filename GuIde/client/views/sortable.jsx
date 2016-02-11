@@ -6,7 +6,6 @@ export default class Sortable extends React.Component {
     children: PropTypes.array
   }
   componentDidMount() {
-    const tnode = React.findDOMNode(this);
     this.props.children.map((child) => {
       const enode = ReactDom.findDOMNode(this.refs[`item-${child.props.key}`]);
       enode.addEventListener('dragstart', ::this.handleDragStart);
@@ -16,7 +15,7 @@ export default class Sortable extends React.Component {
     });
   }
   handleDragStart() {
-    console.log('handleDragStart');
+    // console.log('handleDragStart');
   }
   handleDragOver() {
   }
@@ -26,11 +25,11 @@ export default class Sortable extends React.Component {
     // http://stackoverflow.com/questions/29568721/getting-dom-node-from-react-child-element
     return (<div>
             {
-              React.Children.map(this.props.children, (child) => {
-                return React.cloneElement(child, {
+              React.Children.map(this.props.children, (child) =>
+                React.cloneElement(child, {
                   ref: `item-${child.props.key}`
-                });
-              })
+                })
+              )
             }
             </div>);
   }

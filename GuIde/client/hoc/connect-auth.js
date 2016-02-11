@@ -1,7 +1,7 @@
 // https://github.com/rackt/redux-router/pull/62#issuecomment-156225020
 import React, { PropTypes } from 'react';
-import {connect} from 'react-redux';
-import {pushState} from 'redux-router';
+import { connect } from 'react-redux';
+import { pushState } from 'redux-router';
 
 // https://github.com/joshgeller/react-redux-jwt-auth-example/blob/master/src/components/AuthenticatedComponent.js
 export function requireAuthentication(Component) {
@@ -13,17 +13,16 @@ export function requireAuthentication(Component) {
       isAuthenticated: PropTypes.bool.isRequired
     }
     componentWillMount() {
-      this.checkAuth();
+      this.checkAuth(this.props);
     }
     componentWillReceiveProps(nextProps) {
       // for logouts
-      this.checkAuth();
+      this.checkAuth(nextProps);
     }
-    checkAuth() {
-      if (!this.props.isAuthenticated) {
+    checkAuth(props) {
+      if (!props.isAuthenticated) {
         const redirectAfterLogin = this.props.location.pathname;
-        this.props
-        .dispatch(pushState(null, `/login?next=${redirectAfterLogin}`));
+        props.dispatch(pushState(null, `/login?next=${redirectAfterLogin}`));
       }
     }
     render() {

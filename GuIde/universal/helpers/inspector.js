@@ -11,7 +11,7 @@ export default function logger(...args) {
     const inspect = require('util').inspect;
     args.forEach((arg, i) => {
       if (typeof arg === 'object') {
-        args[i] = inspect(arg, {showHidden: false, depth: null});
+        args[i] = inspect(arg, { showHidden: false, depth: null });
       }
     });
   }

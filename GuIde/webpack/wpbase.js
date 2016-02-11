@@ -28,10 +28,6 @@ const wpConfig = {
   resolve: {
     // When requiring, you don't need to add these extensions
     extensions: ['', '.js', '.jsx'],
-    alias: { // todo
-      ace: path.resolve(__dirname, 'node_modules/ace'),
-      codemirror: path.resolve(__dirname, 'node_modules/codemirror')
-    },
     // Modules will be searched for in these directories
     modulesDirectories: [
       'node_modules',
@@ -90,7 +86,8 @@ const wpConfig = {
       }
     }, {
       test: isomorphicPlugin.regular_expression('images'),
-      loader: 'url-loader?limit=10240' // any image below or equal to 10K will be converted to inline base64 instead
+      loader: 'url-loader?limit=10240'
+      // any image below or equal to 10K will be converted to inline base64 instead
     }]
   },
   postcss: function postcss() {
@@ -105,7 +102,8 @@ const wpConfig = {
 };
 
 wpConfig.cssTestRe = /\.(css|scss)$/;
-wpConfig.cssTransformer = 'css?modules&importLoaders=1&sourceMap&localIdentName=[local]___[hash:base64:5]!postcss?parser=postcss-scss';
+wpConfig.cssTransformer = `css?modules&importLoaders=1&sourceMap&
+  localIdentName=[local]___[hash:base64:5]!postcss?parser=postcss-scss`;
 
 // ----------------------------------
 // Vendor Bundle Configuration

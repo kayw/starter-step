@@ -5,7 +5,7 @@ import { isLoaded, techcuzLoadLink, techcuzCreateLink, techcuzDeleteLink, techcu
   techcuzReorderLink, techcuzMoveLink } from '../../universal/redux/reducers/gudmarks';
 import connectFetch from '../hoc/connect-fetch';
 
-function fetchData({state, dispatch}) {
+function fetchData({ state, dispatch }) {
   const promises = [];
   if (!isLoaded(state, 'techcuz')) {
     promises.push(dispatch(techcuzLoadLink()));
@@ -14,11 +14,9 @@ function fetchData({state, dispatch}) {
 }
 @connectFetch(fetchData)
 @connect(
-  state => {
-    return ({
-      guLinks: state.techcuz.get('gulinks')
-    });
-  },
+  state => ({
+    guLinks: state.techcuz.get('gulinks')
+  }),
   { techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink,
     techcuzReorderLink, techcuzMoveLink }
 )
@@ -38,9 +36,10 @@ export default class TechcuzView extends Component {
   render() {
     const { guLinks } = this.props;
     return (
-      <GuLinkPage category="techcuz" gulinks={guLinks} creator={this.props.techcuzCreateLink}
-        deleter={this.props.techcuzDeleteLink} modify={this.props.techcuzModifyLink}
-        onMove={this.props.techcuzMoveLink} onReorder={this.props.techcuzReorderLink}/>
+      <GuLinkPage category="techcuz" gulinks={guLinks} onCreate={this.props.techcuzCreateLink}
+        onDelete={this.props.techcuzDeleteLink} onModify={this.props.techcuzModifyLink}
+        onMove={this.props.techcuzMoveLink} onReorder={this.props.techcuzReorderLink}
+      />
     );
   }
 }

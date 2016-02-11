@@ -2,14 +2,8 @@ import * as actions from './actions/index';
 import cobody from 'co-body';
 import { fromJS } from 'immutable';
 import debug from '../../universal/helpers/inspector';
-console.log(actions);
-/*
-      yield r.dbCreate("guide").run();
-      yield r.db("guide").tableCreate("gudmarks").run();
-      yield r.db("quake").table("quakes")
-      .indexCreate("geometry", {geo: true}).run();
-
-*/
+// console.log(actions);
+//
 function findApiAction(url, method) {
   let action = false;
   let params = null;
@@ -64,7 +58,7 @@ export function getApiResult(url, method, query) {
       if (action && typeof action === 'function') {
         result = yield action(query);
       }
-      console.log('get api result', result);
+      // console.log('get api result', result);
       if (result) {
         Object.keys(result).forEach(key => {
           result[key] = fromJS(result[key]);

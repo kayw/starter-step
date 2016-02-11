@@ -20,10 +20,11 @@ wpConfig.devServer = {
   port: config.get('webpack_port')
 };
 wpConfig.devtool = 'source-map';
-wpConfig.plugins.push(new webpack.HotModuleReplacementPlugin());// sync with browser while developing
+// sync with browser while developing
+wpConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 wpConfig.module.loaders.push({
   test: wpConfig.cssTestRe,
-  loader: 'style!' + wpConfig.cssTransformer
+  loader: `style!${wpConfig.cssTransformer}`
 });
 
 module.exports = wpConfig;

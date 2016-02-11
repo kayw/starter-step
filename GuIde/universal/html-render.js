@@ -3,7 +3,7 @@ import ReactDom from 'react-dom/server';
 import { reduxReactRouter, match } from 'redux-router/server';
 import createHistory from 'history/lib/createMemoryHistory';
 import createStore from './redux/configureStore';
-import getRoutes from './components/routes';
+import getRoutes from '../client/routes';
 import App from './components/app';
 import Html from './components/html';
 import OldView from '../client/views/old';
@@ -33,6 +33,7 @@ export default function render(url, initialState) {
       }
     });
    */
+    const consoleF = console;
     store.dispatch(match(url, (err, redirection, routerState) => {
       if (err) {
         reject([500], err);
@@ -42,7 +43,7 @@ export default function render(url, initialState) {
         reject([404]);
       } else {
         store.getState().router.then(() => {
-          console.log('store getstate', store.getState());
+          // consoleF.log('store getstate', store.getState());
           const component = (<App store= { store } />);
           let htmls = '';
           try {
@@ -50,7 +51,7 @@ export default function render(url, initialState) {
               <Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>
             );
           } catch (e) {
-            console.log('render static markup error', e && e.stack);
+            consoleF.log('render static markup error', e && e.stack);
           }
           resolve(`<!doctype html>\n${htmls}`);
         });

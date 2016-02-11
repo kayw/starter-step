@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
-import { List, ListItem, LeftNav, Divider, SelectableContainerEnhance, Styles } from 'material-ui';
+import { List, ListItem, LeftNav, Divider,
+  SelectableContainerEnhance as selectableContainerEnhance, Styles } from 'material-ui';
 const { Colors, Spacing, Typography } = Styles;
-const SelectableList = SelectableContainerEnhance(List);
+const SelectableList = selectableContainerEnhance(List);
 
 export default class AppLeftNav extends React.Component {
   static propTypes = {
