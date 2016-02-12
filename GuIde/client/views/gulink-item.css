@@ -1,5 +1,5 @@
 @import "theme";
-.invisible {
+:global .invisible {
   visibility: hidden;
 }
 .gulink {

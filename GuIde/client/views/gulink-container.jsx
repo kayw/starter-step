@@ -114,7 +114,15 @@ export default class GuLinkContainer extends Component {
     }));
   }
   handleReorder = () => {
-    this.props.onReorder(this.props.category, this.props.gulinks);
+    /*
+     * TODO cache previous order and only pass changed id orders
+     * update in then
+     */
+    this.props.onReorder(this.props.category,
+      this.props.gulinks.map(gulink => ({
+        _id: gulink.get('_id'),
+        order: gulink.get('order')
+      })));
   }
 
   render() {

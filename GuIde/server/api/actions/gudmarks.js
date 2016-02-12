@@ -82,26 +82,12 @@ function order(table) {
       // console.log(body, params);
       try {
         /*
-         * TODO: add order field, transfer {_id:, order:} body
-         * update order Maybe can cache previous order and only pass changed id orders
+         * [{_id:, order: }, ]
          *
+         */
         for (let i = 0; i < body.length; ++i) {
-          yield r.table(table).nth(i).replace({
-            _id: `${table}${i}`,
-            name: body[i].name,
-            links: body[i].links,
-            source: body[i].source
-          });
-        }
-       */
-        yield r.table(table).delete();
-        for (let i = 0; i < body.length; ++i) {
-          yield r.table(table).insert({
-            _id: `${table}${i}`,
-            order: i,
-            name: body[i].name,
-            links: body[i].links,
-            source: body[i].source
+          yield r.table(table).get(body[i]._id).update({
+            order: body[i].order
           });
         }
         return true;

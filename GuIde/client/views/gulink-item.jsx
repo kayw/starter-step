@@ -107,9 +107,9 @@ export default class GuLinkItem extends Component {
       focused, category, gulink, onReload, isDragging, connectDragSource,
       connectDropTarget
     } = this.props;
-    // todo invisible as global css
     return connectDragSource(connectDropTarget(
-      <li styleName={`gulink${(focused ? ' nav-focus' : '')}${(isDragging ? ' invisible' : '')}`}
+      <li styleName={`gulink${(focused ? ' nav-focus' : '')}`}
+        className={`${(isDragging ? ' invisible' : '')}`}
         key={gulink._id}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}

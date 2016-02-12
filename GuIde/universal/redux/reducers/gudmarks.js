@@ -30,8 +30,22 @@ function liftedReducer(actionTypes) {
       case actionTypes.DELETION_SUCCESS:
         return state.update('gulinks', list => list.delete(action.data.index));
       case actionTypes.MOVE:
-        return state.update('gulinks', list => list.splice(action.data.originIndex, 1).splice(
-          action.data.atIndex, 0, list.get(action.data.originIndex)));
+        return state.update('gulinks', list => {
+          const from = action.data.originIndex;
+          const to = action.data.atIndex;
+          const increment = from < to ? -1 : 1;
+          function orderUpdater(item) {
+            return item.set('order', item.get('order') + increment);
+          }
+          // http://stackoverflow.com/a/21071454
+          // http://stackoverflow.com/a/11348717
+          for (let index = to; index !== from; index += increment) {
+            list = list.update(index, orderUpdater);
+          }
+          return list.update(from, item => item.set('order', to)).sort(
+            (itemA, itemB) => itemA.get('order') < itemB.get('order') ? -1 : 1
+          );
+        });
       default:
         return state;
     }
@@ -48,7 +62,7 @@ function formActionType(domain) {
     'DELETION', 'DELETION_SUCCESS', 'DELETION_FAIL'
   ];
   const actionType = {};
-  atypes.forEach((at) => {
+  atypes.forEach(at => {
     actionType[at] = `@@${domain}/${at}`;
   });
   return actionType;

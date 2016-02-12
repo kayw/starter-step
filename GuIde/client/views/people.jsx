@@ -32,7 +32,7 @@ export default class PeopleView extends Component {
   render() {
     const { guLinks } = this.props;
     return (
-      <GuLinkPage category="people" gulinks={guLinks} onCreato={this.props.peopleCreateLink}
+      <GuLinkPage category="people" gulinks={guLinks} onCreate={this.props.peopleCreateLink}
         onDelete={this.props.peopleDeleteLink} onModify={this.props.peopleModifyLink}
         onMove={this.props.peopleMoveLink} onReorder={this.props.peopleReorderLink}
       />
