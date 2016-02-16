@@ -1,7 +1,7 @@
 update docs script rm -rf before rsync
-reorder the gulink
 Rodux https://github.com/rackt/redux-router/issues/66  react-router 2.0 https://github.com/rackt/redux/issues/805
 https://github.com/rackt/redux-simple-router/issues/13
+babel6 jwt auth
 
 search action
 saviour page
@@ -15,7 +15,13 @@ which config item cause webpack-dev-server watch restart
 precss import partial hot load https://github.com/jonathantneal/precss/issues/6
 async route
 mouseonenter dialog dismiss not fired
+
+#fixme
+##reorder the gulink
 dnd scroll  https://github.com/gaearon/react-dnd/issues/324#issuecomment-154042432   and see https://github.com/gaearon/react-dnd/issues/362
+https://github.com/voidberg/html5sortable/blob/master/src/html.sortable.src.js  http://reactjsnews.com/complex-drag-and-drop-lists-using-react/
+https://github.com/HurricaneJames/dex/tree/master/app/assets/javascripts/components/{containermixin,draggablelistview}.jsx
+
 multiple rethinkdash yield (?? in rethink docker) warning  a promise not handled
 
 #refractor
