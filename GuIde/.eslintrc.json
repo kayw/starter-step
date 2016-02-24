@@ -2,7 +2,7 @@
   "extends": "airbnb",
   "parser": "babel-eslint",
   "globals": {
-     __CLIENT__: false,
+    "__CLIENT__": false,
     "__DEV__": false,
     "__PROD__": false,
     "__SERVER__": false,
@@ -13,8 +13,6 @@
   },
   "rules": {
     "comma-dangle": [1, "never"],
-    "no-else-return": 0,
-    "no-param-reassign": 0,
     "react/prefer-es6-class": 0
   }
 }

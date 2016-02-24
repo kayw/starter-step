@@ -3,11 +3,13 @@ import fs from 'fs';
 const readFileThunk = (src) =>
   new Promise((resolve, reject) => {
     fs.readFile(src, { encoding: 'utf8' }, (err, data) => {
+      let thened;
       if (err) {
-        return reject(err);
+        thened = reject(err);
       } else {
-        return resolve(data);
+        thened = resolve(data);
       }
+      return thened;
     });
   });
 

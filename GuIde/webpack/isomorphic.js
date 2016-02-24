@@ -12,39 +12,40 @@ export default {
     style_decriptor: {
       extensions: ['css', 'scss'],
       filter: (module, regex, options, log) => {
-        /*
-        if (module.name.slice(-2) === 'ss') {
-          log.info(module.name, regex.toString());
-        }
-       */
+        let filtered;
         if (options.development) {
           // in development mode there's webpack "style-loader",
           // so the module.name is not equal to module.name
-          return WebpackIsomorphicPlugin.style_loader_filter(module, regex, options, log);
+          filtered = WebpackIsomorphicPlugin.style_loader_filter(module, regex, options, log);
         } else {
           // in production mode there's no webpack "style-loader",
           // so the module.name will be equal to the asset path
-          return regex.test(module.name);
+          filtered = regex.test(module.name);
         }
+        return filtered;
       },
       path: (module, options, log) => {
+        let path;
         if (options.development) {
           // in development mode there's webpack "style-loader",
           // so the module.name is not equal to module.name
-          return WebpackIsomorphicPlugin.style_loader_path_extractor(module, options, log);
+          path = WebpackIsomorphicPlugin.style_loader_path_extractor(module, options, log);
         } else {
           // in production mode there's no webpack "style-loader",
           // so the module.name will be equal to the asset path
-          return module.name;
+          path = module.name;
         }
+        return path;
       },
       parser: (module, options, log) => {
+        let source;
         if (options.development) {
-          return WebpackIsomorphicPlugin.css_modules_loader_parser(module, options, log);
+          source = WebpackIsomorphicPlugin.css_modules_loader_parser(module, options, log);
         } else {
           // in production mode there's Extract Text Loader which extracts CSS text away
-          return module.source;
+          source = module.source;
         }
+        return source;
       }
     }
   }

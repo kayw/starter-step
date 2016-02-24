@@ -25,11 +25,10 @@ export default class App extends Component {
   }
 
   renderRouter() {
-    if (this.props.routes) {
-      return <ReduxRouter routes={routes} />;
-    } else {
-      return <ReduxRouter />;
-    }
+    return this.props.routes ?
+      <ReduxRouter routes={routes} />
+      :
+      <ReduxRouter />;
   }
 
   render() {

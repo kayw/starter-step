@@ -1,7 +1,8 @@
 import superagent from 'superagent';
 import debug from '../../helpers/inspector';
 
-function apiPromise(requests) {
+function apiPromiseRequest() {
+  const requests = {};
   ['get', 'post', 'patch', 'del', 'put'].forEach((method) => {
     requests[method] = (endpoint, option) => {
       const furl = (endpoint.indexOf(__API_ROOT__) === -1) ? __API_ROOT__ + endpoint : endpoint;
@@ -22,12 +23,12 @@ function apiPromise(requests) {
       });
     };
   });
+  return requests;
 }
 
 export const CLIENT_API = Symbol('client');
 export default function clientMiddleware() {
-  const requests = {};
-  apiPromise(requests);
+  const requests = apiPromiseRequest();
   return ({ dispatch, getState }) => next => action => {
     if (typeof action === 'function') {
       return action(dispatch, getState);

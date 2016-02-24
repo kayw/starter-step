@@ -56,7 +56,8 @@ const gulinkTarget = {
     // Generally it's better to avoid mutations,
     // but it's good here for the sake of performance
     // to avoid expensive index searches.
-    monitor.getItem().index = hoverIndex;
+    const item = monitor.getItem();
+    item.index = hoverIndex;
   }
 };
 

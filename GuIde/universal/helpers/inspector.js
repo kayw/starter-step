@@ -1,6 +1,7 @@
-export default function logger(...args) {
+export default function logger(...fnargs) {
   let logFn = console;
   logFn = logFn.log.bind(logFn);
+  const args = { ...fnargs };
   if (typeof window === 'object') {
     args.forEach((arg, i) => {
       if (typeof arg === 'object') {
