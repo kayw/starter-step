@@ -5,7 +5,6 @@ import rootReducer from './reducers/combiner';
 
 // https://github.com/emmenko/redux-react-router-async-example/blob/master/lib/utils/configure-store.js
 export default function configureStore(reduxReactRouter, getRoutes, createHistory, initialState) {
-  let createMiddlewaredStore;
   const apiMiddleware = createClientApi();
   const storeEnhancers = [reduxReactRouter({ getRoutes, createHistory }),
     applyMiddleware(apiMiddleware, transitionMw)];
@@ -13,7 +12,7 @@ export default function configureStore(reduxReactRouter, getRoutes, createHistor
     const DevTools = require('../components/redux-dev-dock');
     storeEnhancers.push(DevTools.instrument());
   }
-  createMiddlewaredStore = compose(...storeEnhancers)(createStore);
+  const createMiddlewaredStore = compose(...storeEnhancers)(createStore);
   const store = createMiddlewaredStore(rootReducer, initialState);
 
   if (module.hot) {

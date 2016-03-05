@@ -28,6 +28,7 @@ function post(table) {
         return result;
       } catch (e) {
         log('insert bookmarks', e.message);
+        return e;
       }
     };
   };
@@ -40,7 +41,7 @@ function get(table) {
         const result = yield r.table(table).orderBy('order');
         return { [table]: { gulinks: result } };
       } catch (e) {
-        log(e.message);
+        return log(e.message);
       }
     };
   };
@@ -58,7 +59,7 @@ function put(table) {
         });
         return result;
       } catch (e) {
-        log(e.message);
+        return log(e.message);
       }
     };
   };
@@ -70,7 +71,7 @@ function del(table) {
         const result = yield r.table(table).get(body.id).delete();
         return result;
       } catch (e) {
-        log(e.message);
+        return log(e.message);
       }
     };
   };
@@ -92,7 +93,7 @@ function order(table) {
         }
         return true;
       } catch (e) {
-        log(e.message);
+        return log(e.message);
       }
     };
   };
@@ -105,12 +106,7 @@ const methodsAggreate = (table) => ({
   put: put(table),
   delete: del(table)
 });
-const techcuz = methodsAggreate('techcuz');
-const docsio = methodsAggreate('docsio');
-const people = methodsAggreate('people');
 
-export default {
-  techcuz,
-  docsio,
-  people
-};
+export const techcuz = methodsAggreate('techcuz');
+export const docsio = methodsAggreate('docsio');
+export const people = methodsAggreate('people');

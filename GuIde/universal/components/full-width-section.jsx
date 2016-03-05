@@ -47,6 +47,7 @@ const FullWidthSection = React.createClass({
   },
 
   render() {
+    /* eslint-disable no-use-before-define */
     const {
       style,
       useContent,
@@ -54,6 +55,7 @@ const FullWidthSection = React.createClass({
       contentStyle,
       ...other
     } = this.props;
+    /* eslint-disable no-use-before-define */
 
     const styles = this.getStyles();
 

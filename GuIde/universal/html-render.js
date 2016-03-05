@@ -43,12 +43,12 @@ export default function render(url, initialState) {
         reject([404]);
       } else {
         store.getState().router.then(() => {
-          // consoleF.log('store getstate', store.getState());
+          consoleF.log('store getstate', store.getState());
           const component = (<App store= { store } />);
           let htmls = '';
           try {
             htmls = ReactDom.renderToStaticMarkup(
-              <Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>
+              <Html assets={webpackIsomorphicTools.assets()} component={component} store={store} />
             );
           } catch (e) {
             consoleF.log('render static markup error', e && e.stack);

@@ -1,11 +1,12 @@
 [{
-    "name"       : "guide-server-dev",
-    "script"     : "./server/index.js",
-    "error_file" : "./pm2/log/guide-server-dev-err.log",
-    "out_file"   : "./pm2/log/guide-server-dev-out.log",
-    "pid_file"   : "./pm2/log/guide-server-dev.pid",
-    "watch"	: ["server","universal", "webpack", "client/views"],
-    "ignore_watch" : ["node_modules", "log"],
+    "name"          : "guide-server-dev",
+    "script"        : "./server/index.js",
+    "node_args"     : ["--es_staging"],
+    "error_file"    : "./pm2/log/guide-server-dev-err.log",
+    "out_file"      : "./pm2/log/guide-server-dev-out.log",
+    "pid_file"      : "./pm2/log/guide-server-dev.pid",
+    "watch"         : ["server","universal", "webpack", "client/views"],
+    "ignore_watch"  : ["node_modules", "log"],
     "env": {
         "NODE_ENV": "development"
     }

@@ -6,9 +6,11 @@ import { isLoaded, peopleLoadLink, peopleCreateLink, peopleDeleteLink, peopleMod
 import connectFetch from '../hoc/connect-fetch';
 
 function fetchData({ state, dispatch }) {
+  let promise;
   if (!isLoaded(state, 'people')) {
-    return dispatch(peopleLoadLink());
+    promise = dispatch(peopleLoadLink());
   }
+  return promise;
 }
 @connectFetch(fetchData)
 @connect(

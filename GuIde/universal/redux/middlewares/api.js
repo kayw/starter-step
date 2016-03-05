@@ -16,7 +16,8 @@ function apiPromiseRequest() {
         }
         request.end((err, resp) => {
           if (err) {
-            return reject((resp && resp.body) || err);
+            debug('api request error', err.toString());
+            return reject(err);
           }
           return resolve(resp.body);
         });
@@ -38,7 +39,8 @@ export default function clientMiddleware() {
       return next(action);
     }
 
-    const { endpoint, method, types, ...rest } = caller;
+    // todo https://github.com/babel/babel-eslint/issues/249
+    const { endpoint, method, types, ...rest } = caller;// eslint-disable-line no-use-before-define
 
     if (typeof endpoint !== 'string') {
       throw new Error('Specify a string endpoint URL.');
@@ -53,10 +55,13 @@ export default function clientMiddleware() {
     const [REQUEST, SUCCESS, FAILURE] = types;
     next({ ...rest, type: REQUEST });
     return requests[method](endpoint, { ...rest }).then(
-      (result) => next({ ...rest, result, type: SUCCESS })
-    ).catch((error) => {
-      debug('MIDDLEWARE ERROR:', error);
+      result => {
+        next({ ...rest, result, type: SUCCESS });
+        return result;
+      }
+    ).catch(error => {
       next({ ...rest, error, type: FAILURE });
+      return error;
     });
   };
 }

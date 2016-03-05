@@ -51,16 +51,16 @@ export default class Html extends Component {
 
           {/* styles (will be present only in production with webpack extract text plugin) */}
           {Object.keys(assets.styles).map((style, i) =>
-            <link href={assets.styles[style]} key={i} rel="stylesheet" type="text/css"/>
+            <link href={assets.styles[style]} key={i} rel="stylesheet" type="text/css" />
           )}
         </head>
         <body>
-          <div id="mount" dangerouslySetInnerHTML={{ __html: content }}/>
+          <div id="mount" dangerouslySetInnerHTML={{ __html: content }} />
           <script dangerouslySetInnerHTML=
             {{ __html: `window.__INITIAL_STATE__=${serialize(store.getState())};` }}
           />
-          <script src={assets.javascript.vendor}/>
-          <script src={assets.javascript.app}/>
+          <script src={assets.javascript.vendor} />
+          <script src={assets.javascript.app} />
           {/*
             Object.keys(assets.javascript).map((script, i) =>
             <script src={assets.javascript[script]} key={i}/>

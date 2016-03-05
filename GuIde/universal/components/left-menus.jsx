@@ -4,7 +4,7 @@ import { List, ListItem, LeftNav, Divider,
 const { Colors, Spacing, Typography } = Styles;
 const SelectableList = selectableContainerEnhance(List);
 
-export default class AppLeftNav extends React.Component {
+class AppLeftNav extends React.Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     leftNavOpen: PropTypes.bool.isRequired,
@@ -64,3 +64,5 @@ export default class AppLeftNav extends React.Component {
       </LeftNav>);
   }
 }
+
+module.exports = AppLeftNav;

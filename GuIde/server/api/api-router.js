@@ -2,8 +2,7 @@ import * as actions from './actions/index';
 import cobody from 'co-body';
 import { fromJS } from 'immutable';
 import debug from '../../universal/helpers/inspector';
-// console.log(actions);
-//
+
 function findApiAction(url, method) {
   let action = false;
   let params = null;
@@ -42,7 +41,7 @@ export default function useApi() {
         const result = yield action(params, body);
         this.json(result);
       } else {
-        yield *next;
+        yield* next;
       }
     } catch (err) {
       this.body = err.message;

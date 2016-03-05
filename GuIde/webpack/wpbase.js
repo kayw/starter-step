@@ -1,6 +1,5 @@
-require('babel/register')({
-  stage: 0,
-  ignore: /node_modules/
+require('babel-core/register')({
+  presets: ['es2015-node5', 'stage-0']
 });
 
 const webpack = require('webpack');
@@ -28,11 +27,7 @@ const wpConfig = {
   resolve: {
     // When requiring, you don't need to add these extensions
     extensions: ['', '.js', '.jsx'],
-    // Modules will be searched for in these directories
-    modulesDirectories: [
-      'node_modules',
-      path.resolve(__dirname, '..')
-    ]
+    root: path.resolve(__dirname, '..')
   },
   output: {
     path: config.get('dist_path'), // Path of output file
@@ -62,15 +57,13 @@ const wpConfig = {
       include: [path.resolve(__dirname, '..')],
       exclude: [nodeModulesPath],  // exclude node_modules so that they are not all compiled
       query: {
-        optional: ['runtime'],
-        stage: 0,
+        // cacheDirectory: true,
+        plugins: ['transform-decorators-legacy'],
+        presets: ['es2015', 'react', 'stage-0'],
         env: {
           development: {
             plugins: [
-              'react-transform'
-            ],
-            extra: {
-              'react-transform': {
+              ['react-transform', {
                 transforms: [{
                   transform: 'react-transform-hmr',
                   imports: ['react'],
@@ -79,8 +72,15 @@ const wpConfig = {
                   transform: 'react-transform-catch-errors',
                   imports: ['react', 'redbox-react']
                 }]
-              }
-            }
+              }]
+            ]
+          },
+          production: {
+            plugins: [
+              'transform-react-remove-prop-types',
+              'transform-react-inline-elements',
+              'transform-react-constant-elements'
+            ]
           }
         }
       }
@@ -95,7 +95,7 @@ const wpConfig = {
     return [autoprefix, precss];
   },
   eslint: {
-    configFile: './.eslintrc',
+    configFile: './.eslintrc.json',
     // failOnError: config.get('__PROD__'),
     emitWarning: config.get('__DEV__')
   }

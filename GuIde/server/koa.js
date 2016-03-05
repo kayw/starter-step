@@ -17,8 +17,8 @@ app.context.json = app.response.json = function json(obj) {
   this.body = JSON.stringify(obj);
 };
 
-app.use(responseTime);
-app.use(logger);
+app.use(responseTime());
+app.use(logger());
 app.use(assets(conf.get('assets_path')));
 
 app.use(api());

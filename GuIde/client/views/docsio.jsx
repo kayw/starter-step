@@ -7,9 +7,11 @@ import { isLoaded, docsioReload, docsioLoadLink, docsioCreateLink, docsioDeleteL
 import connectFetch from '../hoc/connect-fetch';
 
 function fetchData({ state, dispatch }) {
+  let promise;
   if (!isLoaded(state, 'docsio')) {
-    return dispatch(docsioLoadLink());
+    promise = dispatch(docsioLoadLink());
   }
+  return promise;
 }
 @connectFetch(fetchData)
 @connect(

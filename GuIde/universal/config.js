@@ -62,4 +62,4 @@ config.set('vendor_dependencies', [
   'material-ui'
 ]);
 
-export default config;
+module.exports = config;

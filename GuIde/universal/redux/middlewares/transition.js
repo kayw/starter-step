@@ -1,4 +1,5 @@
 import { ROUTER_DID_CHANGE } from 'redux-router/lib/constants';
+import debug from '../../helpers/inspector';
 
 const locationsAreEqual = (locA, locB) => (locA.pathname === locB.pathname)
   && (locA.search === locB.search);
@@ -45,8 +46,12 @@ export default ({ getState, dispatch }) => next => action => {
           .then(resolve, resolve);
       };
 
-      fetchComponentData(components, { state: getState(), dispatch, location, params }).then(
-        doTransition, doTransition);
+      fetchComponentData(components, { state: getState(), dispatch, location, params })
+        .then(doTransition, doTransition)
+        .catch(error => {
+          debug(error);
+          return doTransition();
+        });
     });
 
     if (!__CLIENT__) {

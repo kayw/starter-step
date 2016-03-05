@@ -36,12 +36,12 @@ function createLogger(options = {}) {
     const logFn = logger || console;
 
     // exit if logFn undefined
-    if (typeof logFn === `undefined`) {
+    if (typeof logFn === 'undefined') {
       return next(action);
     }
 
     // exit early if predicate function returns false
-    if (typeof predicate === `function` && !predicate(getState, action)) {
+    if (typeof predicate === 'function' && !predicate(getState, action)) {
       return next(action);
     }
 
@@ -55,11 +55,11 @@ function createLogger(options = {}) {
 
     // formatters
     const time = new Date();
-    const isCollapsed = (typeof collapsed === `function`) ? collapsed(getState, action) : collapsed;
+    const isCollapsed = (typeof collapsed === 'function') ? collapsed(getState, action) : collapsed;
 
     const formattedTime = timestamp ?
-      ` @ ${time.getHours()}:${pad(time.getMinutes())}:${pad(time.getSeconds())}` : ``;
-    const formattedDuration = duration ? ` in ${took.toFixed(2)} ms` : ``;
+      ` @ ${time.getHours()}:${pad(time.getMinutes())}:${pad(time.getSeconds())}` : '';
+    const formattedDuration = duration ? ` in ${took.toFixed(2)} ms` : '';
     const formattedAction = actionTransformer(action);
     const message = `action ${formattedAction.type}${formattedTime}${formattedDuration}`;
     const startMessage = isCollapsed ? logFn.groupCollapsed : logFn.group;
@@ -72,19 +72,19 @@ function createLogger(options = {}) {
     }
 
     if (level) {
-      logFn[level](`%c prev state`, `color: #9E9E9E; font-weight: bold`, prevState);
-      logFn[level](`%c action`, `color: #03A9F4; font-weight: bold`, formattedAction);
-      logFn[level](`%c next state`, `color: #4CAF50; font-weight: bold`, nextState);
+      logFn[level]('%c prev state', 'color: #9E9E9E; font-weight: bold', prevState);
+      logFn[level]('%c action', 'color: #03A9F4; font-weight: bold', formattedAction);
+      logFn[level]('%c next state', 'color: #4CAF50; font-weight: bold', nextState);
     } else {
-      logFn.log(`%c prev state`, `color: #9E9E9E; font-weight: bold`, prevState);
-      logFn.log(`%c action`, `color: #03A9F4; font-weight: bold`, formattedAction);
-      logFn.log(`%c next state`, `color: #4CAF50; font-weight: bold`, nextState);
+      logFn.log('%c prev state', 'color: #9E9E9E; font-weight: bold', prevState);
+      logFn.log('%c action', 'color: #03A9F4; font-weight: bold', formattedAction);
+      logFn.log('%c next state', 'color: #4CAF50; font-weight: bold', nextState);
     }
 
     try {
       logFn.groupEnd();
     } catch (e) {
-      logFn.log(`—— log end ——`);
+      logFn.log('—— log end ——');
     }
 
     return returnValue;

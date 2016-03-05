@@ -15,10 +15,6 @@ export default class App extends Component {
     initialState: {}
   }
 
-  constructor() {
-    super();
-  }
-
   renderDevTools() {
     const DevTools = require('./redux-dev-dock');
     return <DevTools key="devtools" />;

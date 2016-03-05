@@ -1,4 +1,4 @@
-import { fromJS, Map as immutifyMap } from 'immutable';
+import { fromJS, Map as immutifyMap, List as listify } from 'immutable';
 import { CLIENT_API } from '../middlewares/api';
 
 // https://github.com/rackt/redux/issues/822
@@ -39,10 +39,11 @@ function liftedReducer(actionTypes) {
           }
           // http://stackoverflow.com/a/21071454
           // http://stackoverflow.com/a/11348717
+          let ulist = listify(list);
           for (let index = to; index !== from; index += increment) {
-            list = list.update(index, orderUpdater);
+            ulist = ulist.update(index, orderUpdater);
           }
-          return list.update(from, item => item.set('order', to)).sort(
+          return ulist.update(from, item => item.set('order', to)).sort(
             (itemA, itemB) => itemA.get('order') < itemB.get('order') ? -1 : 1
           );
         });
