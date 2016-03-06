@@ -1,6 +1,4 @@
 update docs script rm -rf before rsync
-Rodux https://github.com/rackt/redux-router/issues/66  react-router 2.0 https://github.com/rackt/redux/issues/805
-https://github.com/rackt/redux-simple-router/issues/13
 TEST
 jwt auth
 
@@ -24,6 +22,7 @@ https://github.com/voidberg/html5sortable/blob/master/src/html.sortable.src.js  
 https://github.com/HurricaneJames/dex/tree/master/app/assets/javascripts/components/{containermixin,draggablelistview}.jsx
 
 multiple rethinkdash yield (?? in rethink docker) warning  a promise not handled
+babel 6 will optimize out actions connect-fetch
 
 #refractor
 category table(api ops) reducer actiontype still a lot non-DRY

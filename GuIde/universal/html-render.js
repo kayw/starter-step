@@ -1,22 +1,49 @@
 import React from 'react';
 import ReactDom from 'react-dom/server';
-import { reduxReactRouter, match } from 'redux-router/server';
+// import { reduxReactRouter, match } from 'redux-router/server';
 import createHistory from 'history/lib/createMemoryHistory';
 import createStore from './redux/configureStore';
 import getRoutes from '../client/routes';
 import App from './components/app';
 import Html from './components/html';
 import OldView from '../client/views/old';
-// import { match } from 'react-router';
-// import createLocation from 'history/lib/createLocation';
+import { match } from 'react-router';
+import createLocation from 'history/lib/createLocation';
+import debug from './helpers/inspector';
 
+// https://github.com/este/este/blob/master/src/server/frontend/render.js
+function fetchComponentData(components, locals, deferred) {
+  const promises = (Array.isArray(components) ? components : [components])
+  .filter(component => component) // filter undefined because of redux-router addition
+  .reduce((fetchers, component) => fetchers.concat(
+    (deferred ? component.deferredfetchers : component.fetchers) || []
+  ), [])
+  .map(fetcher => fetcher(locals));
+
+  return Promise.all(promises);
+}
+function loadOnServer(renderProps, store) {
+  const { getState, dispatch } = store;
+  const { components, location, params } = renderProps;
+  const locals = { state: store.getState(), dispatch, location, params };
+  return new Promise(resolve => {
+    const doTransition = () =>
+    Promise.all(fetchComponentData(components, locals, true))
+    .then(resolve, resolve);
+    fetchComponentData(components, locals)
+      .then(doTransition, doTransition)
+      .catch(error => {
+        debug(error);
+        return doTransition();
+      });
+  });
+}
 export default function render(url, initialState) {
   return new Promise((resolve, reject) => {
-    const store = createStore(reduxReactRouter, getRoutes, createHistory, initialState);
-    /*
+    const history = createHistory(url);
+    const store = createStore(initialState);
     const routes = getRoutes();
-    const location = createLocation(url);
-    match({ routes, location }, (err, redirection, props) => {
+    match({ history, routes, location: url }, (err, redirection, props) => {
       if (err) {
         reject([500], err);
       } else if (redirection) {
@@ -24,15 +51,22 @@ export default function render(url, initialState) {
       } else if (!props) {
         reject([404]);
       } else {
-        console.log('store getstate', store.getState());
-        const component = (<App store= { store } />);
-        const htmls = ReactDom.renderToStaticMarkup(
-          <Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>
-        );
-        resolve(`<!doctype html>\n${htmls}`);
+        loadOnServer(props, store).then(() => {
+          debug('store getstate', store.getState());
+          const component = (<App routingContext={props} store= {store} />);
+          let htmls = '';
+          try {
+            htmls = ReactDom.renderToStaticMarkup(
+              <Html assets={webpackIsomorphicTools.assets()} component={component} store={store} />
+            );
+          } catch (e) {
+            debug('render static markup error', e && e.stack);
+          }
+          resolve(`<!doctype html>\n${htmls}`);
+        });
       }
     });
-   */
+    /*
     const consoleF = console;
     store.dispatch(match(url, (err, redirection, routerState) => {
       if (err) {
@@ -57,6 +91,7 @@ export default function render(url, initialState) {
         });
       }
     }));
+   */
   });
 }
 

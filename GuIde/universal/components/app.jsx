@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { ReduxRouter } from 'redux-router';
+import { Router, RouterContext } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import routes from '../../client/routes';
+import getPlainRoute from '../../client/routes';
 
 injectTapEventPlugin();
 export default class App extends Component {
 
   static propTypes = {
     store: React.PropTypes.object.isRequired,
-    routes: React.PropTypes.object
+    routingContext: React.PropTypes.object,
+    routerHisotry: React.PropTypes.object
   };
   static defaultProps = {
     initialState: {}
@@ -21,10 +22,21 @@ export default class App extends Component {
   }
 
   renderRouter() {
-    return this.props.routes ?
-      <ReduxRouter routes={routes} />
-      :
-      <ReduxRouter />;
+    /*
+      invariant(
+        this.props.routingContext || this.props.routerHistory,
+        '<App /> needs either a routingContext or routerHistory to render.'
+      );
+    */
+    if (this.props.routingContext) {
+      return <RouterContext {...this.props.routingContext} />;
+    } else {
+      return (
+        <Router history={this.props.routerHistory}>
+        { getPlainRoute(this.props.store) }
+        </Router>
+      );
+    }
   }
 
   render() {

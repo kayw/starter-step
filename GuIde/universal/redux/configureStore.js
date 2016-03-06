@@ -1,13 +1,11 @@
 import { compose, createStore, applyMiddleware } from 'redux';
 import createClientApi from './middlewares/api';
-import transitionMw from './middlewares/transition';
 import rootReducer from './reducers/combiner';
 
 // https://github.com/emmenko/redux-react-router-async-example/blob/master/lib/utils/configure-store.js
-export default function configureStore(reduxReactRouter, getRoutes, createHistory, initialState) {
+export default function configureStore(initialState) {
   const apiMiddleware = createClientApi();
-  const storeEnhancers = [reduxReactRouter({ getRoutes, createHistory }),
-    applyMiddleware(apiMiddleware, transitionMw)];
+  const storeEnhancers = [ applyMiddleware(apiMiddleware) ];
   if (__DEVTOOLS__) {
     const DevTools = require('../components/redux-dev-dock');
     storeEnhancers.push(DevTools.instrument());

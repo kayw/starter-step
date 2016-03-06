@@ -5,8 +5,6 @@ import { fromJS } from 'immutable';
 import App from '../universal/components/app';
 import configureStore from '../universal/redux/configureStore';
 import makeRouteHookSafe from './make-route-hooks-safe';
-import getPlainRoute from './routes';
-import { reduxReactRouter } from 'redux-router';
 
 const initialState = window.__INITIAL_STATE__ || undefined;
 if (initialState) {
@@ -16,7 +14,6 @@ if (initialState) {
     }
   });
 }
-const store = configureStore(reduxReactRouter, makeRouteHookSafe(getPlainRoute),
-                             createBrowserHistory, initialState);
-ReactDom.render(<App routes={ getPlainRoute(store) } store={store} />,
+const store = configureStore(initialState);
+ReactDom.render(<App routerHistory={createBrowserHistory()} store={store} />,
              document.getElementById('mount'));

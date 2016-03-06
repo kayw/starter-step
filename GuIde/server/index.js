@@ -16,3 +16,11 @@ global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/i
   .server(rootDir, function run() { // eslint-disable-line prefer-arrow-callback
     require('./koa');
   });
+
+process.on('uncaughtException', function onUncauth(err) {
+  console.log('Caught exception:', err);
+});
+
+process.on('exit', function onExit(code) {
+  console.log('exit', code);
+});
