@@ -40,10 +40,11 @@ function liftedReducer(actionTypes) {
           // http://stackoverflow.com/a/21071454
           // http://stackoverflow.com/a/11348717
           let ulist = listify(list);
+          const toOrder = list.get(to).get('order');
           for (let index = to; index !== from; index += increment) {
             ulist = ulist.update(index, orderUpdater);
           }
-          return ulist.update(from, item => item.set('order', to)).sort(
+          return ulist.update(from, item => item.set('order', toOrder)).sort(
             (itemA, itemB) => itemA.get('order') < itemB.get('order') ? -1 : 1
           );
         });
@@ -68,7 +69,7 @@ function formActionType(domain) {
   });
   return actionType;
 }
-const techcuzActionType = formActionType('techcuz');
+export const techcuzActionType = formActionType('techcuz');
 const docsioActionType = formActionType('docsio');
 const peopleActionType = formActionType('people');
 

@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import cssifyModules from 'react-css-modules';
 import { DragSource as dragSource, DropTarget as dropTarget } from 'react-dnd';
 const styles = require('./gulink-item.css');
-const GULINK_TYPE = Symbol('gulink');
+const GULINK_TYPE = 'gulink';
 
 const gulinkSource = {
   beginDrag(props) {

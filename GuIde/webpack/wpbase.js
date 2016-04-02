@@ -1,5 +1,5 @@
 require('babel-core/register')({
-  presets: ['es2015-node5', 'stage-0']
+  presets: ['es2015-node5']
 });
 
 const webpack = require('webpack');
@@ -79,7 +79,7 @@ const wpConfig = {
             plugins: [
               'transform-react-remove-prop-types',
               'transform-react-inline-elements',
-              'transform-react-constant-elements'
+              'transform-react-constant-elements',
             ]
           }
         }
