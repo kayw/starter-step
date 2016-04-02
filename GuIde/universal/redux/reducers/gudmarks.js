@@ -33,18 +33,21 @@ function liftedReducer(actionTypes) {
         return state.update('gulinks', list => {
           const from = action.data.originIndex;
           const to = action.data.atIndex;
+          const toOrder = list.get(to).get('order');
           const increment = from < to ? -1 : 1;
           function orderUpdater(item) {
             return item.set('order', item.get('order') + increment);
           }
           // http://stackoverflow.com/a/21071454
           // http://stackoverflow.com/a/11348717
-          let ulist = listify(list);
-          const toOrder = list.get(to).get('order');
-          for (let index = to; index !== from; index += increment) {
-            ulist = ulist.update(index, orderUpdater);
-          }
-          return ulist.update(from, item => item.set('order', toOrder)).sort(
+          //
+          // https://github.com/tonyhb/redux-ui/blob/master/src/action-reducer.js#L44
+          return list.withMutations(lst => {
+            for (let index = to; index !== from; index += increment) {
+              lst.set(index, orderUpdater(list.get(index)));
+            }
+            lst.set(from, list.get(from).set('order', toOrder));
+          }).sort(
             (itemA, itemB) => itemA.get('order') < itemB.get('order') ? -1 : 1
           );
         });

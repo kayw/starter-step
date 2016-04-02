@@ -4,7 +4,7 @@ import {
   scryRenderedDOMComponentsWithClass, Simulate
 } from 'react-addons-test-utils';
 import { expect } from 'chai';
-import { List as listify } from 'immutable';
+import { fromJS } from 'immutable';
 import GulinkContainer from '../gulink-container';
 const injectTapEventPlugin = require("react-tap-event-plugin")
 injectTapEventPlugin()
@@ -29,21 +29,21 @@ describe('Gulink View', () => {
       onDelete: () => {},
       onMove: () => {},
       onReorder: () => {},
-      gulinks: listify([{
+      gulinks: fromJS([{
         _id: 'r',
         order: 1,
         name: 'react',
-        links: listify([]),
+        links: [],
       }, {
         _id: 'a',
         order: 2,
         name: 'angular',
-        links: listify([]),
+        links: [],
       }, {
         _id: 'e',
         order: 3,
         name: 'ember',
-        links: listify([]),
+        links: [],
       }])
     };
     shallowRendered_ = shallowRender(<GulinkContainer {...props_} />);
