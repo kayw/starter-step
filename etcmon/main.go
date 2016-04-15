@@ -10,7 +10,7 @@ import (
 var help = `
 	Usage: etcmon [options] ...args
 
-	monitor the specifieced configs in etc directory, when some changed, copy the file to home registry directory
+	monitor the specifieced configs in etc directory, when some file changed, copy the file to home registry directory
 	receive http request for appending new watched file or directory
 
 		Options:
