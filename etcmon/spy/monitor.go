@@ -13,8 +13,8 @@ import (
 type conf struct {
 	Port           string
 	DestinationDir string
-	RootDir        string
-	paths          []string
+	Level          int
+	WatchPaths     map[string][]string ` root: paths `
 }
 type Monitor struct {
 	config  conf
@@ -45,18 +45,20 @@ func (m *Monitor) Start() {
 	} else {
 		logWriter = os.Stdout
 	}
-	m.log = log.New(logWriter, "spy ", log.Ldate|log.Ltime|log.Lmicroseconds)
-	m.watch(m.paths)
+	m.log = log.New(logWriter, "etcmon ", log.Ldate|log.Ltime|log.Lmicroseconds)
+	for root, paths := range m.config.WatchPaths {
+		m.watch(root, paths)
+	}
 	m.listenEvents()
 	m.httpServer.start()
 }
 
-func (m *Monitor) watch(paths) {
-	for _, path := range paths {
-		abspath := trailJoin(m.rootDir, path)
+func (m *Monitor) watch(root, paths) {
+	for path := range paths {
+		abspath := trailJoin(root, path)
 		if err := m.wathcer.Add(abspath); err != nil {
 			m.debug("watch failed: %s", err)
-			m.stopWith(fmt.Errorf("%s (%s)", err, path))
+			m.stopWith(fmt.Errorf("%s (%s)", err, abspath))
 			return
 		}
 	}
@@ -70,8 +72,8 @@ func (m *Monitor) listenEvents() {
 			if err != nil {
 				m.Debug("watch error:%s", err)
 			}
-		case paths := <-m.httpServer.paths:
-			go m.watch(paths)
+		case hotwatch := <-m.httpServer.hotwatch:
+			go m.watch(hotwatch.root, hotwatch.paths)
 		}
 	}
 }
@@ -81,21 +83,47 @@ func (m *Monitor) handleNotifyEvent(event *fsnotify.Event) {
 	if path == "" {
 		return
 	}
+	destpath := trailJoin(m.conf.DestinationPath, path)
 	if event.Op&fsnotify.Create == fsnotify.Create ||
+		event.Op&fsnotify.Rename == fsnotify.Rename ||
 		event.Op&fsnotify.Write == fsnotify.Write {
-		if event.Op&fsnotify.Create == fsnotify.Create {
-			ioutil.mkdir(trailJoin(m.conf.DestinationDir, path))
+		// check dir
+		if event.Op&fsnotify.Create == fsnotify.Create ||
+			event.Op&fsnotify.Rename == fsnotify.Rename {
+			destdir := filepath.Dir(destpath)
+			if err := createDirectory(destdir); err != nil {
+				m.info("create directory %s error %s", destdir, err)
+			}
 		}
-		ioutil.copy(destinationDir)
-	}
-	if event.Op&fsnotify.Rename == fsnotify.Rename {
-		ioutil.rename(trailJoin(m.conf.DestinationDir, path), newname)
+		if err := ioutil.writeFile(destpath); err != nil {
+			m.info("write file %s error %s", destpath, err)
+		}
+
 	}
 	if event.Op&fsnotify.Remove == fsnotify.Remove {
-		ioutil.remove(trailJoin(m.conf.DestinationDir, path))
+		destdir := destpath + "/"
+		// Check to see if directory exists
+		fi, err := os.Stat(destdir)
+		if err != nil {
+			m.info("stat %s error %s", destdir, err)
+			return
+		}
+		if fi.IsDir() {
+			if err := os.RemoveAll(destdir); err != nil {
+				m.info("remove dir %s error %s", destdir, err)
+			}
+		} else {
+			if err := os.Remove(destpath); err != nil {
+				m.info("remove file %s error %s", destdir, err)
+			}
+		}
 	}
 }
 
+func createDirectory(dir string) error {
+	dir = dir + "/"
+	return os.MkdirAll(dir, 700)
+}
 func trailJoin(paths ...string) string {
 	p := filepath.Join(paths)
 	info, err := os.stat(p)
@@ -106,13 +134,13 @@ func trailJoin(paths ...string) string {
 	return p
 }
 func (m *Monitor) info(f string, args ...interface{}) {
-	if m.config.level > 1 {
+	if m.config.Level > 1 {
 		m.log.Printf(f, args...)
 	}
 }
 
 func (m *Monitor) debug(f string, args ...interface{}) {
-	if m.config.level > 0 {
+	if m.config.Level > 0 {
 		m.log.Printf(f, args...)
 	}
 }
