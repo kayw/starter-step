@@ -83,31 +83,38 @@ func (m *Monitor) handleNotifyEvent(event *fsnotify.Event) {
 	if path == "" {
 		return
 	}
+	// Check to see if original path is directory or file
+	fi, err := os.Stat(path)
+	if err != nil {
+		m.info("stat %s error %s", path, err)
+		return
+	}
 	destpath := trailJoin(m.conf.DestinationPath, path)
-	if event.Op&fsnotify.Create == fsnotify.Create ||
-		event.Op&fsnotify.Rename == fsnotify.Rename ||
-		event.Op&fsnotify.Write == fsnotify.Write {
-		// check dir
-		if event.Op&fsnotify.Create == fsnotify.Create ||
-			event.Op&fsnotify.Rename == fsnotify.Rename {
-			destdir := filepath.Dir(destpath)
-			if err := createDirectory(destdir); err != nil {
-				m.info("create directory %s error %s", destdir, err)
+	if event.Op&fsnotify.Create == fsnotify.Create {
+		if fi.IsDir() {
+			if err := createDirectory(destpath); err != nil {
+				m.info("create directory %s error %s", destpath, err)
+			}
+		} else {
+			// file's parent directory was guaranteed to be already created
+			if _, err := CopyFile(destpath, path); err != nil {
+				m.info("copy file %s error %s", path, err)
 			}
 		}
-		if err := ioutil.writeFile(destpath); err != nil {
-			m.info("write file %s error %s", destpath, err)
+	}
+	if event.Op&fsnotify.Rename == fsnotify.Rename {
+		m.info("path %s renamed", path)
+	}
+	if event.Op&fsnotify.Write == fsnotify.Write {
+		if fi.IsDir() {
+			return
+		}
+		if _, err := CopyFile(destpath, path); err != nil {
+			m.info("copy file %s error %s", path, err)
 		}
 
 	}
 	if event.Op&fsnotify.Remove == fsnotify.Remove {
-		destdir := destpath + "/"
-		// Check to see if directory exists
-		fi, err := os.Stat(destdir)
-		if err != nil {
-			m.info("stat %s error %s", destdir, err)
-			return
-		}
 		if fi.IsDir() {
 			if err := os.RemoveAll(destdir); err != nil {
 				m.info("remove dir %s error %s", destdir, err)
@@ -120,6 +127,21 @@ func (m *Monitor) handleNotifyEvent(event *fsnotify.Event) {
 	}
 }
 
+//https://groups.google.com/forum/#!topic/golang-nuts/JNyQxQLyf5o
+//http://stackoverflow.com/questions/21060945/simple-way-to-copy-a-file-in-golang
+func CopyFile(dst, src string) (int64, os.Error) {
+	sf, err := os.Open(src)
+	if err != nil {
+		return 0, err
+	}
+	defer sf.Close()
+	df, err := os.Create(dst)
+	if err != nil {
+		return 0, err
+	}
+	defer df.Close()
+	return io.Copy(df, sf)
+}
 func createDirectory(dir string) error {
 	dir = dir + "/"
 	return os.MkdirAll(dir, 700)
