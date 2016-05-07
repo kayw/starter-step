@@ -8,19 +8,26 @@ import (
 	"log"
 	"os"
 	"path"
+	"sync"
 )
 
+type watched struct {
+	root  string
+	paths []string
+}
 type conf struct {
-	Port           string
-	DestinationDir string
-	Level          int
-	WatchPaths     map[string][]string ` root: paths `
+	Port           string    `json: "port"`
+	DestinationDir string    `json: "dest"`
+	Level          int       `json: "level"`
+	WatchedPaths   []watched `json: "watched"`
 }
 type Monitor struct {
-	config  conf
-	httper  *httpServer
-	watcher *fsnotify.Watcher
-	logger  *log.Logger
+	config   conf
+	httper   *httpServer
+	watcher  *fsnotify.Watcher
+	logger   *log.Logger
+	watching chan error
+	closer   sync.Once
 }
 
 func New(configJson string, verbose bool) (*Monitor, error) {
@@ -34,6 +41,7 @@ func New(configJson string, verbose bool) (*Monitor, error) {
 		return nil, err
 	}
 	m.httper = &httpServer{port: m.config.Port}
+	m.watching = make(chan error)
 	return m
 }
 
@@ -46,11 +54,23 @@ func (m *Monitor) Start() {
 		logWriter = os.Stdout
 	}
 	m.log = log.New(logWriter, "etcmon ", log.Ldate|log.Ltime|log.Lmicroseconds)
-	for root, paths := range m.config.WatchPaths {
-		m.watch(root, paths)
+	for _, watchp := range m.config.WatchPaths {
+		m.watch(watchp.root, watchp.paths)
 	}
 	m.listenEvents()
 	m.httpServer.start()
+}
+
+func (m *Monitor) Wait() {
+	err := <-s.watching
+	if err != nil {
+		m.info("Error: %v", err)
+	}
+	return err
+}
+
+func (m *Monitor) Stop() {
+	m.stopWith(nil)
 }
 
 func (m *Monitor) watch(root, paths) {
@@ -62,6 +82,14 @@ func (m *Monitor) watch(root, paths) {
 			return
 		}
 	}
+}
+
+func (m *Monitor) stopWith(err error) {
+	m.closer.Do(func() {
+		m.watcher.Close()
+		s.watching <- err
+		close(s.watching)
+	})
 }
 func (m *Monitor) listenEvents() {
 	for {
@@ -96,7 +124,7 @@ func (m *Monitor) handleNotifyEvent(event *fsnotify.Event) {
 				m.info("create directory %s error %s", destpath, err)
 			}
 		} else {
-			// file's parent directory was guaranteed to be already created
+			// this file's directory is guaranteed to be created
 			if _, err := CopyFile(destpath, path); err != nil {
 				m.info("copy file %s error %s", path, err)
 			}

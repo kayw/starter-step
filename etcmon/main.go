@@ -3,10 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/kayw/etcmon/spy"
 	"os"
+	"os/signal"
 	"time"
 )
 
+var VERSION = "0.0.0-src"
 var help = `
 	Usage: etcmon [options] ...args
 
@@ -21,11 +24,22 @@ var help = `
 func main() {
 	confJson := flag.String("config", "config.json", "")
 	verbose := flag.Bool("verbose", false, "")
+	version := flag.Bool("version", false, "")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, help)
 	}
+	if *version {
+		fmt.Println(VERSION)
+		os.Exit(1)
+	}
 	flag.Parse()
 	args := flag.Args()
+	monitor, err := etcmon.New(*confJson, *verbose)
+	if err != nil {
+		fmt.Println(os.Stderr, "\n\t%s\n", err)
+		flag.Usage()
+		os.Exit(1)
+	}
 	//stop on CTRL+C
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, os.Kill)
@@ -35,9 +49,9 @@ func main() {
 	}()
 
 	//start watching
-	w.Start()
+	monitor.Start()
 	//block
-	if err := w.Wait(); err != nil {
+	if err := moinotr.Wait(); err != nil {
 		os.Exit(1)
 	}
 }
