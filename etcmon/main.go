@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/kayw/etcmon/spy"
+	etcmon "github.com/kayw/etcmon/spy"
 	"os"
 	"os/signal"
 	"time"
