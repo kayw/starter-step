@@ -9,12 +9,12 @@ const gulinkSource = {
   beginDrag(props) {
     return {
       id: props.id,
-      index: props.index
+      index: props.index,
     };
   },
   endDrag(props) {
     props.onReorder();
-  }
+  },
 };
 
 const gulinkTarget = {
@@ -58,15 +58,15 @@ const gulinkTarget = {
     // to avoid expensive index searches.
     const item = monitor.getItem();
     item.index = hoverIndex;
-  }
+  },
 };
 
 @dropTarget(GULINK_TYPE, gulinkTarget, connect => ({
-  connectDropTarget: connect.dropTarget()
+  connectDropTarget: connect.dropTarget(),
 }))
 @dragSource(GULINK_TYPE, gulinkSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  isDragging: monitor.isDragging(),
 }))
 @cssifyModules(styles, { allowMultiple: true })
 export default class GuLinkItem extends Component {
@@ -84,7 +84,7 @@ export default class GuLinkItem extends Component {
     onMove: PropTypes.func.isRequired,
     onReorder: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
-    gulink: PropTypes.object.isRequired
+    gulink: PropTypes.object.isRequired,
   }
 
   handleMouseEnter = () => {
@@ -106,7 +106,7 @@ export default class GuLinkItem extends Component {
   render() {
     const {
       focused, category, gulink, onReload, isDragging, connectDragSource,
-      connectDropTarget
+      connectDropTarget,
     } = this.props;
     return connectDragSource(connectDropTarget(
       <li styleName={`gulink${(focused ? ' nav-focus' : '')}`}
@@ -117,7 +117,7 @@ export default class GuLinkItem extends Component {
       >
           <h3 styleName={`gulink-name ${category}`}>{gulink.name}</h3>
           {gulink.source && <span styleName="from">from</span>}
-          {gulink.source && <span styleName="source">{ ` ${gulink.source}` }</span>}
+          {gulink.source && <span styleName="source">{` ${gulink.source}`}</span>}
           <div styleName="gulink-actions">
             <span styleName="gulink-action" onClick={this.handleLinkModify}>
               <i className="md-mode-edit"></i>

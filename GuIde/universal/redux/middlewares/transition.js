@@ -4,9 +4,11 @@ import debug from '../../helpers/inspector';
 const locationsAreEqual = (locA, locB) => (locA.pathname === locB.pathname)
   && (locA.search === locB.search);
 
-const getDataDependency = (component = {}, methodName) => component.WrappedComponent ?
+const getDataDependency = (component = {}, methodName) => (
+  component.WrappedComponent ?
     getDataDependency(component.WrappedComponent, methodName) :
-    component[methodName];
+    component[methodName]
+);
 
 const getDataDependencies = (components, getState, dispatch, location, params, deferred) => {
   const methodName = deferred ? 'fetchDataDeferred' : 'fetchData';

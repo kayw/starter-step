@@ -5,7 +5,7 @@ import rootReducer from './reducers/combiner';
 // https://github.com/emmenko/redux-react-router-async-example/blob/master/lib/utils/configure-store.js
 export default function configureStore(initialState) {
   const apiMiddleware = createClientApi();
-  const storeEnhancers = [ applyMiddleware(apiMiddleware) ];
+  const storeEnhancers = [applyMiddleware(apiMiddleware)];
   if (__DEVTOOLS__) {
     const DevTools = require('../components/redux-dev-dock');
     storeEnhancers.push(DevTools.instrument());

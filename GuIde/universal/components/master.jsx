@@ -9,31 +9,31 @@ class Master extends React.Component {
   static propTypes = {
     history: React.PropTypes.object.isRequired,
     location: React.PropTypes.object.isRequired,
-    children: React.PropTypes.object
+    children: React.PropTypes.object,
   }
   static childContextTypes = {
-    muiTheme: React.PropTypes.object
+    muiTheme: React.PropTypes.object,
   }
 
   state = {
     muiTheme: getMuiTheme(),
-    leftNavOpen: false
+    leftNavOpen: false,
   }
 
   getChildContext() {
     return {
-      muiTheme: this.state.muiTheme
+      muiTheme: this.state.muiTheme,
     };
   }
   componentWillMount() {
     this.setState({
-      muiTheme: this.state.muiTheme
+      muiTheme: this.state.muiTheme,
     });
   }
   componentWillReceiveProps(nextProps, nextContext) {
     const newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
     this.setState({
-      muiTheme: newMuiTheme
+      muiTheme: newMuiTheme,
     });
   }
   getStyles() {
@@ -43,35 +43,35 @@ class Master extends React.Component {
         position: 'fixed',
         // Needed to overlap the examples
         zIndex: this.state.muiTheme.zIndex.appBar + 1,
-        top: 0
+        top: 0,
       },
       footer: {
         backgroundColor: Colors.grey900,
-        textAlign: 'center'
+        textAlign: 'center',
       },
       a: {
-        color: darkWhite
+        color: darkWhite,
       },
       p: {
         margin: '0 auto',
         padding: '0',
         color: Colors.lightWhite,
-        maxWidth: '335px'
+        maxWidth: '335px',
       },
       iconButton: {
-        color: darkWhite
-      }
+        color: darkWhite,
+      },
     };
   }
 
   handleTouchTapLeftIcon = () => {
     this.setState({
-      leftNavOpen: !this.state.leftNavOpen
+      leftNavOpen: !this.state.leftNavOpen,
     });
   }
   handleRequestChangeLeftNav = (open) => {
     this.setState({
-      leftNavOpen: open
+      leftNavOpen: open,
     });
   }
   handleRequestChangeLink = (link) => {
@@ -94,16 +94,16 @@ class Master extends React.Component {
     return (
       <AppCanvas>
         <AppBar
-          onLeftIconButtonTouchTap={ this.handleTouchTapLeftIcon }
+          onLeftIconButtonTouchTap={this.handleTouchTapLeftIcon}
           title={title}
           zDepth={0}
           iconElementRight={githubButton}
           style={styles.appBar}
         />
-        { this.props.children }
-        <AppLeftNav onRequestChangeLeftNav={ this.handleRequestChangeLeftNav }
-          location={ this.props.location } onRequestChangeLink={ this.handleRequestChangeLink }
-          leftNavOpen={ this.state.leftNavOpen }
+        {this.props.children}
+        <AppLeftNav onRequestChangeLeftNav={this.handleRequestChangeLeftNav}
+          location={this.props.location} onRequestChangeLink={this.handleRequestChangeLink}
+          leftNavOpen={this.state.leftNavOpen}
         />
         <FullWidthSection style={styles.footer}>
           <p style={styles.p}>

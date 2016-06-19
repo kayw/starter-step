@@ -8,7 +8,6 @@ import App from './components/app';
 import Html from './components/html';
 import OldView from '../client/views/old';
 import { match } from 'react-router';
-import createLocation from 'history/lib/createLocation';
 import debug from './helpers/inspector';
 
 // https://github.com/este/este/blob/master/src/server/frontend/render.js
@@ -25,7 +24,7 @@ function fetchComponentData(components, locals, deferred) {
 function loadOnServer(renderProps, store) {
   const { getState, dispatch } = store;
   const { components, location, params } = renderProps;
-  const locals = { state: store.getState(), dispatch, location, params };
+  const locals = { state: getState(), dispatch, location, params };
   return new Promise(resolve => {
     const doTransition = () =>
     Promise.all(fetchComponentData(components, locals, true))
@@ -53,7 +52,7 @@ export default function render(url, initialState) {
       } else {
         loadOnServer(props, store).then(() => {
           debug('store getstate', store.getState());
-          const component = (<App routingContext={props} store= {store} />);
+          const component = (<App routingContext={props} store={store} />);
           let htmls = '';
           try {
             htmls = ReactDom.renderToStaticMarkup(

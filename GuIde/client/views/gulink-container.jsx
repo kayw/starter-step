@@ -18,13 +18,13 @@ export default class GuLinkContainer extends Component {
     onMove: PropTypes.func.isRequired,
     onReorder: PropTypes.func.isRequired,
     gulinks: PropTypes.object.isRequired,
-    onReload: PropTypes.func
+    onReload: PropTypes.func,
   }
 
   state = {
     openDialog: false,
     linksBundle: [''],
-    selectedIndex: -1
+    selectedIndex: -1,
   }
   handleLinkAdd = () => {
     this.setState({ openDialog: true });
@@ -61,8 +61,8 @@ export default class GuLinkContainer extends Component {
           _id: gulinks.size,
           name: this.refs.name_field.getValue(),
           links,
-          source: this.refs.from_field.getValue()
-        }
+          source: this.refs.from_field.getValue(),
+        },
       };
       this.props.onCreate(gulink);
     } else {
@@ -72,8 +72,8 @@ export default class GuLinkContainer extends Component {
           _id: gulinks.get(this.state.selectedIndex).get('_id'),
           name: this.refs.name_field.getValue(),
           links,
-          source: this.refs.from_field.getValue()
-        }
+          source: this.refs.from_field.getValue(),
+        },
       };
       this.props.onModify(this.state.selectedIndex, gulink);
     }
@@ -92,25 +92,25 @@ export default class GuLinkContainer extends Component {
     this.setState(update(this.state, {
       linksBundle: {
         [idx]: {
-          $set: ev.target.value
-        }
-      }
+          $set: ev.target.value,
+        },
+      },
     }));
   }
   handleLinkBundleRemove = (idx) => () => {
     this.setState(update(this.state, {
       linksBundle: {
         $splice: [
-          [idx, 2]
-        ]
-      }
+          [idx, 2],
+        ],
+      },
     }));
   }
   handleLinkBundleAdd = () => {
     this.setState(update(this.state, {
       linksBundle: {
-        $push: ['', '']
-      }
+        $push: ['', ''],
+      },
     }));
   }
   handleReorder = () => {
@@ -121,7 +121,7 @@ export default class GuLinkContainer extends Component {
     this.props.onReorder(this.props.category,
       this.props.gulinks.map(gulink => ({
         _id: gulink.get('_id'),
-        order: gulink.get('order')
+        order: gulink.get('order'),
       })));
   }
 
@@ -132,14 +132,14 @@ export default class GuLinkContainer extends Component {
       ? gulinks[this.state.selectedIndex] : {};
     const gulinkActions = [
       <FlatButton label="Cancel" key="fb1" secondary onTouchTap={this.handleDialogCancel} />,
-      <FlatButton label="Submit" key="fb2" primary onTouchTap={::this.handleDialogSubmit} />
+      <FlatButton label="Submit" key="fb2" primary onTouchTap={::this.handleDialogSubmit} />,
     ];
 
     // https://github.com/gajus/react-css-modules/issues/50
     return (
       <div>
         <Toolbar>
-            <IconButton iconClassName="md-add-box" onTouchTap={ this.handleLinkAdd } />
+            <IconButton iconClassName="md-add-box" onTouchTap={this.handleLinkAdd} />
             <span styleName="toolbar-text">添加书签</span>
         </Toolbar>
         <ul styleName="gulinks">
@@ -175,7 +175,7 @@ export default class GuLinkContainer extends Component {
               return null;
             }
             const oddlb = this.state.linksBundle[idx + 1];
-            return (<div key={ 4 + idx }>
+            return (<div key={4 + idx}>
               <div styleName="url-input">
                 <TextField floatingLabelText="url" value={lb}
                   onChange={this.handleLinkBundleChange(idx)}

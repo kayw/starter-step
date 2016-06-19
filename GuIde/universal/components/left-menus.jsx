@@ -9,7 +9,7 @@ class AppLeftNav extends React.Component {
     location: PropTypes.object.isRequired,
     leftNavOpen: PropTypes.bool.isRequired,
     onRequestChangeLeftNav: PropTypes.func.isRequired,
-    onRequestChangeLink: PropTypes.func.isRequired
+    onRequestChangeLink: PropTypes.func.isRequired,
   }
   getStyles() {
     return {
@@ -20,7 +20,7 @@ class AppLeftNav extends React.Component {
       fontWeight: Typography.fontWeightLight,
       backgroundColor: Colors.cyan500,
       paddingLeft: Spacing.desktopGutter,
-      marginBottom: 8
+      marginBottom: 8,
     };
   }
 
@@ -39,13 +39,12 @@ class AppLeftNav extends React.Component {
   render() {
     const { onRequestChangeLeftNav, leftNavOpen, location } = this.props;
     return (
-      <LeftNav docked={false} open={leftNavOpen} onRequestChange={ onRequestChangeLeftNav }>
-        <div style={this.getStyles()} onTouchTap={ this.handleTouchTapHeader }>
+      <LeftNav docked={false} open={leftNavOpen} onRequestChange={onRequestChangeLeftNav}>
+        <div style={this.getStyles()} onTouchTap={this.handleTouchTapHeader}>
           GuIde
         </div>
         <SelectableList valueLink={{ value: location.pathname,
-          requestChange: this.handleRequestChangeList }}
-        >
+          requestChange: this.handleRequestChangeList }}>
           <ListItem primaryText="techcuz" value="/techcuz" />
           <ListItem primaryText="docs.io" value="/docsio" />
           <ListItem primaryText="people" value="/people" />
@@ -55,9 +54,8 @@ class AppLeftNav extends React.Component {
         </SelectableList>
         <Divider />
         <SelectableList subheader="Tools" valueLink={{
-          value: '', requestChange: this.handleRequestChangeLink
-        }}
-        >
+          value: '', requestChange: this.handleRequestChangeLink,
+        }}>
           <ListItem primaryText="Material-UI" value="https://github.com/callemall/material-ui" />
           <ListItem primaryText="React" value="http://facebook.github.io/react" />
         </SelectableList>

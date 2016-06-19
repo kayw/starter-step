@@ -15,7 +15,7 @@ function fetchData({ state, dispatch }) {
 @connectFetch(fetchData)
 @connect(
   state => ({
-    guLinks: state.people.get('gulinks')
+    guLinks: state.people.get('gulinks'),
   }),
   { peopleCreateLink, peopleDeleteLink, peopleModifyLink, peopleMoveLink, peopleReorderLink }
 )
@@ -26,10 +26,10 @@ export default class PeopleView extends Component {
     peopleReorderLink: PropTypes.func.isRequired,
     peopleModifyLink: PropTypes.func.isRequired,
     peopleCreateLink: PropTypes.func.isRequired,
-    peopleDeleteLink: PropTypes.func.isRequired
+    peopleDeleteLink: PropTypes.func.isRequired,
   }
   static contextTypes = {
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
   }
   render() {
     const { guLinks } = this.props;

@@ -1,6 +1,6 @@
 require('babel-core/register')({
   plugins: ['transform-decorators-legacy'],
-  presets: ['es2015', 'stage-0', 'react']
+  presets: ['es2015', 'stage-0', 'react'],
 });
 require('babel-polyfill');
 const config = require('../universal/config');

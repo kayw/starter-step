@@ -15,7 +15,7 @@ function fetchData({ state, dispatch }) {
 @connectFetch(fetchData)
 @connect(
   state => ({
-    guLinks: state.techcuz.get('gulinks')
+    guLinks: state.techcuz.get('gulinks'),
   }),
   { techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink,
     techcuzReorderLink, techcuzMoveLink }
@@ -28,10 +28,10 @@ export default class TechcuzView extends Component {
     techcuzMoveLink: PropTypes.func.isRequired,
     techcuzModifyLink: PropTypes.func.isRequired,
     techcuzCreateLink: PropTypes.func.isRequired,
-    techcuzDeleteLink: PropTypes.func.isRequired
+    techcuzDeleteLink: PropTypes.func.isRequired,
   }
   static contextTypes = {
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
   }
   render() {
     const { guLinks } = this.props;

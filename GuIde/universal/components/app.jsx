@@ -10,10 +10,10 @@ export default class App extends Component {
   static propTypes = {
     store: React.PropTypes.object.isRequired,
     routingContext: React.PropTypes.object,
-    routerHisotry: React.PropTypes.object
+    routerHisotry: React.PropTypes.object,
   };
   static defaultProps = {
-    initialState: {}
+    initialState: {},
   }
 
   renderDevTools() {
@@ -33,7 +33,7 @@ export default class App extends Component {
     } else {
       return (
         <Router history={this.props.routerHistory}>
-        { getPlainRoute(this.props.store) }
+        {getPlainRoute(this.props.store)}
         </Router>
       );
     }
@@ -43,8 +43,8 @@ export default class App extends Component {
     return (
         <Provider store={this.props.store}>
           <div>
-          { this.renderRouter()}
-          { __DEVTOOLS__ && this.renderDevTools() }
+          {this.renderRouter()}
+          {__DEVTOOLS__ && this.renderDevTools()}
           </div>
         </Provider>
     );

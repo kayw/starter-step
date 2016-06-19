@@ -1,5 +1,5 @@
 require('babel-core/register')({
-  presets: ['es2015-node5']
+  presets: ['es2015-node5'],
 });
 
 const webpack = require('webpack');
@@ -15,7 +15,7 @@ const nodeModulesPath = path.resolve(__dirname, '..', 'node_modules');
 const wpConfig = {
   // Entry point to the project
   entry: {
-    vendor: config.get('vendor_dependencies')
+    vendor: config.get('vendor_dependencies'),
   },
   context: path.resolve(__dirname, '..'),
   /*
@@ -27,19 +27,19 @@ const wpConfig = {
   resolve: {
     // When requiring, you don't need to add these extensions
     extensions: ['', '.js', '.jsx'],
-    root: path.resolve(__dirname, '..')
+    root: path.resolve(__dirname, '..'),
   },
   output: {
     path: config.get('dist_path'), // Path of output file
     publicPath: config.get('webpack_public_path'),
-    filename: '[name]-[hash].js'  // Name of output file
+    filename: '[name]-[hash].js',  // Name of output file
   },
   plugins: [
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __API_ROOT__: JSON.stringify(config.get('__API_ROOT__')),
       __DEV__: config.get('__DEV__'),
-      __DEVTOOLS__: config.get('__DEVTOOLS__')
+      __DEVTOOLS__: config.get('__DEVTOOLS__'),
     }),
     config.get('__DEV__') ? isomorphicPlugin.development() : isomorphicPlugin,
   ],
@@ -49,7 +49,7 @@ const wpConfig = {
       test: /\.(js|jsx)$/,
       loader: 'eslint-loader',
       include: [path.resolve(__dirname, '..')],
-      exclude: [nodeModulesPath]
+      exclude: [nodeModulesPath],
     }],
     loaders: [{
       test: /\.(js|jsx)$/, // All .js and .jsx files
@@ -67,28 +67,28 @@ const wpConfig = {
                 transforms: [{
                   transform: 'react-transform-hmr',
                   imports: ['react'],
-                  locals: ['module']
+                  locals: ['module'],
                 }, {
                   transform: 'react-transform-catch-errors',
-                  imports: ['react', 'redbox-react']
-                }]
-              }]
-            ]
+                  imports: ['react', 'redbox-react'],
+                }],
+              }],
+            ],
           },
           production: {
             plugins: [
               'transform-react-remove-prop-types',
               'transform-react-inline-elements',
               'transform-react-constant-elements',
-            ]
-          }
-        }
-      }
+            ],
+          },
+        },
+      },
     }, {
       test: isomorphicPlugin.regular_expression('images'),
-      loader: 'url-loader?limit=10240'
+      loader: 'url-loader?limit=10240',
       // any image below or equal to 10K will be converted to inline base64 instead
-    }]
+    }],
   },
   postcss: function postcss() {
     // return [autoprefix({ browsers: ['> 5%', 'last 2 versions'] }), precss];
@@ -97,8 +97,8 @@ const wpConfig = {
   eslint: {
     configFile: './.eslintrc.json',
     // failOnError: config.get('__PROD__'),
-    emitWarning: config.get('__DEV__')
-  }
+    emitWarning: config.get('__DEV__'),
+  },
 };
 
 wpConfig.cssTestRe = /\.(css|scss)$/;
@@ -114,7 +114,7 @@ wpConfig.cssTransformer = `css?modules&importLoaders=1&sourceMap&
 const commonChunkPlugin = new webpack.optimize.CommonsChunkPlugin(
   'vendor', '[name]-[hash].js'
 );
-commonChunkPlugin.__KARMA_IGNORE__ = true;
+commonChunkPlugin.KARMA_IGNORE = true;
 wpConfig.plugins.push(commonChunkPlugin);
 
 module.exports = wpConfig;

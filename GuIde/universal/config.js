@@ -21,7 +21,7 @@ config.set('server_port', 3000);
 config.set('rethinkdb', {
   host: 'localhost',
   port: 28015,
-  db: 'guide'
+  db: 'guide',
 });
 
 // ------------------------------------
@@ -59,7 +59,7 @@ config.set('vendor_dependencies', [
   'redux',
   'redux-devtools',
   'react-tap-event-plugin',
-  'material-ui'
+  'material-ui',
 ]);
 
 module.exports = config;

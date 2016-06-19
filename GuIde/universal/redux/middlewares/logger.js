@@ -30,7 +30,7 @@ function createLogger(options = {}) {
       duration = false,
       timestamp = true,
       transformer = state => state,
-      actionTransformer = actn => actn
+      actionTransformer = actn => actn,
     } = options;
 
     const logFn = logger || console;

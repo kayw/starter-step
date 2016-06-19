@@ -15,7 +15,7 @@ export default class Html extends Component {
   static propTypes = {
     assets: PropTypes.object,
     component: PropTypes.object,
-    store: PropTypes.object
+    store: PropTypes.object,
   }
 /*
 
@@ -56,9 +56,7 @@ export default class Html extends Component {
         </head>
         <body>
           <div id="mount" dangerouslySetInnerHTML={{ __html: content }} />
-          <script dangerouslySetInnerHTML=
-            {{ __html: `window.__INITIAL_STATE__=${serialize(store.getState())};` }}
-          />
+          <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__=${serialize(store.getState())};` }} />
           <script src={assets.javascript.vendor} />
           <script src={assets.javascript.app} />
           {/*

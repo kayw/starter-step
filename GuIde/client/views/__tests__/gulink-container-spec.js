@@ -1,13 +1,13 @@
 import React from 'react';
 import {
   renderIntoDocument, createRenderer, scryRenderedDOMComponentsWithTag,
-  scryRenderedDOMComponentsWithClass, Simulate
+  scryRenderedDOMComponentsWithClass, Simulate,
 } from 'react-addons-test-utils';
 import { expect } from 'chai';
 import { fromJS } from 'immutable';
 import GulinkContainer from '../gulink-container';
-const injectTapEventPlugin = require("react-tap-event-plugin")
-injectTapEventPlugin()
+const injectTapEventPlugin = require('react-tap-event-plugin');
+injectTapEventPlugin();
 
 // http://chaijs.com/api/bdd/
 // http://sinonjs.org/
@@ -44,7 +44,7 @@ describe('Gulink View', () => {
         order: 3,
         name: 'ember',
         links: [],
-      }])
+      }]),
     };
     shallowRendered_ = shallowRender(<GulinkContainer {...props_} />);
     rendered_ = renderIntoDocument(<GulinkContainer {...props_} />);
@@ -66,7 +66,7 @@ describe('Gulink View', () => {
   it('should show dialog when add clicked', () => {
     const addBtn = scryRenderedDOMComponentsWithTag(rendered_, 'button')[0];
     // https://github.com/zilverline/react-tap-event-plugin/issues/10
-    Simulate.touchTap(addBtn)
+    Simulate.touchTap(addBtn);
     console.log(rendered_.refs.child.state);
     expect(rendered_.getDecoratedComponentInstance().state.openDialog).to.be.true;
   });

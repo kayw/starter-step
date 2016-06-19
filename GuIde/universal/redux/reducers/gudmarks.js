@@ -1,10 +1,10 @@
-import { fromJS, Map as immutifyMap, List as listify } from 'immutable';
+import { fromJS, Map as immutifyMap } from 'immutable';
 import { CLIENT_API } from '../middlewares/api';
 
 // https://github.com/rackt/redux/issues/822
 const initialState = fromJS({
   loaded: false,
-  gulinks: []
+  gulinks: [],
   /*
    * [{_id: , order: , links: [], source: ,name: }]
    */
@@ -48,7 +48,7 @@ function liftedReducer(actionTypes) {
             }
             lst.set(from, list.get(from).set('order', toOrder));
           }).sort(
-            (itemA, itemB) => itemA.get('order') < itemB.get('order') ? -1 : 1
+            (itemA, itemB) => (itemA.get('order') < itemB.get('order') ? -1 : 1)
           );
         });
       default:
@@ -64,7 +64,7 @@ function formActionType(domain) {
     'CREATION', 'CREATION_SUCCESS', 'CREATION_FAIL',
     'MODIFICATION', 'MODIFICATION_SUCCESS', 'MODIFICATION_FAIL',
     'REORDER', 'REORDER_SUCCESS', 'REORDER_FAIL',
-    'DELETION', 'DELETION_SUCCESS', 'DELETION_FAIL'
+    'DELETION', 'DELETION_SUCCESS', 'DELETION_FAIL',
   ];
   const actionType = {};
   atypes.forEach(at => {
@@ -87,8 +87,8 @@ function liftedLoadLink(category, actionTypes) {
         types: [actionTypes.LOAD, actionTypes.LOAD_SUCCESS, actionTypes.LOAD_FAIL],
         endpoint: category,
         method: 'get',
-        category
-      }
+        category,
+      },
     };
   };
 }
@@ -99,8 +99,8 @@ function liftedCreateLink(actionTypes) {
         types: [actionTypes.CREATION, actionTypes.CREATION_SUCCESS, actionTypes.CREATION_FAIL],
         endpoint: gulink.category,
         method: 'post',
-        data: gulink[gulink.category]
-      }
+        data: gulink[gulink.category],
+      },
     };
   };
 }
@@ -112,8 +112,8 @@ function liftedDelLink(actionTypes) {
         types: [actionTypes.DELETION, actionTypes.DELETION_SUCCESS, actionTypes.DELETION_FAIL],
         endpoint: category,
         method: 'del',
-        data: { index: selected, id }
-      }
+        data: { index: selected, id },
+      },
     };
   };
 }
@@ -127,8 +127,8 @@ function liftedModifyLink(actionTypes) {
         endpoint: gulink.category,
         method: 'put',
         index,
-        data: gulink[gulink.category]
-      }
+        data: gulink[gulink.category],
+      },
     };
   };
 }
@@ -140,8 +140,8 @@ function liftedReorderLink(actionTypes) {
         types: [actionTypes.REORDER, actionTypes.REORDER_SUCCESS, actionTypes.REORDER_FAIL],
         endpoint: `${category}/order`,
         method: 'put',
-        data: gulinks
-      }
+        data: gulinks,
+      },
     };
   };
 }
@@ -150,7 +150,7 @@ function liftedMoveLink(actionTypes) {
   return function moveLink(originIndex, atIndex) {
     return {
       type: actionTypes.MOVE,
-      data: { originIndex, atIndex }
+      data: { originIndex, atIndex },
     };
   };
 }
@@ -193,8 +193,8 @@ function docsioReload(category, docName) {
         docsioActionType.RELOAD_FAIL],
       endpoint: category,
       method: 'post',
-      data: docName
-    }
+      data: docName,
+    },
   };
 }
 
@@ -205,5 +205,5 @@ export {
   docsio, docsioCreateLink, docsioDeleteLink, docsioModifyLink, docsioLoadLink,
   docsioReorderLink, docsioMoveLink,
   people, peopleCreateLink, peopleDeleteLink, peopleModifyLink, peopleLoadLink,
-  peopleReorderLink, peopleMoveLink
+  peopleReorderLink, peopleMoveLink,
 };

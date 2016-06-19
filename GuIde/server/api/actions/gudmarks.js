@@ -6,8 +6,8 @@ winston.loggers.add('bookmarks', {
     filename: './pm2/log/bookmarks.json',
     handleExceptions: true,
     json: true,
-    colorize: false
-  }
+    colorize: false,
+  },
 });
 
 const logger = winston.loggers.get('bookmarks');
@@ -23,7 +23,7 @@ function post(table) {
           order: body._id,
           name: body.name,
           links: body.links,
-          source: body.source
+          source: body.source,
         });
         return result;
       } catch (e) {
@@ -55,7 +55,7 @@ function put(table) {
         const result = yield r.table(table).get(body._id).update({
           name: body.name,
           links: body.links,
-          source: body.source
+          source: body.source,
         });
         return result;
       } catch (e) {
@@ -88,7 +88,7 @@ function order(table) {
          */
         for (let i = 0; i < body.length; ++i) {
           yield r.table(table).get(body[i]._id).update({
-            order: body[i].order
+            order: body[i].order,
           });
         }
         return true;
@@ -104,7 +104,7 @@ const methodsAggreate = (table) => ({
   get: get(table),
   post: post(table),
   put: put(table),
-  delete: del(table)
+  delete: del(table),
 });
 
 export const techcuz = methodsAggreate('techcuz');

@@ -12,7 +12,7 @@ const serverOptions = {
   lazy: false,
   publicPath: config.output.publicPath,
   headers: { 'Access-Control-Allow-Origin': '*' },
-  stats: { colors: true }
+  stats: { colors: true },
 };
 const webpackDevServer = new WebpackDevServer(config, serverOptions);
 

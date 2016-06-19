@@ -20,7 +20,7 @@ export default (store) => {
   }
   const routes = (
     <Route path="/" component={Master}>
-      <Route onEnter={ requireAuth } />
+      <Route onEnter={requireAuth} />
       <Route component={PageContainer}>
         <IndexRoute component={TechcuzView} />
         <Route path="techcuz" component={TechcuzView} />

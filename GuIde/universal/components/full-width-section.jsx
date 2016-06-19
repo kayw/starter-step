@@ -10,18 +10,18 @@ const FullWidthSection = React.createClass({
     contentStyle: React.PropTypes.object,
     contentType: React.PropTypes.string,
     style: React.PropTypes.object,
-    useContent: React.PropTypes.bool
+    useContent: React.PropTypes.bool,
   },
 
   mixins: [
     StylePropable,
-    StyleResizable
+    StyleResizable,
   ],
 
   getDefaultProps() {
     return {
       useContent: false,
-      contentType: 'div'
+      contentType: 'div',
     };
   },
 
@@ -29,20 +29,20 @@ const FullWidthSection = React.createClass({
     return {
       root: {
         padding: `${DesktopGutter}px`,
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
       },
       content: {
         maxWidth: '1200px',
-        margin: '0 auto'
+        margin: '0 auto',
       },
       rootWhenSmall: {
         paddingTop: DesktopGutter * 2,
-        paddingBottom: DesktopGutter * 2
+        paddingBottom: DesktopGutter * 2,
       },
       rootWhenLarge: {
         paddingTop: DesktopGutter * 3,
-        paddingBottom: DesktopGutter * 3
-      }
+        paddingBottom: DesktopGutter * 3,
+      },
     };
   },
 
@@ -53,7 +53,7 @@ const FullWidthSection = React.createClass({
       useContent,
       contentType,
       contentStyle,
-      ...other
+      ...other,
     } = this.props;
     /* eslint-disable no-use-before-define */
 
@@ -83,7 +83,7 @@ const FullWidthSection = React.createClass({
         {content}
       </ClearFix>
     );
-  }
+  },
 });
 
 module.exports = FullWidthSection;

@@ -7,7 +7,7 @@ module.exports = {
   assets: {
     images: {
       extensions: ['png', 'jpg', 'gif', 'ico', 'svg'],
-      parser: WebpackIsomorphicPlugin.url_loader_parser
+      parser: WebpackIsomorphicPlugin.url_loader_parser,
     },
     style_decriptor: {
       extensions: ['css', 'scss'],
@@ -46,7 +46,7 @@ module.exports = {
           source = module.source;
         }
         return source;
-      }
-    }
-  }
+      },
+    },
+  },
 };

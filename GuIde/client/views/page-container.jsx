@@ -7,14 +7,14 @@ export default class PageContainer extends React.Component {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.object,
-      PropTypes.array
-    ])
+      PropTypes.array,
+    ]),
   }
   render() {
     return (
       <div styleName="root">
         <div styleName="content">
-        { this.props.children }
+        {this.props.children}
         </div>
       </div>
     );
