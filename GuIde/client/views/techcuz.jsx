@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import GuLinkPage from './gulink-container';
 import { isLoaded, techcuzLoadLink, techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink,
@@ -12,34 +12,32 @@ function fetchData({ state, dispatch }) {
   }
   return Promise.all(promises);
 }
-@connectFetch(fetchData)
-@connect(
-  state => ({
-    guLinks: state.techcuz.get('gulinks'),
-  }),
-  { techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink,
-    techcuzReorderLink, techcuzMoveLink }
-)
-export default class TechcuzView extends Component {
-  static propTypes = {
-    guLinks: PropTypes.object.isRequired,
-    selectedIndex: PropTypes.number,
-    techcuzReorderLink: PropTypes.func.isRequired,
-    techcuzMoveLink: PropTypes.func.isRequired,
-    techcuzModifyLink: PropTypes.func.isRequired,
-    techcuzCreateLink: PropTypes.func.isRequired,
-    techcuzDeleteLink: PropTypes.func.isRequired,
-  }
-  static contextTypes = {
-    store: PropTypes.object.isRequired,
-  }
-  render() {
-    const { guLinks } = this.props;
-    return (
-      <GuLinkPage category="techcuz" gulinks={guLinks} onCreate={this.props.techcuzCreateLink}
-        onDelete={this.props.techcuzDeleteLink} onModify={this.props.techcuzModifyLink}
-        onMove={this.props.techcuzMoveLink} onReorder={this.props.techcuzReorderLink}
-      />
-    );
-  }
+function TechcuzView(props) {
+  const { guLinks } = props;
+  return (
+    <GuLinkPage category="techcuz" gulinks={guLinks} onCreate={props.techcuzCreateLink}
+      onDelete={props.techcuzDeleteLink} onModify={props.techcuzModifyLink}
+      onMove={props.techcuzMoveLink} onReorder={props.techcuzReorderLink}
+    />
+  );
 }
+
+TechcuzView.propTypes = {
+  guLinks: PropTypes.object.isRequired,
+  selectedIndex: PropTypes.number,
+  techcuzReorderLink: PropTypes.func.isRequired,
+  techcuzMoveLink: PropTypes.func.isRequired,
+  techcuzModifyLink: PropTypes.func.isRequired,
+  techcuzCreateLink: PropTypes.func.isRequired,
+  techcuzDeleteLink: PropTypes.func.isRequired,
+};
+
+export default connectFetch(fetchData)(
+  connect(
+    state => ({
+      guLinks: state.techcuz.get('gulinks'),
+    }),
+    { techcuzCreateLink, techcuzDeleteLink, techcuzModifyLink,
+      techcuzReorderLink, techcuzMoveLink }
+  )(TechcuzView)
+);

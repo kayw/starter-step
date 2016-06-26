@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import { browserHistory } from 'react-router';
 import { fromJS } from 'immutable';
 import App from '../universal/components/app';
 import configureStore from '../universal/redux/configureStore';
-import makeRouteHookSafe from './make-route-hooks-safe';
 
 const initialState = window.__INITIAL_STATE__ || undefined;
 if (initialState) {
@@ -15,5 +14,5 @@ if (initialState) {
   });
 }
 const store = configureStore(initialState);
-ReactDom.render(<App routerHistory={createBrowserHistory()} store={store} />,
+ReactDom.render(<App routerHistory={browserHistory} store={store} />,
              document.getElementById('mount'));

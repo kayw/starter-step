@@ -139,8 +139,8 @@ export default class GuLinkContainer extends Component {
     return (
       <div>
         <Toolbar>
-            <IconButton iconClassName="md-add-box" onTouchTap={this.handleLinkAdd} />
-            <span styleName="toolbar-text">添加书签</span>
+          <IconButton iconClassName="md-add-box" onTouchTap={this.handleLinkAdd} />
+          <span styleName="toolbar-text">添加书签</span>
         </Toolbar>
         <ul styleName="gulinks">
         {
@@ -188,9 +188,9 @@ export default class GuLinkContainer extends Component {
               </div>
               {
                 idx !== 0 &&
-                <span styleName="url-action" onClick={this.handleLinkBundleRemove(idx)}>
-                  <i className="md-remove"></i>
-                </span>
+                  <span styleName="url-action" onClick={this.handleLinkBundleRemove(idx)}>
+                    <i className="md-remove"></i>
+                  </span>
               }
               <span styleName="url-action" onClick={this.handleLinkBundleAdd}>
                 <i className="md-add"></i>

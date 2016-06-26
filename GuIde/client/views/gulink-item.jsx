@@ -115,30 +115,30 @@ export default class GuLinkItem extends Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
-          <h3 styleName={`gulink-name ${category}`}>{gulink.name}</h3>
-          {gulink.source && <span styleName="from">from</span>}
-          {gulink.source && <span styleName="source">{` ${gulink.source}`}</span>}
-          <div styleName="gulink-actions">
-            <span styleName="gulink-action" onClick={this.handleLinkModify}>
-              <i className="md-mode-edit"></i>
-            </span>
-            {
-              onReload &&
+        <h3 styleName={`gulink-name ${category}`}>{gulink.name}</h3>
+        {gulink.source && <span styleName="from">from</span>}
+        {gulink.source && <span styleName="source">{` ${gulink.source}`}</span>}
+        <div styleName="gulink-actions">
+          <span styleName="gulink-action" onClick={this.handleLinkModify}>
+            <i className="md-mode-edit"></i>
+          </span>
+          {
+            onReload &&
               <span styleName="gulink-action" onClick={this.handleBackendReload}>
                 <i className="md-sync"></i>
               </span>
-            }
-            <span styleName="gulink-action" onClick={this.handleLinkRemove}>
-              <i className="md-delete"></i>
-            </span>
-          </div>
-          <div>
-          {
-            gulink.links.map((link, idx) =>
-              <p key={`g${idx}`} styleName="short-desc"><a href={link} target="_blank">{link}</a>
-              </p>)
           }
-          </div>
+          <span styleName="gulink-action" onClick={this.handleLinkRemove}>
+            <i className="md-delete"></i>
+          </span>
+        </div>
+        <div>
+        {
+          gulink.links.map((link, idx) =>
+            <p key={`g${idx}`} styleName="short-desc"><a href={link} target="_blank">{link}</a>
+            </p>)
+        }
+        </div>
       </li>));
   }
 }

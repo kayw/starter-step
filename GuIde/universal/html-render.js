@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDom from 'react-dom/server';
-// import { reduxReactRouter, match } from 'redux-router/server';
-import createHistory from 'history/lib/createMemoryHistory';
 import createStore from './redux/configureStore';
 import getRoutes from '../client/routes';
 import App from './components/app';
@@ -39,10 +37,9 @@ function loadOnServer(renderProps, store) {
 }
 export default function render(url, initialState) {
   return new Promise((resolve, reject) => {
-    const history = createHistory(url);
     const store = createStore(initialState);
     const routes = getRoutes();
-    match({ history, routes, location: url }, (err, redirection, props) => {
+    match({ routes, location: url }, (err, redirection, props) => {
       if (err) {
         reject([500], err);
       } else if (redirection) {

@@ -18,8 +18,8 @@
     "webpackIsomorphicTools": true
   },
   "rules": {
-    "react/prefer-es6-class": 0,
     "react/jsx-first-prop-new-line": 0,
+    "no-underscore-dangle": 0,
     "global-require": 0
   }
 }

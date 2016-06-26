@@ -1,7 +1,7 @@
+/* eslint no-undef: 0  */
 import React from 'react';
 import {
-  renderIntoDocument, createRenderer, scryRenderedDOMComponentsWithTag,
-  scryRenderedDOMComponentsWithClass, Simulate,
+  renderIntoDocument, scryRenderedDOMComponentsWithTag, Simulate,
 } from 'react-addons-test-utils';
 import { expect } from 'chai';
 import { fromJS } from 'immutable';
@@ -12,14 +12,13 @@ injectTapEventPlugin();
 // http://chaijs.com/api/bdd/
 // http://sinonjs.org/
 
-function shallowRender(component) {
-  const renderer = createRenderer();
-  renderer.render(component);
-  return renderer.getRenderOutput();
-}
+// function shallowRender(component) {
+//   const renderer = createRenderer();
+//   renderer.render(component);
+//   return renderer.getRenderOutput();
+// }
 describe('Gulink View', () => {
   let props_;
-  let shallowRendered_;
   let rendered_;
   beforeEach(() => {
     props_ = {
@@ -46,7 +45,7 @@ describe('Gulink View', () => {
         links: [],
       }]),
     };
-    shallowRendered_ = shallowRender(<GulinkContainer {...props_} />);
+    // shallowRendered_ = shallowRender(<GulinkContainer {...props_} />);
     rendered_ = renderIntoDocument(<GulinkContainer {...props_} />);
   });
   it('should have three links', () => {
@@ -67,7 +66,10 @@ describe('Gulink View', () => {
     const addBtn = scryRenderedDOMComponentsWithTag(rendered_, 'button')[0];
     // https://github.com/zilverline/react-tap-event-plugin/issues/10
     Simulate.touchTap(addBtn);
-    console.log(rendered_.refs.child.state);
-    expect(rendered_.getDecoratedComponentInstance().state.openDialog).to.be.true;
+    // console.log(rendered_.refs.child.state);
+    // expect(rendered_.getDecoratedComponentInstance().state.openDialog).to.be.true;
+    // https://github.com/eslint/eslint/issues/2102
+    // https://github.com/moll/js-must#asserting-on-property-access
+    expect(rendered_.getDecoratedComponentInstance().state.openDialog).to.equal(true);
   });
 });

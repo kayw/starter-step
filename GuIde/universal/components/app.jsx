@@ -6,11 +6,10 @@ import getPlainRoute from '../../client/routes';
 
 injectTapEventPlugin();
 export default class App extends Component {
-
   static propTypes = {
     store: React.PropTypes.object.isRequired,
     routingContext: React.PropTypes.object,
-    routerHisotry: React.PropTypes.object,
+    routerHistory: React.PropTypes.object,
   };
   static defaultProps = {
     initialState: {},
@@ -30,23 +29,22 @@ export default class App extends Component {
     */
     if (this.props.routingContext) {
       return <RouterContext {...this.props.routingContext} />;
-    } else {
-      return (
-        <Router history={this.props.routerHistory}>
-        {getPlainRoute(this.props.store)}
-        </Router>
-      );
     }
+    return (
+      <Router history={this.props.routerHistory}>
+      {getPlainRoute(this.props.store)}
+      </Router>
+    );
   }
 
   render() {
     return (
-        <Provider store={this.props.store}>
-          <div>
-          {this.renderRouter()}
-          {__DEVTOOLS__ && this.renderDevTools()}
-          </div>
-        </Provider>
+      <Provider store={this.props.store}>
+        <div>
+        {this.renderRouter()}
+        {__DEVTOOLS__ && this.renderDevTools()}
+        </div>
+      </Provider>
     );
   }
 }
