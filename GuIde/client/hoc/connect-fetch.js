@@ -21,9 +21,9 @@ export default function connectFetch(...actions) {
     componentDidMount() {
       const { store: { getState, dispatch } } = this.context;
       const { location, params } = this.props;
-      actions.forEach(action => dispatch(action({
+      actions.forEach(action => action({
         state: getState(), dispatch, location, params,
-      })));
+      }));
     }
     render() {
       return <Wrapped {...this.props} />;

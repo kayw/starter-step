@@ -46,8 +46,7 @@ class AppLeftNav extends React.Component {
         <div style={this.getStyles()} onTouchTap={this.handleTouchTapHeader}>
           GuIde
         </div>
-        <SelectableList valueLink={{ value: location.pathname,
-          requestChange: this.handleRequestChangeList }}>
+        <SelectableList value={location.pathname} onChange={this.handleRequestChangeList}>
           <ListItem primaryText="techcuz" value="/techcuz" />
           <ListItem primaryText="docs.io" value="/docsio" />
           <ListItem primaryText="people" value="/people" />

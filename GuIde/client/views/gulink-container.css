@@ -6,10 +6,6 @@
   padding: 0 40px;
 }
 
-.toolbar-text {
-  vertical-align: super;
-}
-
 .url-input {
   width: 47%;
   display: inline-block;

@@ -53,7 +53,7 @@ export default class Master extends React.Component {
       },
       p: {
         margin: '0 auto',
-        padding: '0',
+        padding: 0,
         color: lightWhite,
         maxWidth: '335px',
       },
