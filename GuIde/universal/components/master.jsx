@@ -1,7 +1,7 @@
 import React from 'react';
 import AppLeftNav from './left-menus';
 import FullWidthSection from './full-width-section';
-import { AppBar, AppCanvas, IconButton } from 'material-ui';
+import { AppBar, IconButton } from 'material-ui';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { darkWhite, lightWhite, grey900 } from 'material-ui/styles/colors';
 
@@ -91,7 +91,7 @@ export default class Master extends React.Component {
       />);
 
     return (
-      <AppCanvas>
+      <div>
         <AppBar
           onLeftIconButtonTouchTap={this.handleTouchTapLeftIcon}
           title={title}
@@ -110,8 +110,7 @@ export default class Master extends React.Component {
           </p>
           {githubButton}
         </FullWidthSection>
-
-      </AppCanvas>
+      </div>
     );
   }
 }
