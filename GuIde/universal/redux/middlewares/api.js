@@ -39,8 +39,8 @@ export default function clientMiddleware() {
       return next(action);
     }
 
-    // todo https://github.com/babel/babel-eslint/issues/249
-    const { endpoint, method, types, ...rest } = caller;// eslint-disable-line no-use-before-define
+    // https://github.com/babel/babel-eslint/issues/249  rest spread espree eslint error
+    const { endpoint, method, types, ...rest } = caller;
 
     if (typeof endpoint !== 'string') {
       throw new Error('Specify a string endpoint URL.');

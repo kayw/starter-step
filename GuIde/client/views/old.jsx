@@ -1,5 +1,5 @@
 import React from 'react';
-export default function OldView(props) {
+export default function OldView() {
   return (
     <div id="playground" className="play-container">
       <div className="play-controls">

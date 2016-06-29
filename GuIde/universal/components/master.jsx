@@ -1,11 +1,11 @@
-const React = require('react');
-const AppLeftNav = require('./left-menus');
-const FullWidthSection = require('./full-width-section');
-const { AppBar, AppCanvas, IconButton, Styles } = require('material-ui');
+import React from 'react';
+import AppLeftNav from './left-menus';
+import FullWidthSection from './full-width-section';
+import { AppBar, AppCanvas, IconButton } from 'material-ui';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { darkWhite, lightWhite, grey900 } from 'material-ui/styles/colors';
 
-const { Colors, getMuiTheme } = Styles;
-
-class Master extends React.Component {
+export default class Master extends React.Component {
   static propTypes = {
     history: React.PropTypes.object.isRequired,
     location: React.PropTypes.object.isRequired,
@@ -37,7 +37,6 @@ class Master extends React.Component {
     });
   }
   getStyles() {
-    const darkWhite = Colors.darkWhite;
     return {
       appBar: {
         position: 'fixed',
@@ -46,7 +45,7 @@ class Master extends React.Component {
         top: 0,
       },
       footer: {
-        backgroundColor: Colors.grey900,
+        backgroundColor: grey900,
         textAlign: 'center',
       },
       a: {
@@ -55,7 +54,7 @@ class Master extends React.Component {
       p: {
         margin: '0 auto',
         padding: '0',
-        color: Colors.lightWhite,
+        color: lightWhite,
         maxWidth: '335px',
       },
       iconButton: {
@@ -116,5 +115,3 @@ class Master extends React.Component {
     );
   }
 }
-
-module.exports = Master;

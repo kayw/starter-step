@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
-import { List, ListItem, LeftNav, Divider,
-  SelectableContainerEnhance as selectableContainerEnhance, Styles } from 'material-ui';
-const { Colors, Spacing, Typography } = Styles;
+import { List, ListItem, Drawer, Divider, Subheader,
+  MakeSelectable as selectableContainerEnhance } from 'material-ui';
+import { spacing, typography, zIndex } from 'material-ui/styles';
+import { cyan500 } from 'material-ui/styles/colors';
 const SelectableList = selectableContainerEnhance(List);
 
 class AppLeftNav extends React.Component {
@@ -15,11 +16,11 @@ class AppLeftNav extends React.Component {
     return {
       cursor: 'pointer',
       fontSize: '24px', // .mui-font-style-headline
-      color: Typography.textFullWhite,
-      lineHeight: `${Spacing.desktopKeylineIncrement}px`,
-      fontWeight: Typography.fontWeightLight,
-      backgroundColor: Colors.cyan500,
-      paddingLeft: Spacing.desktopGutter,
+      color: typography.textFullWhite,
+      lineHeight: `${spacing.desktopKeylineIncrement}px`,
+      fontWeight: typography.fontWeightLight,
+      backgroundColor: cyan500,
+      paddingLeft: spacing.desktopGutter,
       marginBottom: 8,
     };
   }
@@ -39,7 +40,9 @@ class AppLeftNav extends React.Component {
   render() {
     const { onRequestChangeLeftNav, leftNavOpen, location } = this.props;
     return (
-      <LeftNav docked={false} open={leftNavOpen} onRequestChange={onRequestChangeLeftNav}>
+      <Drawer docked={false} open={leftNavOpen} onRequestChange={onRequestChangeLeftNav}
+        containerStyle={{ zIndex: zIndex.drawer - 100 }}
+      >
         <div style={this.getStyles()} onTouchTap={this.handleTouchTapHeader}>
           GuIde
         </div>
@@ -53,13 +56,12 @@ class AppLeftNav extends React.Component {
           <ListItem primaryText="saviour" value="/saviour" />
         </SelectableList>
         <Divider />
-        <SelectableList subheader="Tools" valueLink={{
-          value: '', requestChange: this.handleRequestChangeLink,
-        }}>
+        <SelectableList value="" onChange={this.handleRequestChangeLink}>
+          <Subheader>Tools</Subheader>
           <ListItem primaryText="Material-UI" value="https://github.com/callemall/material-ui" />
           <ListItem primaryText="React" value="http://facebook.github.io/react" />
         </SelectableList>
-      </LeftNav>);
+      </Drawer>);
   }
 }
 
