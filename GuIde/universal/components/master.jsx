@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import AppLeftNav from './left-menus';
 import FullWidthSection from './full-width-section';
 import { AppBar, IconButton } from 'material-ui';
@@ -7,12 +7,14 @@ import { darkWhite, lightWhite, grey900 } from 'material-ui/styles/colors';
 
 export default class Master extends React.Component {
   static propTypes = {
-    history: React.PropTypes.object.isRequired,
-    location: React.PropTypes.object.isRequired,
-    children: React.PropTypes.object,
+    location: PropTypes.object.isRequired,
+    children: PropTypes.object,
+  }
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
   }
   static childContextTypes = {
-    muiTheme: React.PropTypes.object,
+    muiTheme: PropTypes.object,
   }
 
   state = {
@@ -74,7 +76,7 @@ export default class Master extends React.Component {
     });
   }
   handleRequestChangeLink = (link) => {
-    this.props.history.push(link);
+    this.context.router.push({ pathname: link });
     this.handleRequestChangeLeftNav(false);
   }
 

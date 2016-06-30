@@ -1,4 +1,4 @@
-/* eslint prefer-arrow-callback: 0 no-console: 0 */
+/* eslint no-console: 0 */
 require('babel-core/register')({
   plugins: ['transform-decorators-legacy'],
   presets: ['es2015', 'stage-0', 'react'],
@@ -14,14 +14,14 @@ global.__DEV__ = config.get('__DEV__');
 global.__DEVTOOLS__ = config.get('__DEVTOOLS__');
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/isomorphic'))
   .development(__DEV__)
-  .server(rootDir, function run() { // eslint-disable-line prefer-arrow-callback
+  .server(rootDir, () => {
     require('./koa');
   });
 
-process.on('uncaughtException', function onUncauth(err) {
+process.on('uncaughtException', (err) => {
   console.log('Caught exception:', err);
 });
 
-process.on('exit', function onExit(code) {
+process.on('exit', (code) => {
   console.log('exit', code);
 });

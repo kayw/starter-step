@@ -139,7 +139,9 @@ export default class GuLinkContainer extends Component {
     return (
       <div>
         <Toolbar>
-          <IconButton iconClassName="md-add-box" onTouchTap={this.handleLinkAdd} tooltip="添加书签" />
+          <IconButton iconClassName="md-add-box" onTouchTap={this.handleLinkAdd} tooltip="添加书签"
+            tooltipPosition="top-left" tooltipStyles={{ fontSize: '15px' }}
+          />
         </Toolbar>
         <ul styleName="gulinks">
         {
