@@ -9,6 +9,12 @@ wpConfig.devtool = 'cheap-source-map';
 wpConfig.plugins.push(
   // css files from the extract-text-plugin loader
   new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
+  new webpack.DefinePlugin({
+    'process.env': {
+      // Useful to reduce the size of client-side libraries, e.g. react
+      NODE_ENV: JSON.stringify('production')
+    }
+  }),
   // optimizations
   new webpack.optimize.DedupePlugin(),
   new webpack.optimize.OccurenceOrderPlugin(),

@@ -21,7 +21,8 @@ config.set('server_port', 3000);
 config.set('rethinkdb', {
   host: 'localhost',
   port: 28015,
-  db: 'guide',
+  db: __DEV__ ? 'guidedev' : 'guide',
+  tables: ['techcuz', 'docsio', 'people'],
 });
 
 // ------------------------------------

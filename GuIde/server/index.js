@@ -7,7 +7,14 @@ require('babel-polyfill');
 const config = require('../universal/config');
 const rootDir = config.get('project_root');
 const WebpackIsomorphicTools = require('webpack-isomorphic-tools');
+const rethink = require('rethinkdbdash');
 
+const rdbConf = config.get('rethinkdb');
+global.r = rethink({
+  host: rdbConf.host,
+  port: rdbConf.port,
+  db: rdbConf.db,
+});
 global.__API_ROOT__ = `http://localhost:${config.get('server_port')}/api/`;
 global.__CLIENT__ = false;
 global.__DEV__ = config.get('__DEV__');
@@ -20,8 +27,10 @@ global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/i
 
 process.on('uncaughtException', (err) => {
   console.log('Caught exception:', err);
+  r.close();
 });
 
 process.on('exit', (code) => {
   console.log('exit', code);
+  r.close();
 });

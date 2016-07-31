@@ -175,15 +175,17 @@ export default class GuLinkContainer extends Component {
             if (idx & 1) { // it's odd
               return null;
             }
+            // https://github.com/callemall/material-ui/issues/4430 todo
             const oddlb = this.state.linksBundle[idx + 1];
             return (<div key={4 + idx}>
               <div styleName="url-input">
                 <TextField floatingLabelText="url" value={lb}
                   onChange={this.handleLinkBundleChange(idx)}
+                  autoFocus
                 />
               </div>
               <div styleName="url-input">
-                <TextField value={oddlb}
+                <TextField value={oddlb} id="url2" autoFocus
                   onChange={this.handleLinkBundleChange(idx + 1)}
                 />
               </div>
