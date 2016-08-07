@@ -97,7 +97,8 @@ export default class GuLinkItem extends Component {
     this.props.onHandleLinkModify();
   }
   handleBackendReload = () => {
-    this.props.onReload(this.props.category, this.props.gulink.name);
+    this.props.onReload(this.props.category, this.props.gulink.name,
+      this.props.gulink.source);
   }
   handleLinkRemove = () => {
     this.props.onHandleLinkRemove(this.props.index);

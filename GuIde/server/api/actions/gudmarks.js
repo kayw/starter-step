@@ -99,7 +99,16 @@ function order(table) {
   };
 }
 
+function reload(table) {
+  return function reloadFn(params, body) {
+    return function* reloadGen() {
+        return true;
+    };
+  };
+}
+
 const methodsAggreate = (table) => ({
+  reload: reload(table),
   order: order(table),
   get: get(table),
   post: post(table),

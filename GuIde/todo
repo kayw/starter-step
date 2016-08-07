@@ -1,7 +1,6 @@
 update docs script rm -rf before rsync
 babel 6 will optimize out actions connect-fetch
 TEST
-jwt auth
 react-router-redux https://github.com/acdlite/redux-router/pull/62#issuecomment-180794497
 
 search action
@@ -9,7 +8,7 @@ saviour page
 codemirror??
 
 https://scotch.io/tutorials/build-chrome-like-tabs-with-bootstrap-and-angularjs
-jsxtree
+jsxtree / flowtype
 
 ??
 which config item cause webpack-dev-server watch restart
@@ -23,14 +22,13 @@ dnd scroll  https://github.com/gaearon/react-dnd/issues/324#issuecomment-1540424
 https://github.com/voidberg/html5sortable/blob/master/src/html.sortable.src.js  http://reactjsnews.com/complex-drag-and-drop-lists-using-react/
 https://github.com/HurricaneJames/dex/tree/master/app/assets/javascripts/components/{containermixin,draggablelistview}.jsx
 
-multiple rethinkdash yield (?? in rethink docker) warning  a promise not handled
 isparta cli view https://github.com/douglasduteil/isparta/issues/81
 ERROR tests/bundler ']'
 
 #refractor
 category table(api ops) reducer actiontype still a lot non-DRY
 connect gulink-container with state has { techcuz: , } and one action creator
-
+responsive
 
 #webpack
 ?? split per route component

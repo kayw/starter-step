@@ -186,14 +186,15 @@ const peopleLoadLink = liftedLoadLink('people', peopleActionType);
 ['RELOAD', 'RELOAD_SUCCESS', 'RELOAD_FAIL'].forEach(at => {
   docsioActionType[at] = `@@docsio/${at}`;
 });
-function docsioReload(category, docName) {
+
+function docsioReload(category, name, from) {
   return {
     [CLIENT_API]: {
       types: [docsioActionType.RELOAD, docsioActionType.RELOAD_SUCCESS,
         docsioActionType.RELOAD_FAIL],
-      endpoint: category,
+      endpoint: `${category}/reload`,
       method: 'post',
-      data: docName,
+      data: { name, from },
     },
   };
 }
