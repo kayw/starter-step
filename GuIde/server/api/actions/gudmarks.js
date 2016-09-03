@@ -1,5 +1,9 @@
-import log from '../../../universal/helpers/inspector';
+import Redis from 'ioredis';
 import winston from 'winston';
+import { workerQueueKey } from '../../../universal/constants';
+import log from '../../../universal/helpers/inspector';
+
+const client = new Redis(); // 127.0.0.1:6379
 winston.loggers.add('bookmarks', {
   file: {
     level: 'info',
@@ -102,7 +106,13 @@ function order(table) {
 function reload(table) {
   return function reloadFn(params, body) {
     return function* reloadGen() {
-        return true;
+      const { id, from, name } = body;
+      yield r.table(table).get(body.id).update({ building: true });
+      yield client.lpush(workerQueueKey, JSON.stringify({
+        id, name, from,
+        type: 'docsio',
+      }));
+      return true;
     };
   };
 }

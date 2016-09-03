@@ -51,6 +51,13 @@ function liftedReducer(actionTypes) {
             (itemA, itemB) => (itemA.get('order') < itemB.get('order') ? -1 : 1)
           );
         });
+      case actionTypes.RELOAD_SUCCESS:
+        return state.update('gulinks', list =>
+          list.update(
+            list.findIndex((gulink) => gulink._id === action.data.id),
+            gulink => gulink.set('building', true)
+          )
+        );
       default:
         return state;
     }
@@ -187,14 +194,18 @@ const peopleLoadLink = liftedLoadLink('people', peopleActionType);
   docsioActionType[at] = `@@docsio/${at}`;
 });
 
-function docsioReload(category, name, from) {
+function docsioReload(category, gulink) {
   return {
     [CLIENT_API]: {
       types: [docsioActionType.RELOAD, docsioActionType.RELOAD_SUCCESS,
         docsioActionType.RELOAD_FAIL],
       endpoint: `${category}/reload`,
       method: 'post',
-      data: { name, from },
+      data: {
+        id: gulink._id,
+        name: gulink.name,
+        from: gulink.source,
+      },
     },
   };
 }

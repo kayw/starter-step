@@ -1,4 +1,3 @@
-update docs script rm -rf before rsync
 babel 6 will optimize out actions connect-fetch
 TEST
 react-router-redux https://github.com/acdlite/redux-router/pull/62#issuecomment-180794497

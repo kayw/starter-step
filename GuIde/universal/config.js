@@ -25,6 +25,11 @@ config.set('rethinkdb', {
   tables: ['techcuz', 'docsio', 'people'],
 });
 
+config.set('redis', {
+  host: 'localhost',
+  port: 6379,
+});
+
 // ------------------------------------
 // Webpack
 // ------------------------------------

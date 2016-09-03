@@ -14,6 +14,7 @@ function fetchData({ state, dispatch }) {
   return promise;
 }
 function DocsIO(props) {
+  // todo building / socket.io
   const { guLinks } = props;
   return (
     <GuLinkPage category="docsio" gulinks={guLinks} onCreate={props.docsioCreateLink}
