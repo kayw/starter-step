@@ -10,7 +10,6 @@ https://scotch.io/tutorials/build-chrome-like-tabs-with-bootstrap-and-angularjs
 jsxtree / flowtype
 
 ??
-which config item cause webpack-dev-server watch restart
 precss import partial hot load https://github.com/jonathantneal/precss/issues/6
 async route
 mouseonenter dialog dismiss not fired

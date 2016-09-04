@@ -1,0 +1,18 @@
+An own GuIDE front end
+=========================
+
+# Bookmarks
+
+## files
+ 
+  techcuz.jsx people.jsx docsio.jsx gulink-item.jsx gulink-container.jsx
+  
+## dependecies
+
+  React + Redux + css-module + ES6&7 + webpack + koa + RethinkDB + Redis
+
+## features
+ 
+  * scaffold for nodejs react isomorphic & server rendering
+  * lifted reducer for a list of tech webforum links, bloggers and localhost doc sites CRUD web view
+  * local doc build command through Redis Queue

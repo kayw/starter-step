@@ -44,13 +44,6 @@ const wpConfig = {
     config.get('__DEV__') ? isomorphicPlugin.development() : isomorphicPlugin,
   ],
   module: {
-    // eslint loader
-    preLoaders: [{
-      test: /\.(js|jsx)$/,
-      loader: 'eslint-loader',
-      include: [path.resolve(__dirname, '..')],
-      exclude: [nodeModulesPath],
-    }],
     loaders: [{
       test: /\.(js|jsx)$/, // All .js and .jsx files
       loader: 'babel', // babel loads jsx and es6-7
@@ -90,11 +83,6 @@ const wpConfig = {
   postcss: function postcss() {
     // return [autoprefix({ browsers: ['> 5%', 'last 2 versions'] }), precss];
     return [autoprefix, precss];
-  },
-  eslint: {
-    configFile: './.eslintrc.json',
-    // failOnError: config.get('__PROD__'),
-    emitWarning: config.get('__DEV__'),
   },
 };
 
