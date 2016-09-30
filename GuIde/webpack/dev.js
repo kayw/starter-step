@@ -19,6 +19,19 @@ wpConfig.devServer = {
   port: config.get('webpack_port'),
 };
 wpConfig.devtool = 'source-map';
+
+// ----------------------------------
+// Vendor Bundle Configuration
+// ----------------------------------
+// NOTE: this is a temporary workaround. I don't know how to get Karma
+// to include the vendor bundle that webpack creates, so to get around that
+// we remove the bundle splitting when webpack is used with Karma.
+const commonChunkPlugin = new webpack.optimize.CommonsChunkPlugin(
+  'vendor', '[name].js'
+);
+commonChunkPlugin.KARMA_IGNORE = true;
+wpConfig.plugins.push(commonChunkPlugin);
+
 // sync with browser while developing
 wpConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 wpConfig.module.loaders.push({

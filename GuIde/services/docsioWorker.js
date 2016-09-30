@@ -84,8 +84,8 @@ const handlers = {
     try {
       process.chdir(srcDir);
       chp.execSync('git pull');
-      chp.execSync('source ./venv3/bin/activate && make docs');
-      chp.execSync('rsync -aAXv ./html/ ~/kspace/docs/flask/ --delete');
+      chp.execSync('source ./venv/bin/activate && make docs');
+      chp.execSync('rsync -aAXv ./_build/html/ ~/kspace/docs/flask/ --delete');
       chp.execSync('rm -rf html');
       process.chdir(cwdBackup);
     } catch (e) {
@@ -98,8 +98,8 @@ const handlers = {
     try {
       process.chdir(path.join(srcDir, 'doc'));
       chp.execSync('git pull');
-      chp.execSync('source ../venv3/bin/activate && make dirhtml');
-      chp.execSync('rsync -aAXv ./html/ ~/kspace/docs/jinja2/ --delete');
+      chp.execSync('source ../venv2/bin/activate && make html');
+      chp.execSync('rsync -aAXv ./_build/html/ ~/kspace/docs/jinja2/ --delete');
       chp.execSync('make clean');
       process.chdir(cwdBackup);
     } catch (e) {

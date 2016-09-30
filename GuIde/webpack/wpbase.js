@@ -32,7 +32,7 @@ const wpConfig = {
   output: {
     path: config.get('dist_path'), // Path of output file
     publicPath: config.get('webpack_public_path'),
-    filename: '[name]-[hash].js',  // Name of output file
+    filename: '[name].js',  // Name of output file
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -89,17 +89,5 @@ const wpConfig = {
 wpConfig.cssTestRe = /\.(css|scss)$/;
 wpConfig.cssTransformer = `css?modules&importLoaders=1&sourceMap&
   localIdentName=[local]___[hash:base64:5]!postcss?parser=postcss-scss`;
-
-// ----------------------------------
-// Vendor Bundle Configuration
-// ----------------------------------
-// NOTE: this is a temporary workaround. I don't know how to get Karma
-// to include the vendor bundle that webpack creates, so to get around that
-// we remove the bundle splitting when webpack is used with Karma.
-const commonChunkPlugin = new webpack.optimize.CommonsChunkPlugin(
-  'vendor', '[name]-[hash].js'
-);
-commonChunkPlugin.KARMA_IGNORE = true;
-wpConfig.plugins.push(commonChunkPlugin);
 
 module.exports = wpConfig;

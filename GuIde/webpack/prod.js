@@ -6,6 +6,11 @@ wpConfig.entry.app = [
   config.get('client_entry')
 ];
 wpConfig.devtool = 'cheap-source-map';
+const commonChunkPlugin = new webpack.optimize.CommonsChunkPlugin(
+  'vendor', '[name]-[hash].js'
+);
+commonChunkPlugin.KARMA_IGNORE = true;
+wpConfig.plugins.push(commonChunkPlugin);
 wpConfig.plugins.push(
   // css files from the extract-text-plugin loader
   new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
@@ -28,7 +33,5 @@ wpConfig.module.loaders.push({
   test: wpConfig.cssTestRe,
   loader: ExtractTextPlugin.extract('style', wpConfig.cssTransformer)
 });
-console.log(wpConfig.output);
-console.log(wpConfig.plugins);
 
 module.exports = wpConfig;
