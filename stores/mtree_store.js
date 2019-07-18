@@ -5,7 +5,7 @@ var appDispatcher = require('../dispatcher');
 
 var fluxConstants = require('../constants/flux_const.js');
 var EventEmitter = require('events').EventEmitter;
-var ActionTypes = fluxConstants.ActionTypes; 
+var ActionTypes = fluxConstants.ActionTypes;
 
 var mtreeConst = require('../constants/mtree_const.js');
 var ToggleTypes = mtreeConst.ToggleStateTypes;
@@ -19,10 +19,10 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
     getRootNode: function() {
         return tree.root_;
     },
-    getData : function() { 
-        return tree; 
+    getData : function() {
+        return tree;
     },
-    setData : function(t) { 
+    setData : function(t) {
         tree = t;
     },
     onNodeCreated : function(node) {
@@ -54,7 +54,7 @@ var treeStore = _.extend({}, EventEmitter.prototype, {
         // if all the children nodes are hidden, show them otherwise hide
         if (folder.toggleState_ == ToggleTypes.TOGGLE_OPEN) {
             folder.toggleState_ = ToggleTypes.TOGGLE_CLOSE;
-        } 
+        }
         else if (folder.toggleState_ == ToggleTypes.TOGGLE_CLOSE) {
             folder.toggleState_ = ToggleTypes.TOGGLE_OPEN;
         }
