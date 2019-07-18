@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  coredns:
+    image: coredns/coredns
+    container_name: coredns
+    restart: always
+    command: -conf config/Corefile
+    ports:
+      - 53:53/udp
+    volumes:
+      - ./coredns:/config/  
+    labels:
+      - "traefik.enable=false" 
+    networks:
+      traefik:
+        ipv4_address: 172.18.0.7
+        # https://stackoverflow.com/questions/27937185/assign-static-ip-to-docker-container
+  traefikproxy:
+    image: traefik:latest
+    container_name: traefikproxy
+    networks:
+      - traefik
+        #         aliases:
+        #                 - confluence.our.domain
+        #https://stackoverflow.com/questions/46446541/traefik-https-access-between-applications-does-not-work
+        #https://github.com/flexguse/traefik-inter-container-routing
+    ports:
+      - "80:80"
+      - "38080:8080"
+      - "443:443"
+    volumes:
+      -  ./traefik.toml:/etc/traefik/traefik.toml
+      -  ./certs:/etc/traefik/certs
+        #-  ./acme:/etc/traefik/acme
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true" 
+      - "traefik.frontend.rule=Host:traefik.srcmind.io"
+      - "traefik.port=8080"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.entryPoints=http,https"
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+      # https://stackoverflow.com/questions/10175812/how-to-create-a-self-signed-certificate-with-openssl # https://stackoverflow.com/a/43860138
+      # openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256
+      # https://serverfault.com/questions/310046/how-to-self-sign-an-ssl-certificate-for-a-specific-domain
+# https://github.com/wekan/wekan/wiki/Traefik-and-self-signed-SSL-certs
+# openssl req -x509 -nodes -newkey rsa:2048 -keyout srcmind.key -out srcmind.crt
+# https://letsencrypt.org/docs/certificates-for-localhost/
+# openssl req -x509 -out localhost.crt -keyout localhost.key \
+#   -newkey rsa:2048 -nodes -sha256 \
+#     -subj '/CN=localhost' -extensions EXT -config <( \
+#        printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+#
+# https://stackoverflow.com/questions/45771190/how-to-connect-my-docker-with-ssl-in-local-network-without-domain

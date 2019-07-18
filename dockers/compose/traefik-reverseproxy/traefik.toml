@@ -1,0 +1,46 @@
+# traefik.toml
+################################################################
+# Global configuration
+################################################################
+
+InsecureSkipVerify = true
+# https://github.com/containous/traefik/issues/2770
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+      	certFile = "/etc/traefik/certs/cert.crt"
+      	keyFile = "/etc/traefik/certs/cert.key"
+
+#[acme]
+#email = "ka@xxx.com"
+#storageFile = "/etc/traefik/acme/acme.json"
+#entryPoint = "https"
+#OnHostRule = true
+#onDemand = true
+#
+#[[acme.domains]]
+#  main = "*.srcmind.io"
+#  #sans = ["traefik.srcmind.io", "traefik.cab.re", "gitlab.cab.re"] 
+#
+##[[acme.domains]]
+##  main = "test.cab.re"
+
+[web]
+address = ":8080"
+#[web.auth.basic]
+#  users = ["pab:$apr1$2ZtdZCue$BHq00nxavh6EFmR9OFAfZ1"]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "srcmind.io"
+watch = true
+exposedbydefault = true
+# https://stackoverflow.com/questions/50720147/set-default-value-for-traefik-docker-network

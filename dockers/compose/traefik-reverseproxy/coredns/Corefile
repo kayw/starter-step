@@ -1,0 +1,7 @@
+.:53 {
+    file /config/srcmind.io srcmind.io
+    forward . /etc/resolv.conf
+    log
+}
+
+#https://github.com/sjpuas/coredns-traefik/blob/master/config/docker.local

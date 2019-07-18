@@ -53,3 +53,4 @@ networks:
     # ~/.ssh/config  Host git.example.com Port 2222 ssh://
     #
     # https://github.com/go-gitea/gitea/issues/4139  https://github.com/go-gitea/gitea/issues/3926
+    #  https://github.com/pabardina/docker-traefik-gitlab
