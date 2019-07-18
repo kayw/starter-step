@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: 'gitea'
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    networks:
+      - traefik
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.enable=true"
+      - "traefik.backend=srcmind-gitea"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:git.srcmind.io"
+      - "traefik.port=3000"
+    volumes:
+      - ${DOCKER_VOLUME}/gitea:/data
+    ports:
+      - "33022:22"
+    dns:
+      - 172.18.0.7
+    depends_on:
+      - postgresql
+
+  postgresql:
+    restart: always
+    image: postgres:11-alpine
+    container_name: 'postgres11'
+    networks:
+      - traefik
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea
+      - POSTGRES_DB=gitea
+    volumes:
+      - ${DOCKER_VOLUME}/pgsql:/var/lib/postgresql/data
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+    # https://github.com/sguter90/docker-compose-gitea
+    # https://docs.gitea.io/en-us/install-with-docker/
+    # https://gist.github.com/joffilyfe/1a99250cb74bb75e29cbe8d6ca8ceedb drone   https://github.com/hamdouni/gitea-drone
+    # https://blog.sakuragawa.moe/gitea-in-docker-container-and-sharing-ssh-with-host/
+    #
+    # https://github.com/gogs/gogs/issues/2409
+    # ~/.ssh/config  Host git.example.com Port 2222 ssh://
+    #
+    # https://github.com/go-gitea/gitea/issues/4139  https://github.com/go-gitea/gitea/issues/3926

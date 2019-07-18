@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  static-web:
+    image: kayw/nginx
+    container_name: 'nginx-doc'
+    networks:
+      - traefik
+    volumes:
+      - ./confs:/etc/nginx/conf.d
+      - $HOME/kspace/docs:/usr/share/nginx/docs:ro
+    #command: [nginx-debug, '-g', 'daemon off;']
+    restart: unless-stopped
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.enable=true"
+      - "traefik.backend=srcmind-doc"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:doc.srcmind.io"
+      - "traefik.port=80"
+        #- "traefik.port=433"
+
+networks:
+  traefik:
+    external: true
+
+    #  https://github.com/nginxinc/docker-nginx/blob/master/stable/alpine/nginx.conf

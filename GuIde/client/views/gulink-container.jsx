@@ -47,7 +47,7 @@ export default class GuLinkContainer extends Component {
   handleDialogSubmit() {
     const { category, gulinks } = this.props;
     const links = [];
-    this.state.linksBundle.forEach(lb => {
+    this.state.linksBundle.forEach((lb) => {
       if (!!lb && lb.slice(0, 4) !== 'http') {
         links.push(`https://${lb}`);
       } else {
@@ -88,7 +88,7 @@ export default class GuLinkContainer extends Component {
       this.setState({ selectedIndex: -1, linksBundle: [''] });
     }
   }
-  handleLinkBundleChange = (idx) => (ev) => {
+  handleLinkBundleChange = idx => (ev) => {
     this.setState(update(this.state, {
       linksBundle: {
         [idx]: {
@@ -97,7 +97,7 @@ export default class GuLinkContainer extends Component {
       },
     }));
   }
-  handleLinkBundleRemove = (idx) => () => {
+  handleLinkBundleRemove = idx => () => {
     this.setState(update(this.state, {
       linksBundle: {
         $splice: [
@@ -144,7 +144,7 @@ export default class GuLinkContainer extends Component {
           />
         </Toolbar>
         <ul styleName="gulinks">
-        {
+          {
           gulinks.map((gulink, i) => {
             const focused = i === this.state.selectedIndex;
             return (
@@ -192,11 +192,11 @@ export default class GuLinkContainer extends Component {
               {
                 idx !== 0 &&
                   <span styleName="url-action" onClick={this.handleLinkBundleRemove(idx)}>
-                    <i className="md-remove"></i>
+                    <i className="md-remove" />
                   </span>
               }
               <span styleName="url-action" onClick={this.handleLinkBundleAdd}>
-                <i className="md-add"></i>
+                <i className="md-add" />
               </span>
             </div>);
           })

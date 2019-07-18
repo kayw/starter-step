@@ -1,5 +1,5 @@
 module.exports = function responseTimeMw() {
-  return function *responseTimeGen(next) {
+  return function* responseTimeGen(next) {
     const start = new Date();
 
     yield next;

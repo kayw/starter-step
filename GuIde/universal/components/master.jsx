@@ -108,7 +108,7 @@ export default class Master extends React.Component {
         />
         <FullWidthSection style={styles.footer}>
           <p style={styles.p}>
-            Hand crafted with <i className="md md-favorite"></i> by <a style={styles.a} href="http://kayw.me">kayw</a>
+            Hand crafted with <i className="md md-favorite" /> by <a style={styles.a} href="http://kayw.me">kayw</a>
           </p>
           {githubButton}
         </FullWidthSection>

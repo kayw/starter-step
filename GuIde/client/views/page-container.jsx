@@ -6,7 +6,7 @@ function PageContainer(props) {
   return (
     <div styleName="root">
       <div styleName="content">
-      {props.children}
+        {props.children}
       </div>
     </div>
   );

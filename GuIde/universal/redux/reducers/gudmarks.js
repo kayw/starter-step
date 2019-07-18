@@ -21,7 +21,7 @@ function liftedReducer(actionTypes) {
       case actionTypes.CREATION_SUCCESS:
         return state.update('gulinks', list => list.push(immutifyMap(action.data)));
       case actionTypes.MODIFICATION_SUCCESS:
-        return state.update('gulinks', list => {
+        return state.update('gulinks', (list) => {
           const gulink = action.data;
           return list.update(action.index, old =>
             old.set('name', gulink.name).set('source', gulink.source)
@@ -30,7 +30,7 @@ function liftedReducer(actionTypes) {
       case actionTypes.DELETION_SUCCESS:
         return state.update('gulinks', list => list.delete(action.data.index));
       case actionTypes.MOVE:
-        return state.update('gulinks', list => {
+        return state.update('gulinks', (list) => {
           const from = action.data.originIndex;
           const to = action.data.atIndex;
           const toOrder = list.get(to).get('order');
@@ -42,7 +42,7 @@ function liftedReducer(actionTypes) {
           // http://stackoverflow.com/a/11348717
           //
           // https://github.com/tonyhb/redux-ui/blob/master/src/action-reducer.js#L44
-          return list.withMutations(lst => {
+          return list.withMutations((lst) => {
             for (let index = to; index !== from; index += increment) {
               lst.set(index, orderUpdater(list.get(index)));
             }
@@ -54,7 +54,7 @@ function liftedReducer(actionTypes) {
       case actionTypes.RELOAD_SUCCESS:
         return state.update('gulinks', list =>
           list.update(
-            list.findIndex((gulink) => gulink._id === action.data.id),
+            list.findIndex(gulink => gulink._id === action.data.id),
             gulink => gulink.set('building', true)
           )
         );
@@ -74,7 +74,7 @@ function formActionType(domain) {
     'DELETION', 'DELETION_SUCCESS', 'DELETION_FAIL',
   ];
   const actionType = {};
-  atypes.forEach(at => {
+  atypes.forEach((at) => {
     actionType[at] = `@@${domain}/${at}`;
   });
   return actionType;
@@ -190,7 +190,7 @@ const techcuzLoadLink = liftedLoadLink('techcuz', techcuzActionType);
 const docsioLoadLink = liftedLoadLink('docsio', docsioActionType);
 const peopleLoadLink = liftedLoadLink('people', peopleActionType);
 
-['RELOAD', 'RELOAD_SUCCESS', 'RELOAD_FAIL'].forEach(at => {
+['RELOAD', 'RELOAD_SUCCESS', 'RELOAD_FAIL'].forEach((at) => {
   docsioActionType[at] = `@@docsio/${at}`;
 });
 

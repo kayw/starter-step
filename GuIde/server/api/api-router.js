@@ -30,7 +30,7 @@ function findApiAction(url, method) {
 }
 
 export default function useApi() {
-  return function *runApi(next) {
+  return function* runApi(next) {
     const { action, params } = findApiAction(this.request.url, this.method);
     try {
       if (action && typeof action === 'function') {
@@ -50,7 +50,7 @@ export default function useApi() {
 }
 
 export function getApiResult(url, method, query) {
-  return function *getApi() {
+  return function* getApi() {
     const { action } = findApiAction(url, method);
     let result;
     try {
@@ -59,7 +59,7 @@ export function getApiResult(url, method, query) {
       }
       // console.log('get api result', result);
       if (result) {
-        Object.keys(result).forEach(key => {
+        Object.keys(result).forEach((key) => {
           result[key] = fromJS(result[key]);
         });
       }

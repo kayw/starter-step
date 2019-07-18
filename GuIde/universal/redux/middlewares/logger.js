@@ -21,7 +21,7 @@ const timer = typeof performance !== 'undefined' && typeof performance.now === '
  */
 
 function createLogger(options = {}) {
-  return ({ getState }) => (next) => (action) => {
+  return ({ getState }) => next => (action) => {
     const {
       level,
       logger,

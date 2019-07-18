@@ -30,7 +30,7 @@ function apiPromiseRequest() {
 export const CLIENT_API = Symbol('client');
 export default function clientMiddleware() {
   const requests = apiPromiseRequest();
-  return ({ dispatch, getState }) => next => action => {
+  return ({ dispatch, getState }) => next => (action) => {
     if (typeof action === 'function') {
       return action(dispatch, getState);
     }
@@ -55,11 +55,11 @@ export default function clientMiddleware() {
     const [REQUEST, SUCCESS, FAILURE] = types;
     next({ ...rest, type: REQUEST });
     return requests[method](endpoint, { ...rest }).then(
-      result => {
+      (result) => {
         next({ ...rest, result, type: SUCCESS });
         return result;
       }
-    ).catch(error => {
+    ).catch((error) => {
       next({ ...rest, error, type: FAILURE });
       return error;
     });

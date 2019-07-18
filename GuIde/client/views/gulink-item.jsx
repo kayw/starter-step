@@ -120,20 +120,20 @@ export default class GuLinkItem extends Component {
         {gulink.source && <span styleName="source">{` ${gulink.source}`}</span>}
         <div styleName="gulink-actions">
           <span styleName="gulink-action" onClick={this.handleLinkModify}>
-            <i className="md-mode-edit"></i>
+            <i className="md-mode-edit" />
           </span>
           {
             onReload &&
               <span styleName="gulink-action" onClick={this.handleBackendReload}>
-                <i className="md-sync"></i>
+                <i className="md-sync" />
               </span>
           }
           <span styleName="gulink-action" onClick={this.handleLinkRemove}>
-            <i className="md-delete"></i>
+            <i className="md-delete" />
           </span>
         </div>
         <div>
-        {
+          {
           gulink.links.map((link, idx) =>
             <p key={`g${idx}`} styleName="short-desc"><a href={link} target="_blank">{link}</a>
             </p>)

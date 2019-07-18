@@ -19,7 +19,7 @@ const logger = winston.loggers.get('bookmarks');
 // https://github.com/neumino/rethinkdbdash-examples/blob/master/todo/app.js
 function post(table) {
   return function insertGudmark(params, body) {
-    return function *insertMark() {
+    return function* insertMark() {
       try {
         logger.info(body);
         const result = yield r.table(table).insert({
@@ -40,7 +40,7 @@ function post(table) {
 
 function get(table) {
   return function getGudmarks() {
-    return function *getGen() {
+    return function* getGen() {
       try {
         const result = yield r.table(table).orderBy('order');
         return { [table]: { gulinks: result } };
@@ -53,7 +53,7 @@ function get(table) {
 
 function put(table) {
   return function updateGudmark(params, body) {
-    return function *update() {
+    return function* update() {
       try {
         logger.info({ name: body.name, links: body.links });
         const result = yield r.table(table).get(body._id).update({
@@ -70,7 +70,7 @@ function put(table) {
 }
 function del(table) {
   return function delGudmark(params, body) {
-    return function *delGen() {
+    return function* delGen() {
       try {
         const result = yield r.table(table).get(body.id).delete();
         return result;
@@ -83,7 +83,7 @@ function del(table) {
 
 function order(table) {
   return function reorder(params, body) {
-    return function *reorderGen() {
+    return function* reorderGen() {
       // console.log(body, params);
       try {
         /*
@@ -117,7 +117,7 @@ function reload(table) {
   };
 }
 
-const methodsAggreate = (table) => ({
+const methodsAggreate = table => ({
   reload: reload(table),
   order: order(table),
   get: get(table),

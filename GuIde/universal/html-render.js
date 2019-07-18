@@ -23,13 +23,13 @@ function loadOnServer(renderProps, store) {
   const { getState, dispatch } = store;
   const { components, location, params } = renderProps;
   const locals = { state: getState(), dispatch, location, params };
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const doTransition = () =>
     Promise.all(fetchComponentData(components, locals, true))
     .then(resolve, resolve);
     fetchComponentData(components, locals)
       .then(doTransition, doTransition)
-      .catch(error => {
+      .catch((error) => {
         debug(error);
         return doTransition();
       });

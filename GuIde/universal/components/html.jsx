@@ -51,7 +51,8 @@ export default function Html(props) {
         <div id="mount" dangerouslySetInnerHTML={{ __html: content }} />
         <script dangerouslySetInnerHTML={{
           __html: `window.__INITIAL_STATE__=${serialize(store.getState())};`,
-        }} />
+        }}
+        />
         <script src={assets.javascript.vendor} />
         <script src={assets.javascript.app} />
         {/*

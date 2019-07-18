@@ -7,7 +7,7 @@ import configureStore from '../universal/redux/configureStore';
 
 const initialState = window.__INITIAL_STATE__ || undefined;
 if (initialState) {
-  Object.keys(initialState).forEach(key => {
+  Object.keys(initialState).forEach((key) => {
     if (key !== 'router') {
       initialState[key] = fromJS(initialState[key]);
     }

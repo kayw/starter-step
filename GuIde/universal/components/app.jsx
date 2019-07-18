@@ -32,7 +32,7 @@ export default class App extends Component {
     }
     return (
       <Router history={this.props.routerHistory}>
-      {getPlainRoute(this.props.store)}
+        {getPlainRoute(this.props.store)}
       </Router>
     );
   }
@@ -41,8 +41,8 @@ export default class App extends Component {
     return (
       <Provider store={this.props.store}>
         <div>
-        {this.renderRouter()}
-        {__DEVTOOLS__ && this.renderDevTools()}
+          {this.renderRouter()}
+          {__DEVTOOLS__ && this.renderDevTools()}
         </div>
       </Provider>
     );

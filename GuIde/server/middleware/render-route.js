@@ -2,8 +2,8 @@ import render, { renderOldPage } from '../../universal/html-render';
 import debug from '../../universal/helpers/inspector';
 
 module.exports = function makeRenderRouteMiddleware(middleware) {
-  return function *renderRoute(next) {
-    function *renderRouteMiddleware() {
+  return function* renderRoute(next) {
+    function* renderRouteMiddleware() {
       let initialState = {};
       if (typeof middleware === 'function') {
         initialState = yield middleware.call(this, `/api${this.request.url}`, this.request.method);
@@ -15,7 +15,7 @@ module.exports = function makeRenderRouteMiddleware(middleware) {
         yield* next;
       }
     }
-    function *renderPlayground() {
+    function* renderPlayground() {
       debug('renderplayground');
       const htmls = renderOldPage();
       this.body = `

@@ -1,0 +1,45 @@
+version: '3'
+services:
+  seafile:
+    image: kayw/seafile
+    build:
+      context: ./image
+    container_name: seafile
+    networks:
+      - traefik
+    labels:
+      - "traefik.docker.network=traefik"
+      - "traefik.enable=true"
+      - "traefik.backend=srcmind-seafile"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:seafile.srcmind.io"
+      - "traefik.port=8000"
+    external_links:
+      - mysql:mysql
+    volumes:
+      - /media/sdc2-ata-TOSHIBA_MQ01UBD1/seafile:/seafile:rw
+    ports:
+      - 38000:8000
+      - 38082:8082
+      #Port 8080 is used for seafdav which is disabled by default
+#      - 127.0.0.1:8080:8080
+#    domainname: seafile.domain.com
+#restart: unless-stopped
+    environment:
+      - SEAFILE_NAME=seafileapp
+      - SEAFILE_ADDRESS=seafile.srcmind.io
+      - SEAFILE_ADMIN=kayw@srcmind.io
+      - SEAFILE_ADMIN_PW=kayw
+      - MYSQL_SERVER=mysql
+      - MYSQL_USER=seafile
+      - MYSQL_USER_PASSWORD=seafiledb
+      - MYSQL_ROOT_PASSWORD=qeemo1234
+
+networks:
+  traefik:
+    external: true
+
+    # https://github.com/crazy-max/docker-nextcloud
+    # https://github.com/yangxuan8282/docker-image/tree/master/rpi-alpine-seafile
+    #  https://github.com/Gronis/docker-seafile.git
+    #  https://github.com/VGoshev/seafile-docker.git 

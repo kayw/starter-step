@@ -20,10 +20,9 @@ export default function OldView() {
       <div className="play-input">
         <textarea className="play-code-area" itemProp="description" name="code" autoCorrect="off"
           autoComplete="off" autoCapitalize="off" spellCheck="false"
-        >
-        </textarea>
+        />
       </div>
-      <div className="play-output"></div>
+      <div className="play-output" />
     </div>
   );
 }

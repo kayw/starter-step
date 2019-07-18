@@ -1,6 +1,6 @@
 import debug from '../../universal/helpers/inspector';
 module.exports = function loggerMiddleware() {
-  return function *loggerGen(next) {
+  return function* loggerGen(next) {
     const start = new Date();
 
     yield next;

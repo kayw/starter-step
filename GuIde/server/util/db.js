@@ -20,6 +20,6 @@ export function ensureDB(rethink, conn, db, tables) {
     ));
   }
   return new Promise((resolve, reject) => {
-    rethink.expr(branches).run(conn).then((resp) => resolve(resp), reject);
+    rethink.expr(branches).run(conn).then(resp => resolve(resp), reject);
   });
 }
