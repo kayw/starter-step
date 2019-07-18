@@ -1,0 +1,114 @@
+.tree-panel {
+	float: right;
+}
+.ui-tree {
+	margin: 0;
+	padding: 0;
+}
+.ui-tree ul {
+	margin: 0;
+	padding: 0 0 0 14px;
+}
+.ui-tree li {
+	list-style-type: none;
+}
+
+.ui-tree a {
+	cursor: pointer;
+}
+.ui-tree li.selected > a {
+	background-color: #d9edf7;
+	color: #000;
+	padding: 0 7px;
+}
+.ui-tree li:before {
+	content: "";
+	display: inline-block;
+	font-size: 13px;
+	height: 11px;
+	line-height: 7px;
+	margin: 3px 7px 0 0;
+	text-align: center;
+	vertical-align: top;
+	width: 11px;
+}
+.ui-tree .has-children:before {
+	border: 1px solid black;
+	content: "▸";
+	cursor: pointer;
+}
+.ui-tree .has-children.open:before {
+	content: "▾";
+	cursor: pointer;
+}
+.ui-tree .has-children.always-open:before {
+	border: 1px solid black;
+	content: "";
+	cursor: default;
+}
+/* imporve 
+http://nickperkinslondon.github.io/angular-bootstrap-nav-tree/test/bs2_ng115_test_page.html    bootstrap-css
+
+*/
+
+#tab-widget {
+	float: left;
+}
+#tab-widget ul {
+	border-bottom: 1px solid #aaa;
+	margin: 0 0 10px;
+	padding: 0;
+}
+#tab-widget .tab {
+	display: inline-block;
+	border: 1px solid transparent;
+	border-bottom: none;
+	bottom: -1px;
+	position: relative;
+	list-style: none;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
+#tab-widget .tab.selected {
+	background: #fff;
+	border-color: #aaa;
+	border-radius: 5px 5px 0 0;
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+}
+
+#tab-widget .tab:focus {
+	box-shadow: 0 0 5px hsl(208, 99%, 50%);
+	border-color: hsl(208, 99%, 50%);
+	outline: none;
+}
+
+#tab-widget .tab:focus:after {
+	content: '';
+	position: absolute;
+	height: 5px;
+	left: -4px;
+	right: -4px;
+	bottom: -5px;
+	background: #fff;
+}
+
+/* http://jsfiddle.net/NV/5YRG9 */
+.tab-panel {
+	display: none;
+	margin-top: 1em;
+}
+
+.tab-panel.selected {
+	display: block;
+}
+
+/*.tab + .tab {
+	margin-left: .5em;
+}
+.tab.selected {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+}*/

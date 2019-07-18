@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+    {% if session.logged_in %}
+        <form action = "{{ url_for('admin_post') }}" method="POST" class="admin-post">
+	    <div id="admin-post-name">Title: </div>
+            <input type="text" name="post_title" maxlength=100>
+            <p>
+	    Tags:
+	    {% if post %}
+	    <select name=tags size=1>
+                {% for tag in post.tags %}
+		<option>{{ tag }}
+                {% endfor %}
+	    {% endif %}
+		<input type="text" name="tags" maxlength=50>
+	    Body:<textarea name="post_body" row=5 cols=80></textarea>
+            <input type="submit" value="Share">
+        </form>
+     {% endif %}
+{% endblock %}

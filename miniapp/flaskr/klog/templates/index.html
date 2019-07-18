@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>{{template "title" .}}</title>
+	<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+	<link rel="alternate" type="application/atom+xml" title="blog.golang.org - Atom Feed" href="//blog.golang.org/feed.atom" />
+</head>
+<body>
+<div class="container">
+
+<div id="sidebar">
+  <ul>
+    {% for tab in tabs %}
+    <li><a href=tab.link>tab.name</a></li>
+    {% endfor %}
+  </ul>
+  <li><a href="/play">Play</a></li>
+  <a href="/srcmind">SrcMind</a>
+
+	{{with .Doc}}
+		{{with .Newer}}
+			<h4>Next article</h4>
+			<p><a href="{{.Path}}">{{.Title}}</a></p>
+		{{end}}
+		
+		{{with .Older}}
+			<h4>Previous article</h4>
+			<p><a href="{{.Path}}">{{.Title}}</a></p>
+		{{end}}
+	{{end}}
+	
+	<h4>Links</h4>
+	<ul>
+	<li><a href='//golang.org/'>golang.org</a></li>
+	</ul>
+	
+	<p><a href="{{.BasePath}}/index">Blog index</a></p>
+</div><!-- #sidebar -->
+
+<div id="content">
+	<h1>SrcMind utility</h1>
+	{{template "content" .}}
+</div><!-- #content -->
+
+<div id="footer">
+	<p>
+	Except as
+	<a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+	the content of this page is licensed under the Creative Commons
+	Attribution 3.0 License,<br>
+	and code is licensed under a <a href="//golang.org/LICENSE">BSD license</a>.<br>
+	<a href="//golang.org/doc/tos.html">Terms of Service</a> | 
+	<a href="//www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+	</p>
+</div><!-- #footer -->
+
+</div><!-- .container -->
+
+</body>

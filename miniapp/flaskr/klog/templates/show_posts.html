@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+  {# if session.logged_in %}
+    <form action="{{ url_for('add_posts') }}" method=post class=add-post>
+      <dl>
+        <dt>Title:
+        <dd><input type=text size=30 name=title>
+        <dt>Text:
+        <dd><textarea name=body rows=5 cols=40></textarea>
+        <dd><input type=submit value=Share>
+      </dl>
+    </form>
+  {% endif #}
+  <ul class=entries>
+  {% for post in posts %}
+  	<li><h2>{{ post.post_title|title }}</h2>{{post.post_pub_time}}
+	tags: {% for tag in post.tags %}
+		{{ tag }},
+	      {% endfor %}
+    	{{ post.post_body|safe }}
+	{% if post.post_update_time -%}
+	updated in {{ post.post_update_time }}
+	{%- endif %}
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
