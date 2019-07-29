@@ -1,0 +1,11 @@
+{
+  "name": "modules-tree-app",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+  },
+  "devDependencies": {
+    "octicons": "~2.3.0",
+    "modularized-normalize-scss": "~3.0.3"
+  }
+}
