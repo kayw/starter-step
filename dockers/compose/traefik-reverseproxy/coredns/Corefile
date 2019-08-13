@@ -1,6 +1,6 @@
 .:53 {
     file /config/srcmind.io srcmind.io
-    forward . /etc/resolv.conf
+#    forward . /etc/resolv.conf
     log
 }
 

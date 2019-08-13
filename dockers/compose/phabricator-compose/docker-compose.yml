@@ -1,0 +1,114 @@
+version: "3"
+
+services:
+  mysql:
+    build: ./mysql
+    image: 'kayw/mysql'
+    container_name: 'mysql'
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=qeemo1234
+    volumes:
+      - ${DOCKER_VOLUME}/mysql:/var/lib/mysql
+    networks:
+      - traefik
+
+  php:
+    build: ./php7
+    image: 'kayw/phabricator-php7'
+    container_name: 'phabricator-php'
+    command: FPM
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=qeemo1234
+    depends_on:
+      - mysql
+    volumes:
+      - ${DOCKER_VOLUME}/phabricator/data:/srv
+      - ${DOCKER_VOLUME}/phabricator/files:/data
+      - ${DOCKER_VOLUME}/phabricator/repo:/repo
+    networks:
+      - traefik
+
+  web:
+    build: ./nginx
+    image: 'kayw/nginx'
+    container_name: 'phabricator-web'
+    restart: unless-stopped
+    depends_on:
+      - php
+    volumes:
+      - ./conf/nginx:/etc/nginx/conf.d
+      - ./conf/ssl:/etc/nginx/ssl:ro
+      - ${DOCKER_VOLUME}/phabricator/data:/srv:ro
+      - ${DOCKER_VOLUME}/phabricator/files:/data:ro
+    networks:
+      - traefik
+    dns:
+      - 172.18.0.7
+    labels:
+      traefik.docker.network: traefik
+      traefik.enable: true
+      traefik.backend: srcmind-phabricator
+      traefik.frontend.entryPoints: http,https
+      traefik.frontend.rule: Host:phabricator.srcmind.io,cdn.srcmind.io
+      #https://github.com/containous/traefik/issues/692
+      traefik.port: 80
+      #traefik.port: 443
+      #traefik.protocol: https
+      #traefik.passHostHeader: true
+
+  phd-pull:
+    build: ./php7
+    image: 'kayw/phabricator-php7'
+    container_name: 'phabricator-phd-pull'
+    command: PULL
+    restart: unless-stopped
+    depends_on:
+      - php
+    volumes:
+      - ${DOCKER_VOLUME}/phabricator/data:/srv
+      - ${DOCKER_VOLUME}/phabricator/files:/data
+      - ${DOCKER_VOLUME}/phabricator/repo:/repo
+    networks:
+      - traefik
+
+  phd-task:
+    build: ./php7
+    image: 'kayw/phabricator-php7'
+    #container_name: 'phabricator-phd-task'
+    command: TASK
+    restart: unless-stopped
+    depends_on:
+      - php
+    volumes:
+      - ${DOCKER_VOLUME}/phabricator/data:/srv
+      - ${DOCKER_VOLUME}/phabricator/files:/data
+      - ${DOCKER_VOLUME}/phabricator/repo:/repo
+    networks:
+      - traefik
+
+  phd-trig:
+    build: ./php7
+    image: 'kayw/phabricator-php7'
+    container_name: 'phabricator-phd-trig'
+    command: TRIG
+    restart: unless-stopped
+    depends_on:
+      - php
+    volumes:
+      - ${DOCKER_VOLUME}/phabricator/data:/srv
+      - ${DOCKER_VOLUME}/phabricator/files:/data
+      - ${DOCKER_VOLUME}/phabricator/repo:/repo
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
+
+
+#https://github.com/Hermsi1337/docker-compose/blob/master/full_php_dev_stack/docker-compose.yml
+#https://github.com/nasqueron/docker-nginx-php-fpm  user app nginx
+#https://stackoverflow.com/questions/32230577/how-do-i-define-the-name-of-image-built-with-docker-compose container_name
+#https://github.com/moby/moby/issues/19990 volume
